@@ -1,0 +1,56 @@
+
+.main{
+    background-color:#e7f0fd;
+    
+}
+.container{
+    width: 80%;
+    display:flex ;
+    justify-content: space-around;
+    margin:auto;
+    padding: 3em 0;
+}
+.quote{
+    margin:auto;
+    padding: 1em;
+    width:40%;
+    margin-right: 7em;
+}
+.quote h1{
+    font-family: 'Playball', cursive;
+    font-weight: 500;
+    font-size: 4.3rem;
+    color: #042345;
+}
+.quote p{
+    font-family: "Merriweather";
+    font-weight: 600;
+    color: #0b57ae;
+    margin:2em auto;
+}
+
+.image img{
+    width:100%;
+    border-radius: 10px;
+    filter: drop-shadow(0 0 0.75rem rgb(147, 144, 144) );
+}
+
+@media (max-width:1065px){
+    main{
+        max-width: 100%;
+        max-height: 50%;
+        flex-direction:column;
+    }
+    .quote h1{
+        font-size: 2rem;
+    }
+    .quote p{
+        font-size: 1rem;
+    }
+
+}
+@media (min-width:620px) and (max-width:1065px){
+    main .quote{
+    margin-left:15.625em;
+   }
+}

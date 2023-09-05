@@ -1,0 +1,25 @@
+.container{
+    position:relative;
+    margin-top: 0%;
+    width:15%;
+    background-color:#accbee;
+    min-height:100vh;
+    border-radius:9px;
+    padding: 2em;
+    font-family: "Ubuntu";
+}
+
+.elements{
+    display: flex;
+    margin-top: 1.7em;
+
+}
+.elements p{
+    margin-left:2em;
+}
+@media (max-width:650px){
+    .container{
+        display: none;
+    }
+
+}

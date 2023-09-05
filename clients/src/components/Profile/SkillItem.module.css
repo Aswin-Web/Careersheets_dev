@@ -1,0 +1,25 @@
+.item {
+  display: flex;
+}
+.item p {
+  font-size: 0.8rem;
+}
+.item h3{
+    font-size: 1rem;
+}
+.Beginner{
+    color: green;
+}
+.Intermediate{
+    color:#FF6000;
+
+}
+.Advanced{
+    color:#0B2447;
+}
+
+@media (max-width: 620px) {
+  .item p {
+    font-size: 0.6rem;
+  }
+}

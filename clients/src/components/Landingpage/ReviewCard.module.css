@@ -1,0 +1,18 @@
+.cardList {
+  list-style: none;
+}
+.cards ul{
+    display: flex;
+    margin: 4em auto;
+    justify-content:space-evenly;
+    flex-wrap: wrap;
+}
+.cards li{
+    margin-top: 3em;
+}
+@media (max-width:620px){
+  .cards li{
+      font-size:0.3rem;
+  }
+
+}
