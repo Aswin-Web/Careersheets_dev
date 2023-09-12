@@ -5,44 +5,37 @@ import ScheduleIcon from "@mui/icons-material/Schedule";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GradingIcon from "@mui/icons-material/Grading";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AddApplication } from "../../redux/reducers/application.data";
 
 const LeftSideBar = () => {
-const data = useSelector((state) => state.application.value);
-const dispatch = useDispatch();
-const token = useSelector((state) => state.auth.value);
-const getApplication = async () => {
-  if (data.length === 0) {
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/user/application`,
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    dispatch(AddApplication([...data]));
+  const data = useSelector((state) => state.application.value);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.value);
+  const getApplication = async () => {
+    if (data.length === 0) {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL}/user/application`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(AddApplication([...data]));
 
-    return await data;
-  }
-  return;
-};
-useEffect(() => {
-  getApplication();
-  return;
-}, []);
-
-
-
-
-
-
-
-
+      return await data;
+    }
+    return;
+  };
+  useEffect(() => {
+    getApplication();
+    return;
+  }, []);
 
   const ButtonStyles = {
     margin: "10px",
@@ -127,6 +120,17 @@ useEffect(() => {
               sx={{ fontWeight: "bold", marginLeft: "7px" }}
             >
               Training
+            </Typography>
+          </Button>
+        </Link>
+        <Link to="/user/jobs" className="LinkAnchorTag">
+          <Button variant="outlined" sx={ButtonStyles}>
+            <WorkOutlineIcon />
+            <Typography
+              component="h6"
+              sx={{ fontWeight: "bold", marginLeft: "7px" }}
+            >
+              Jobs
             </Typography>
           </Button>
         </Link>

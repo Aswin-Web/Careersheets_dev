@@ -14,9 +14,9 @@ const {
   updateStatus,
   updateProfileRole,
   postProject,
-  deleteProject
+  deleteProject,
+  GetAllJobs
 } = require("../controllers/user.profile.conroller");
-
 
 const {
   postApplication,
@@ -34,7 +34,6 @@ router
 router.get("/profile", getUserInfo);
 
 router.route("/profile/education").post(postEducation);
-
 
 router.delete("/profile/education/:id", deleteEducation);
 
@@ -58,5 +57,7 @@ router.delete("/profile/projects/:id", deleteProject);
 
 router.post("/application/removestatus", RemoveStatusFromApplication);
 
-module.exports = router;
+// Jobs Routes
+router.get("/jobs", GetAllJobs);
 
+module.exports = router;

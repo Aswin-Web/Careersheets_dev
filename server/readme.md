@@ -54,3 +54,10 @@
                     3.password
                     4.confirmPassword
     
+
+    2. Platform Administrator
+
+        Routes:
+                1."/admin/jobs" (ALL JOBS) [GET] - To get all Jobs
+                2."/admin/jobs" (CREATE JOB) [POST] - To create a job Oppourtunity
+                3. "/admin/jobs/:jobId" (Edit Job) [PUT]- To Edit a Job oppourtunity

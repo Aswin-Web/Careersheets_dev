@@ -46,8 +46,12 @@ import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
-
-
+import AllJobsSection from "./components/Admin/AllJobsSection";
+import CreateJobOppourtunity from "./components/Admin/CreateJobOppourtunity";
+import JobDetails from "./components/Admin/JobDetails";
+import EditJobOppourtunity from "./components/Admin/EditJobOppourtunity";
+import JobsMenuComponent from "./components/JobSeekerPage/JobsMenu/JobsMenuComponent";
+import ViewJobApplications from "./components/JobSeekerPage/JobsMenu/ViewJobApplications";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -73,7 +77,6 @@ function App() {
 
   return (
     <div className="App">
-      
       {/* Landing Page Routes */}
       <Routes>
         <Route path="/" element={<LandingHome />} />
@@ -108,6 +111,9 @@ function App() {
           <Route path="training" element={<Training />} />
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
+          {/* Jobs Menu */}
+          <Route path="jobs" element={<JobsMenuComponent />} />
+          <Route path="jobs/*" element={<ViewJobApplications />} />
         </Route>
         {/* Admin Routes */}
         <Route
@@ -118,9 +124,15 @@ function App() {
             </PlatFormAdminController>
           }
         >
+          {/* College Admin Verification */}
           <Route path="verify" element={<AdminTable />} />
           <Route path="download" element={<h1>download</h1>} />
-          <Route path="verify/:id" element={<SingleProfile/>} />
+          <Route path="verify/:id" element={<SingleProfile />} />
+          {/* Job postings */}
+          <Route path="jobs" element={<AllJobsSection />} />
+          <Route path="jobs/*" element={<JobDetails />} />
+          <Route path="edit/*" element={<EditJobOppourtunity />} />
+          <Route path="new" element={<CreateJobOppourtunity />} />
         </Route>
         <Route path="/adminlogin" element={<LoginSection />} />
       </Routes>

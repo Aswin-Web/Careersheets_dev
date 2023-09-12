@@ -1,11 +1,35 @@
-import { Box, Button, Container, Typography } from '@mui/material'
-import React from 'react'
-import BasicTable from './Table'
-import { Outlet, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { Box, Button, Container, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import BasicTable from "./Table";
+import { Outlet, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import  Axios  from "axios";
+import { useDispatch } from "react-redux";
+import { AddJobs } from "../../redux/reducers/AllJobDetails";
 
 const Dashboard = () => {
-  const navigate=useNavigate()
+  const dispatch =useDispatch()
+  const navigate = useNavigate();
+  useEffect(() => {
+    console.log("Working")
+    NetworkRequest();
+  },[]);
+  const NetworkRequest = async () => {
+    const { data } = await Axios.get(
+      `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
+      {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("admin")}`,
+        },
+      }
+    );
+    console.log(data.allJobs)
+    dispatch(AddJobs(data.allJobs));
+  };
+
+
+
   return (
     <div>
       <Helmet>
@@ -23,11 +47,32 @@ const Dashboard = () => {
             gap: "1rem",
           }}
         >
-          <Button variant="outlined" color="error" sx={{ margin: "0 1rem" }}>
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ margin: "0 1rem" }}
+            onClick={() => navigate("/admin/verify")}
+          >
             Verify CollegeAdmin
           </Button>
           <Button variant="outlined" color="error">
             Download
+          </Button>
+          <Button
+            sx={{ margin: "0 1rem" }}
+            variant="outlined"
+            color="error"
+            onClick={() => navigate("/admin/new")}
+          >
+            New Job
+          </Button>
+          <Button
+            sx={{ margin: "0 1rem" }}
+            variant="outlined"
+            color="error"
+            onClick={() => navigate("/admin/jobs")}
+          >
+            View Jobs
           </Button>
 
           <Button
@@ -57,6 +102,6 @@ const Dashboard = () => {
       </Container>
     </div>
   );
-}
+};
 
-export default Dashboard
+export default Dashboard;

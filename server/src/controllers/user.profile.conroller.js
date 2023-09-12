@@ -4,6 +4,7 @@ const JobSeeker = require("../models/user.models");
 const User = require("../models/user.models");
 const Project = require("../models/project.models");
 const mongoose = require("mongoose");
+const Jobs = require("../models/jobs.models");
 
 const getUserInfo = async (req, res) => {
   const id = req.user._id.toString();
@@ -209,7 +210,7 @@ const deleteProject = async (req, res) => {
   let existingProject;
   try {
     existingProject = await Project.findByIdAndRemove(id).populate("user");
-    
+
     await existingProject.user.project.pull(existingProject);
     await existingProject.user.save();
 
@@ -226,21 +227,43 @@ const deleteProject = async (req, res) => {
 };
 
 /////SPECIFYING PROFILE ROLE//////////
-const updateProfileRole = async(req, res) => {
-  const {profileRole}=req.body
+const updateProfileRole = async (req, res) => {
+  const { profileRole } = req.body;
   const user = req.user._id.toString();
   let role;
   try {
-    userRole=await User.findByIdAndUpdate(user,{$set:{profileRole:profileRole}},{new:true})
-    const role=userRole.profileRole
-    res.status(200).json({message:"updated Successfully",role:role})
-    console.log(role)
+    userRole = await User.findByIdAndUpdate(
+      user,
+      { $set: { profileRole: profileRole } },
+      { new: true }
+    );
+    const role = userRole.profileRole;
+    res.status(200).json({ message: "updated Successfully", role: role });
+    console.log(role);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ message: error });
   }
-
 };
+
+const GetAllJobs = async (req, res, next) => {
+  try {
+    const user = req.user._id.toString();
+    const userInfo = await User.findOne({ _id: user }).appliedJobs;
+
+    console.log(userInfo);
+    const jobs = await Jobs.find({
+      _id: { $nin: userInfo },
+      isClosed: false,
+    }).sort([["createdAt", -1]]);
+
+    return res.json({ jobs });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
 module.exports = {
   getUserInfo,
   postEducation,
@@ -251,4 +274,5 @@ module.exports = {
   updateProfileRole,
   postProject,
   deleteProject,
+  GetAllJobs,
 };

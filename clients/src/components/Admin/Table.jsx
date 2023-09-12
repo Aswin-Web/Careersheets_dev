@@ -8,33 +8,35 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 import { Box } from "@mui/material";
 import { AddCollegeList } from "../../redux/reducers/collegeAdminlist";
-import {useDispatch,useSelector} from 'react-redux'
-
+import { useDispatch, useSelector } from "react-redux";
 
 export default function BasicTable(props) {
-  const dispatch=useDispatch()
-  const collegeList=useSelector((state) => state.collegeAdminList.value);
-  const [users,setUsers]=React.useState([])
+  const dispatch = useDispatch();
+  const collegeList = useSelector((state) => state.collegeAdminList.value);
+  const [users, setUsers] = React.useState([]);
   const { status, view } = props;
 
-  const requestCollegeAdmin=async ()=>{
-    if (collegeList.length===0){
-    const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + "/admin"}`,
-      {headers:{
-        "Content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("admin")}`,
-      }}
-    );
-    setUsers(data.user)
-    dispatch(AddCollegeList([...data.user])) }   
-  }
+  const requestCollegeAdmin = async () => {
+    if (collegeList.length === 0) {
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL + "/admin"}`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+          },
+        }
+      );
+      setUsers(data.user);
+      dispatch(AddCollegeList([...data.user]));
+    }
+  };
   React.useEffect(() => {
-    requestCollegeAdmin()
-  },[]);
+    requestCollegeAdmin();
+  }, []);
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
