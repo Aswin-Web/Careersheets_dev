@@ -13,6 +13,8 @@ import applicationDetailSlice from "./reducers/applicationDetails";
 import CollegeAdminListSlice from "./reducers/collegeAdminlist";
 import projectSlice from "./reducers/project-data";
 import roleSlice from "./reducers/role-data";
+import personalSlice from "./reducers/personalInfo";
+import summarySlice from "./reducers/summary-data";
 export default configureStore({
   reducer: {
     auth : userSlice,
@@ -25,9 +27,11 @@ export default configureStore({
     applicationDetail:applicationDetailSlice.reducer,
     project:projectSlice.reducer,
     role:roleSlice.reducer,
+    summary:summarySlice.reducer,
+    personalInfo:personalSlice.reducer,
     application:applicationSlice,
     notification:notificationSlice,
-    collegeAdminList:CollegeAdminListSlice
+    collegeAdminList:CollegeAdminListSlice,
 
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),

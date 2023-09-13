@@ -37,9 +37,12 @@ const StatusForm = (props) => {
   const statusFormSubmitHandler = (event) => {
     event.preventDefault();
 
-
-    updateRequest().catch((err) => console.log(err));
-    dispatch(statusActions.changeStatus(inputs));
+    updateRequest()
+      .then((data) => {
+        console.log(data, "sdasdasasasda");
+        dispatch(statusActions.changeStatus(inputs));
+      })
+      .catch((err) => console.log(err));
   };
 
   const inputChangeHandler = (event) => {

@@ -13,7 +13,8 @@ const getUserInfo = async (req, res) => {
     userDetails = await JobSeeker.findById(id)
       .populate("education")
       .populate("skill")
-      .populate("project");
+      .populate("project")
+      .populate("personal");
   } catch (error) {
     console.log(error);
   }
@@ -209,7 +210,7 @@ const deleteProject = async (req, res) => {
   let existingProject;
   try {
     existingProject = await Project.findByIdAndRemove(id).populate("user");
-    
+
     await existingProject.user.project.pull(existingProject);
     await existingProject.user.save();
 
@@ -226,20 +227,23 @@ const deleteProject = async (req, res) => {
 };
 
 /////SPECIFYING PROFILE ROLE//////////
-const updateProfileRole = async(req, res) => {
-  const {profileRole}=req.body
+const updateProfileRole = async (req, res) => {
+  const { profileRole } = req.body;
   const user = req.user._id.toString();
   let role;
   try {
-    userRole=await User.findByIdAndUpdate(user,{$set:{profileRole:profileRole}},{new:true})
-    const role=userRole.profileRole
-    res.status(200).json({message:"updated Successfully",role:role})
-    console.log(role)
+    userRole = await User.findByIdAndUpdate(
+      user,
+      { $set: { profileRole: profileRole } },
+      { new: true }
+    );
+    const role = userRole.profileRole;
+    res.status(200).json({ message: "updated Successfully", role: role });
+    console.log(role);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({ message: error });
   }
-
 };
 module.exports = {
   getUserInfo,

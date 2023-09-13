@@ -7,7 +7,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useDispatch, useSelector } from "react-redux";
 import RoleForm from "./RoleForm";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 //MUI///
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -18,6 +18,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import { roleActions } from "../../redux/reducers/role-data";
 
 const Profile = () => {
+  const navigate=useNavigate()
   const dispatch = useDispatch();
   const profileRole = useSelector((state) => state.role.role);
   const { name, displayPicture } = UseAuth();
@@ -126,6 +127,11 @@ const Profile = () => {
               </div>
             </div>
           </div>
+          <div className={classes.resume}>
+            <Button sx={{padding:"12px"}} variant="contained" onClick={()=>{
+              navigate("/user/profile/resume")
+            }}>Generate Resume</Button>
+          </div>
         </div>
         {/* <div className={classes.bio}>
           <h3>Bio:</h3>
@@ -138,9 +144,9 @@ const Profile = () => {
           </p>
         </div> */}
       </div>
-      
+
       <hr />
-     
+
       <div>
         <ProfileDetails />
       </div>

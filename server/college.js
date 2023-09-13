@@ -39,7 +39,7 @@ const colleges = [
   { name: "Sri Eshwar College of Engineering (Autonomous)" },
   { name: "Hindusthan Institute of Technology (Autonomous)" },
   { name: "P A College of Engineering and Technology (Autonomous)" },
-  { name: "Dhanalakshmi Srinivasan College of Engineering" },   
+  { name: "Dhanalakshmi Srinivasan College of Engineering" },
   { name: "Adithya Institute of Technology" },
   { name: "Kathir College of Engineering" },
   { name: "Easa College of Engineering and Technology" },

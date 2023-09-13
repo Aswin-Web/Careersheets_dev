@@ -46,6 +46,7 @@ import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
+import ResumeMain from "./components/Profile/Resume/ResumeMain";
 
 
 
@@ -108,6 +109,7 @@ function App() {
           <Route path="training" element={<Training />} />
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
+          <Route path="profile/resume" element={<ResumeMain/>}/>
         </Route>
         {/* Admin Routes */}
         <Route
