@@ -42,6 +42,9 @@ const Schema = new mongoose.Schema(
         ref: "Skill",
       },
     ],
+    appliedPlatformJobs:[{
+      type: mongoose.Types.ObjectId, ref: "Job",unique:true
+    }]
   },
   {
     timestamps: true,

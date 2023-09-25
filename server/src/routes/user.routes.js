@@ -15,7 +15,11 @@ const {
   updateProfileRole,
   postProject,
   deleteProject,
-  GetAllJobs
+  GetAllJobs,
+  ApplyForPlatformJobs,
+  AddUserToJobHistory,
+  AppliedJobs,
+  SearchAppliedJobs,
 } = require("../controllers/user.profile.conroller");
 
 const {
@@ -58,6 +62,18 @@ router.delete("/profile/projects/:id", deleteProject);
 router.post("/application/removestatus", RemoveStatusFromApplication);
 
 // Jobs Routes
+// To Get all jobs which are not applied
 router.get("/jobs", GetAllJobs);
+// To apply for a jobs by job seeker
+router.get("/jobs/:jobId", ApplyForPlatformJobs);
+
+// To View the applied Jobs
+router.get("/appliedjobs", AppliedJobs);
+
+// To view a particular Job
+router.get("/appliedjobs/:id", SearchAppliedJobs);
+
+// To update The Job history to increase the user count
+router.get("/history/:id", AddUserToJobHistory);
 
 module.exports = router;

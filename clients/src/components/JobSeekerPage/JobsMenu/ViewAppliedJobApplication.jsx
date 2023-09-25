@@ -9,7 +9,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { AddSingleApplication } from "../../../redux/reducers/application.data";
-import { removeAJob } from "../../../redux/reducers/JobsUsers";
 
 const centerItems = {
   display: "flex",
@@ -18,23 +17,22 @@ const centerItems = {
   gap: "10px",
   margin: "0.5rem 0",
 };
-const ViewJobApplications = () => {
+const ViewAppliedJobApplications = () => {
+  
   const [views, setviews] = useState(0);
+  const [currentJob,setCurrentJob]=useState([])
   const dispatch = useDispatch();
-  const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
   const allJobs = useSelector((state) => state.allJobsUser.value);
-  const currentJob = allJobs.filter((x) => x._id === jobbID);
+  // const currentJob = allJobs.filter((x) => x._id === jobbID);
   const newState = useSelector((state) => state);
-
-  console.log(useSelector((state) => state));
 
   const saveApplyHistory = async () => {
     const data = await axios.get(
       `${
-        process.env.REACT_APP_SERVER_URL + `/user/history/${currentJob[0]._id}`
+        process.env.REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`
       }`,
       {
         headers: {
@@ -45,17 +43,10 @@ const ViewJobApplications = () => {
         },
       }
     );
-    console.log(data);
-    setviews(data.data.views);
-  };
-
-  useEffect(() => {
-    saveApplyHistory();
-  }, []);
-
-  const handleApply = async () => {
-    const data = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + `/user/jobs/${currentJob[0]._id}`}`,
+    const view = await axios.get(
+      `${
+        process.env.REACT_APP_SERVER_URL + `/user/history/${jobbID}`
+      }`,
       {
         headers: {
           "Content-type": "application/json",
@@ -65,13 +56,16 @@ const ViewJobApplications = () => {
         },
       }
     );
-    if (data.status === 200) {
-      console.log(data.data.newApplication, newState);
-      dispatch(AddSingleApplication(data.data.newApplication));
-      dispatch(removeAJob(currentJob[0]._id));
-      navigate("/user");
-    }
+    setviews(view.data.views);
+    setCurrentJob([...data.data.jobs])
+   
   };
+
+  useEffect(() => {
+    saveApplyHistory();
+  }, []);
+
+ 
 
   return (
     <Box
@@ -241,36 +235,12 @@ const ViewJobApplications = () => {
                 color: "black",
                 border: "1px solid black",
                 backgroundColor: "#27E1C1",
-                display: `${alert ? "none" : "block"}`,
+                
               }}
-              onClick={() => setAlert(!alert)}
+              disabled
             >
-              Apply for this Job
+              Applied on {`${new Date(currentJob[0].updatedAt).toLocaleDateString ()}`}
             </Button>
-            <Box sx={{ display: `${alert ? "block" : "none"}` }}>
-              <p>Are you sure you want to apply?</p>
-              <Button
-                sx={{
-                  color: "black",
-                  border: "1px solid black",
-                  backgroundColor: "#27E1C1",
-                  margin: "0 1rem",
-                }}
-                onClick={handleApply}
-              >
-                Apply
-              </Button>
-              <Button
-                sx={{
-                  color: "black",
-                  border: "1px solid black",
-                  backgroundColor: "#27E1C1",
-                }}
-                onClick={() => setAlert(!alert)}
-              >
-                Cancel
-              </Button>
-            </Box>
           </Box>
         </Box>
       ) : (
@@ -280,4 +250,4 @@ const ViewJobApplications = () => {
   );
 };
 
-export default ViewJobApplications;
+export default ViewAppliedJobApplications;

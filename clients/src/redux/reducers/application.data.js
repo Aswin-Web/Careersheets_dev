@@ -32,10 +32,13 @@ export const applicationSlice = createSlice({
 
       })
       state.value=[...newData]
+    },
+    AddSingleApplication(state, action) {
+      state.value = [action.payload,...state.value ];
     }
   },
 });
 
-export const { AddApplication, AddItemToStatus,DeleteStatus } = applicationSlice.actions;
+export const { AddApplication, AddItemToStatus,DeleteStatus,AddSingleApplication } = applicationSlice.actions;
 
 export default applicationSlice.reducer;

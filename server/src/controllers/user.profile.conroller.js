@@ -5,6 +5,8 @@ const User = require("../models/user.models");
 const Project = require("../models/project.models");
 const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
+const Application = require("../models/application.models");
+const JobsHistory = require("../models/jobshistory.models");
 
 const getUserInfo = async (req, res) => {
   const id = req.user._id.toString();
@@ -249,14 +251,187 @@ const updateProfileRole = async (req, res) => {
 const GetAllJobs = async (req, res, next) => {
   try {
     const user = req.user._id.toString();
-    const userInfo = await User.findOne({ _id: user }).appliedJobs;
-
-    console.log(userInfo);
+    const userInfo = await User.findOne({ _id: user }).populate("skill");
     const jobs = await Jobs.find({
-      _id: { $nin: userInfo },
+      _id: { $nin: userInfo.appliedPlatformJobs },
       isClosed: false,
-    }).sort([["createdAt", -1]]);
+      SkillsRequired: {
+        $in: userInfo.skill.map((x) => {
+          try {
+            if (x.skill.length !== 1) {
+              return new RegExp(`.*${x.skill}.*`, "i");
+            } else {
+              return new RegExp(x.skill, "i");
+            }
+          } catch (error) {
+            return x.skill;
+          }
+        }),
+      },
+      //  [/.*c.*/i ,/.*Java.*/i ]
+    })
+      .sort([["createdAt", -1]])
+      .select(
+        "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
+      );
 
+    console.log(
+      userInfo.skill.map((x) => {
+        try {
+          if (x.skill.length !== 1) {
+            console.log(x.skill.length, x.skill);
+            return new RegExp(`.*${x.skill}.*`, "i");
+          } else {
+            return new RegExp(x.skill, "i");
+          }
+        } catch (error) {
+          return x.skill;
+        }
+      })
+    );
+    return res.json({ jobs });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const ApplyForPlatformJobs = async (req, res, next) => {
+  try {
+    const jobId = req.params.jobId;
+    const userId = req.user._id.toString();
+
+    const job = await Jobs.find({ _id: jobId });
+    let user = await User.findOne({ _id: userId });
+    if (job.length !== 0) {
+      if (user.appliedPlatformJobs === undefined) {
+        let modify = await User.findOneAndUpdate(
+          { _id: userId },
+          { $push: { appliedPlatformJobs: jobId } }
+        );
+        let jobUpdate = await Jobs.findOneAndUpdate(
+          {
+            _id: jobId,
+          },
+          { $push: { appliedUsers: { userId, isViewed: false } } }
+        );
+        const newApplication = await Application.create({
+          author: userId,
+          company: job[0].companyName,
+          designation: job[0].roleName,
+          whereApply: "Carrersheets",
+          joblink: "-",
+          applicationDate: job[0].createdAt,
+          location: job[0].location,
+        });
+        return res.status(200).json({
+          msg: "item added successfully",
+          newApplication: newApplication,
+        });
+      } else {
+        const isDuplicated = user.appliedPlatformJobs.filter(
+          (item) => item.toString() === jobId
+        );
+
+        if (isDuplicated.length === 0) {
+          let modify = await User.findOneAndUpdate(
+            { _id: userId },
+            { $push: { appliedPlatformJobs: jobId } }
+          );
+          const newApplication = await Application.create({
+            author: userId,
+            company: job[0].companyName,
+            designation: job[0].roleName,
+            whereApply: "Carrersheets",
+            joblink: "-",
+            applicationDate: job[0].createdAt,
+            location: job[0].location,
+          });
+          let jobUpdate = await Jobs.findOneAndUpdate(
+            {
+              _id: jobId,
+            },
+            { $push: { appliedUsers: { userId, isViewed: false } } }
+          );
+
+          return res.status(200).json({
+            msg: "item added successfully",
+            newApplication: newApplication,
+          });
+        } else {
+          return res.status(400).json({ msg: "item already presented" });
+        }
+      }
+    } else {
+      return res.status(400).json({ msg: "Job is not Valid" });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const AddUserToJobHistory = async (req, res, next) => {
+  try {
+    const jobId = req.params.id;
+    if (jobId === undefined || jobId === "") {
+      return res.status(400).json({ msg: "Invalid Parameter Sent" });
+    }
+
+    const updateData = await JobsHistory.create({
+      job_id: jobId,
+      user_id: req.user._id.toString(),
+    });
+    const ApplicationViews = await JobsHistory.find({
+      job_id: mongoose.Types.ObjectId(jobId),
+    }).count();
+    console.log(ApplicationViews);
+    return res
+      .status(200)
+      .json({ msg: "Inserted Successfully", views: ApplicationViews });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const AppliedJobs = async (req, res, next) => {
+  try {
+    const user = req.user._id.toString();
+    const userInfo = await User.findOne({ _id: user }).populate("skill");
+    const jobs = await Jobs.find({
+      _id: { $in: userInfo.appliedPlatformJobs },
+      isClosed: false,
+      //  [/.*c.*/i ,/.*Java.*/i ]
+    })
+      .sort([["createdAt", -1]])
+      .select(
+        "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
+      );
+
+    console.log(jobs);
+    return res.json({ jobs });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const SearchAppliedJobs = async (req, res, next) => {
+  try {
+    const user = req.user._id.toString();
+    // const userInfo = await User.findOne({ _id: user }).populate("skill");
+    const jobs = await Jobs.find({
+      _id: req.params.id,
+
+      //  [/.*c.*/i ,/.*Java.*/i ]
+    })
+      .sort([["createdAt", -1]])
+      .select(
+        "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
+      );
+
+    console.log(jobs);
     return res.json({ jobs });
   } catch (error) {
     console.log(error);
@@ -275,4 +450,8 @@ module.exports = {
   postProject,
   deleteProject,
   GetAllJobs,
+  ApplyForPlatformJobs,
+  AddUserToJobHistory,
+  AppliedJobs,
+  SearchAppliedJobs,
 };

@@ -60,6 +60,8 @@ app.use((req, res, next) => {
   next()
 });
 
+
+
 ///COLLEGE LIST 
 app.use("/collegelist",collegeListRouter)
 

@@ -228,7 +228,29 @@ const JobCreationRoute = async (req, res, next) => {
 };
 
 const GetAllJobs = async (req, res, next) => {
-  const jobs = await Jobs.find({}).sort({ createdAt: -1 });
+  const jobs = await Jobs.find({})
+    .sort({ createdAt: -1 })
+    .populate({
+      path: "appliedUsers.userId",
+      populate: {
+        path: "project",
+      },
+      // populate:{
+      //   path:"education"
+      // }
+    })
+    .populate({
+      path: "appliedUsers.userId",
+      populate: {
+        path: "skill",
+      },
+    })
+    .populate({
+      path: "appliedUsers.userId",
+      populate: {
+        path: "education",
+      },
+    });
   return res.status(200).json({ allJobs: jobs });
 };
 
@@ -300,22 +322,22 @@ const DisableJob = async (req, res, next) => {
   try {
     const jobId = req.params.jobId;
     const currentJob = await Jobs.find({ _id: jobId });
-    if (currentJob[0].length !==0){
-      const modifyJob=await Jobs.findOneAndUpdate({_id:jobId},{isClosed: !currentJob[0].isClosed})
+    if (currentJob[0].length !== 0) {
+      const modifyJob = await Jobs.findOneAndUpdate(
+        { _id: jobId },
+        { isClosed: !currentJob[0].isClosed }
+      );
       return res.status(200).json({
-        msg:"Edited Successfully",
-        job:{
-          ...modifyJob
-        }
-      })
-
-    }
-    else{
+        msg: "Edited Successfully",
+        job: {
+          ...modifyJob,
+        },
+      });
+    } else {
       return res.status(400).json({
-        message:"Job does not Exist "
-      })
+        message: "Job does not Exist ",
+      });
     }
-    
   } catch (error) {
     console.log(error);
     return next();
@@ -329,5 +351,5 @@ module.exports = {
   InputValidationJob,
   GetAllJobs,
   EditJobs,
-  DisableJob
+  DisableJob,
 };

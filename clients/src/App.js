@@ -52,6 +52,8 @@ import JobDetails from "./components/Admin/JobDetails";
 import EditJobOppourtunity from "./components/Admin/EditJobOppourtunity";
 import JobsMenuComponent from "./components/JobSeekerPage/JobsMenu/JobsMenuComponent";
 import ViewJobApplications from "./components/JobSeekerPage/JobsMenu/ViewJobApplications";
+import AppliedJobsMenuComponent from "./components/JobSeekerPage/JobsMenu/AppliedJobsComponent";
+import ViewAppliedJobApplications from "./components/JobSeekerPage/JobsMenu/ViewAppliedJobApplication";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -114,6 +116,9 @@ function App() {
           {/* Jobs Menu */}
           <Route path="jobs" element={<JobsMenuComponent />} />
           <Route path="jobs/*" element={<ViewJobApplications />} />
+          {/* Applied Jobs */}
+          <Route path="applied" element={<AppliedJobsMenuComponent/>}/>
+          <Route path="applied/*" element={<ViewAppliedJobApplications/>}/>
         </Route>
         {/* Admin Routes */}
         <Route

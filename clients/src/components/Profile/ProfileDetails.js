@@ -26,34 +26,35 @@ const ProfileDetails = () => {
   const projectItems = useSelector((state) => state.project.items);
   const skillItems = useSelector((state) => state.skill.skills);
   const token = useSelector((state) => state.auth.value);
-  const sendRequest = async () => {
-    const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .catch((err) => console.log(err));
-    const data = await response.data;
+  console.log("Profile Page")
+  // const sendRequest = async () => {
+  //   const response = await axios
+  //     .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+  //       headers: {
+  //         "Content-type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .catch((err) => console.log(err));
+  //   const data = await response.data;
 
-    return data;
-  };
+  //   return data;
+  // };
 
-  useEffect(() => {
-    sendRequest().then((data) => {
-      console.log(data, "data");
-      let status = data.status;
-      let details = data.education.reverse();
-      let project = data.project.reverse();
+  // useEffect(() => {
+  //   sendRequest().then((data) => {
+  //     console.log(data, "data");
+  //     let status = data.status;
+  //     let details = data.education.reverse();
+  //     let project = data.project.reverse();
       
-      dispatch(educationActions.replaceEdu(details));
-      dispatch(projectActions.replaceProject(project));
-      dispatch(skillActions.replaceSkill(data.skill));
-      dispatch(statusActions.changeStatus(status));
-      dispatch(roleActions.changeRole(data.profileRole))
-    });
-  }, [dispatch]);
+  //     dispatch(educationActions.replaceEdu(details));
+  //     dispatch(projectActions.replaceProject(project));
+  //     dispatch(skillActions.replaceSkill(data.skill));
+  //     dispatch(statusActions.changeStatus(status));
+  //     dispatch(roleActions.changeRole(data.profileRole))
+  //   });
+  // }, [dispatch]);
 
   return (
     <div className={classes.details}>
