@@ -23,6 +23,7 @@ const CSVroutes = require('./routes/csv.routes')
 const collegeAdminRouter=require("./routes/college.routes")
 const collegeListRouter=require("./routes/collegeList.routes")
 const platformAdminRoutes=require("./routes/platformAdmin.routes")
+const resumeRoutes=require("./routes/resume.routes")
 
 
 const cors =require('cors')
@@ -84,7 +85,8 @@ app.use("/collegeadmin",collegeAdminRouter)
 
 // User Routes
 app.use("/user", userRoutes);
-// 
+// Resume generation Routes
+app.use("/user/profile/generateresume",resumeRoutes)
 
 
 app.use("/*",(req, res) => {

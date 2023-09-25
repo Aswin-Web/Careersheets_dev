@@ -47,6 +47,7 @@ import AdminTable from "./components/Admin/Table";
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
 import ResumeMain from "./components/Profile/Resume/ResumeMain";
+import PDF from "./components/Profile/Resume/PDFview";
 
 
 
@@ -110,6 +111,7 @@ function App() {
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
           <Route path="profile/resume" element={<ResumeMain/>}/>
+          <Route path="profile/resume/pdf" element={<PDF/>}/>
         </Route>
         {/* Admin Routes */}
         <Route

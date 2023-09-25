@@ -17,14 +17,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { roleActions } from "../../redux/reducers/role-data";
 
+import { pipeline } from '@xenova/transformers';
+
+
 const Profile = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const profileRole = useSelector((state) => state.role.role);
   const { name, displayPicture } = UseAuth();
   const [open, setOpen] = React.useState(false);
   const [role, setRole] = React.useState();
   const token = useSelector((state) => state.auth.value);
+  // const userData = useSelector((state) => state.data.value);
 
   const updateRequest = async () => {
     const response = await axios
@@ -70,6 +74,28 @@ const Profile = () => {
       })
       .catch((err) => console.log(err));
   };
+
+ 
+
+  const generateResumeHandler = async() => {
+    // let poet = await pipeline(
+    //   "text2text-generation",
+    //   "Xenova/LaMini-Flan-T5-783M"
+    // );
+    // let result = await poet("Write me a love poem about cheese.", {
+    //   max_new_tokens: 200,
+    //   temperature: 0.9,
+    //   repetition_penalty: 2.0,
+    //   no_repeat_ngram_size: 3,
+  
+    //   // top_k: 20,
+    //   // do_sample: true,
+    // });
+    // console.log(result)
+    // navigate("/user/profile/resume/")
+    console.log("clicked");
+  };
+
 
   return (
     <div className={classes.Container}>
@@ -128,9 +154,13 @@ const Profile = () => {
             </div>
           </div>
           <div className={classes.resume}>
-            <Button sx={{padding:"12px"}} variant="contained" onClick={()=>{
-              navigate("/user/profile/resume")
-            }}>Generate Resume</Button>
+            <Button
+              sx={{ padding: "12px" }}
+              variant="contained"
+              onClick={generateResumeHandler}
+            >
+              Generate Resume
+            </Button>
           </div>
         </div>
         {/* <div className={classes.bio}>

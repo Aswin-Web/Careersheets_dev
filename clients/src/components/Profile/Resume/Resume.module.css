@@ -51,7 +51,7 @@
 .skill ul {
   padding: 5px 50px;
   line-height: 28px;
-  height: 165px;
+  height: 160px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -93,7 +93,7 @@
   padding: 5px 30px;
 }
 .splitLinePersonal {
-  width: 38%;
+  width: 36%;
   border-width: 1px;
   border-bottom: 0px;
   border-left: 0px;
@@ -121,4 +121,11 @@
 
 .empty{
     height:1em;
+}
+.main{
+    padding: 20px;
+    padding-bottom: 50px;
+    background-color: aliceblue;
+    border-radius: 2px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
 }

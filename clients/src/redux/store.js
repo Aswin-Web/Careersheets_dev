@@ -15,6 +15,7 @@ import projectSlice from "./reducers/project-data";
 import roleSlice from "./reducers/role-data";
 import personalSlice from "./reducers/personalInfo";
 import summarySlice from "./reducers/summary-data";
+import { dataSlice } from "./reducers/data";
 export default configureStore({
   reducer: {
     auth : userSlice,
@@ -32,6 +33,7 @@ export default configureStore({
     application:applicationSlice,
     notification:notificationSlice,
     collegeAdminList:CollegeAdminListSlice,
+    data:dataSlice.reducer
 
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),

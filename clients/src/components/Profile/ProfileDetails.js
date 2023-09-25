@@ -16,6 +16,7 @@ import { projectActions } from "../../redux/reducers/project-data";
 import { roleActions } from "../../redux/reducers/role-data";
 import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
+import { dataAction } from "../../redux/reducers/data";
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const ProfileDetails = () => {
   const projectItems = useSelector((state) => state.project.items);
   const skillItems = useSelector((state) => state.skill.skills);
   const token = useSelector((state) => state.auth.value);
+  const data=useSelector((state)=>state.data.value)
 
   const Languages = personalState.languages.map((item) => item);
 
@@ -43,8 +45,7 @@ const ProfileDetails = () => {
       })
       .catch((err) => console.log(err));
     const data = await response.data;
-    console.log(data)
-    
+    // console.log(data);
 
     return data;
   };
@@ -70,8 +71,12 @@ const ProfileDetails = () => {
           fullName: user.fullName,
         })
       );
+      // full data to the state
+      dispatch(dataAction.AddData(data));
     });
   }, [dispatch]);
+
+  // console.log(data,"data from the redux state")
 
   return (
     <div className={classes.details}>
