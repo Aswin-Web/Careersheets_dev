@@ -35,7 +35,6 @@ body {
   display: flex;
 }
 .naming {
-  
   margin-left: 4em;
   margin-top: 2em;
 }
@@ -63,11 +62,20 @@ hr {
 .profileRole {
   display: flex;
 }
-.mainProfile{
+.mainProfile {
   display: flex;
 }
+.resume{
+  margin-right: 80px;
+  margin-top: 10px;
+}
+.heading{
+  display: flex;
+  justify-content: space-between;
+}
+
 @media (max-width: 620px) {
-  .naming{
+  .naming {
     padding-left: 5em;
     margin: 0;
   }
@@ -88,12 +96,16 @@ hr {
   hr {
     margin-bottom: 0;
   }
-  .topCard img{
+  .topCard img {
     height: 30vh;
   }
- 
-  .mainProfile{
+
+  .mainProfile {
     display: flex;
-    flex-wrap:nowrap;
+    flex-wrap: nowrap;
+  }
+  .resume{
+    margin-right: 0px;
+    margin-top: 2px;
   }
 }

@@ -12,6 +12,9 @@ import applicationDetailSlice from "./reducers/applicationDetails";
 import CollegeAdminListSlice from "./reducers/collegeAdminlist";
 import projectSlice from "./reducers/project-data";
 import roleSlice from "./reducers/role-data";
+import personalSlice from "./reducers/personalInfo";
+import summarySlice from "./reducers/summary-data";
+import { dataSlice } from "./reducers/data";
 import AllJobDetails from "./reducers/AllJobDetails";
 import JobsUsers from "./reducers/JobsUsers";
 export default configureStore({
@@ -30,6 +33,9 @@ export default configureStore({
     collegeAdminList: CollegeAdminListSlice,
     allJobs: AllJobDetails,
     allJobsUser: JobsUsers,
+    data:dataSlice.reducer,
+    summary:summarySlice.reducer,
+    personalInfo:personalSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

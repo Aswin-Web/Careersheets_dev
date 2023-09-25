@@ -16,7 +16,8 @@ const getUserInfo = async (req, res) => {
     userDetails = await JobSeeker.findById(id)
       .populate("education")
       .populate("skill")
-      .populate("project");
+      .populate("project")
+      .populate("personal");
   } catch (error) {
     console.log(error);
   }
