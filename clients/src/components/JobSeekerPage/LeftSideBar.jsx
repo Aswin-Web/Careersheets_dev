@@ -6,10 +6,33 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GradingIcon from "@mui/icons-material/Grading";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AddApplication } from "../../redux/reducers/application.data";
+import { AddJobsUser } from "../../redux/reducers/JobsUsers";
+import { educationActions } from "../../redux/reducers/education-Data";
+import { projectActions } from "../../redux/reducers/project-data";
+import { skillActions } from "../../redux/reducers/Skill-data";
+import { statusActions } from "../../redux/reducers/status-data";
+import { roleActions } from "../../redux/reducers/role-data";
+
+const sendRequest = async () => {
+  const response = await axios
+    .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${localStorage
+          .getItem("user")
+          .slice(1, localStorage.getItem("user").length - 1)}`,
+      },
+    })
+    .catch((err) => console.log(err));
+  const data = await response.data;
+
+  return data;
+};
 
 const LeftSideBar = () => {
   const data = useSelector((state) => state.application.value);
@@ -32,8 +55,38 @@ const LeftSideBar = () => {
     }
     return;
   };
+
+  const getJobs = async () => {
+    const { data } = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL + "/user/jobs"}`,
+      {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage
+            .getItem("user")
+            .slice(1, localStorage.getItem("user").length - 1)}`,
+        },
+      }
+    );
+
+    dispatch(AddJobsUser(data.jobs));
+  };
+
   useEffect(() => {
     getApplication();
+    getJobs();
+    sendRequest().then((data) => {
+      console.log(data, "data");
+      let status = data.status;
+      let details = data.education.reverse();
+      let project = data.project.reverse();
+
+      dispatch(educationActions.replaceEdu(details));
+      dispatch(projectActions.replaceProject(project));
+      dispatch(skillActions.replaceSkill(data.skill));
+      dispatch(statusActions.changeStatus(status));
+      dispatch(roleActions.changeRole(data.profileRole));
+    });
     return;
   }, []);
 
@@ -131,6 +184,17 @@ const LeftSideBar = () => {
               sx={{ fontWeight: "bold", marginLeft: "7px" }}
             >
               Jobs
+            </Typography>
+          </Button>
+        </Link>
+        <Link to="/user/applied" className="LinkAnchorTag">
+          <Button variant="outlined" sx={ButtonStyles}>
+            <DoneOutlineIcon />
+            <Typography
+              component="h6"
+              sx={{ fontWeight: "bold", marginLeft: "7px" }}
+            >
+              Applied Jobs
             </Typography>
           </Button>
         </Link>

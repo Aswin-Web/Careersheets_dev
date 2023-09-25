@@ -17,11 +17,18 @@ export const allJobsSlice = createSlice({
           return x;
         }
       });
+
       state.value = [...afterUpdate];
+    },
+    removeAJob(state, action) {
+      const availableJobs = state.value.filter(
+        (job) => job._id !== action.payload
+      );
+      state.value = [...availableJobs];
     },
   },
 });
 
-export const { AddJobsUser, updateJobsUser } = allJobsSlice.actions;
+export const { AddJobsUser, updateJobsUser, removeAJob } = allJobsSlice.actions;
 
 export default allJobsSlice.reducer;

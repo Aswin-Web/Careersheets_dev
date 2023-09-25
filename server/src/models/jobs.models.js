@@ -18,11 +18,27 @@ const JobSchema = new mongoose.Schema(
     employmentType: String,
     role_Category: String,
     jobStatus: String,
-    
+
     isClosed: {
       type: Boolean,
       default: false,
     },
+    appliedUsers: [
+      {
+        userId: {
+          type: mongoose.Types.ObjectId,
+          ref: "User",
+        },
+        isViewed: {
+          type:Boolean,
+          default: false,
+        },
+        isWishlisted:{
+          type:Boolean,
+          default: false,
+        }
+      },
+    ],
   },
   {
     timestamps: true,

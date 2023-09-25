@@ -4,7 +4,7 @@ const User=require('../models/user.models')
 
 const authenticateUser = async (req, res, next) => {
   const authToken = req.headers.authorization;
- 
+  
   try {
     // IF JWT token is present
     if (authToken) {
@@ -25,7 +25,7 @@ const authenticateUser = async (req, res, next) => {
         throw new Error("No _id was decoded");
       }
     }
-    return res.status(500)
+    return res.status(500).json({msg:"not authenticated"})
   } catch (error) {
     console.log(error)
     return res.status(498).json({

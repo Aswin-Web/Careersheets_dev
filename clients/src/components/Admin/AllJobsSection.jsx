@@ -73,7 +73,19 @@ const AllJobsSection = () => {
             >
               {/* Heading */}
               <Box>
-                <h3> {item.roleName} <div style={{width:"10px",height:"10px",background:`${item.isClosed?'red':'#03C988'}`,borderRadius:'50%',display:'inline-block'}}></div></h3>
+                <h3>
+                  {" "}
+                  {item.roleName}{" "}
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      background: `${item.isClosed ? "red" : "#03C988"}`,
+                      borderRadius: "50%",
+                      display: "inline-block",
+                    }}
+                  ></div>
+                </h3>
                 <h4>{item.companyName}</h4>
               </Box>
               {/* Horizontal Columns */}
@@ -108,6 +120,15 @@ const AllJobsSection = () => {
                     <Button>View</Button>
                   </Link>
                 </Box>
+              </Box>
+              <Box>
+                <p style={{ color: "grey" }}>
+                  {`${
+                    item.appliedUsers.length !== 0
+                      ? item.appliedUsers.length + " has applied"
+                      : "None applied"
+                  } `}
+                </p>
               </Box>
             </Box>
           ))

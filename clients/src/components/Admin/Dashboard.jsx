@@ -24,7 +24,7 @@ const Dashboard = () => {
         },
       }
     );
-    console.log(data.allJobs)
+    console.log(data.allJobs,"DASHBOARD")
     dispatch(AddJobs(data.allJobs));
   };
 
