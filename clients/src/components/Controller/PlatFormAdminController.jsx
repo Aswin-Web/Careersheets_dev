@@ -6,7 +6,7 @@ const PlatFormAdminController = (props) => {
     try {
      
         var decoded = jwt_decode(localStorage.getItem("admin"));
-        if (decoded._id === "admin@gmail.com") {
+        if (decoded.role === "superuser") {
           
           
           

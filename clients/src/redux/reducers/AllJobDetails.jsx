@@ -21,15 +21,19 @@ export const allJobsSlice = createSlice({
       const afterUpdate = state.value.map((x) => {
         if (x._id === action.payload.job_id) {
           return { ...action.payload.jobDetails };
-        }else {
-          return x
+        } else {
+          return x;
         }
       });
       state.value = [...afterUpdate];
     },
+    AddNewJob(state, action) {
+      state.value = [action.payload, ...state.value];
+    },
   },
 });
 
-export const { AddJobs, DisAbleJobs, updateJobs } = allJobsSlice.actions;
+export const { AddJobs, DisAbleJobs, updateJobs, AddNewJob } =
+  allJobsSlice.actions;
 
 export default allJobsSlice.reducer;

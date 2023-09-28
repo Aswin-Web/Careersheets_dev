@@ -120,66 +120,66 @@
 //   </Document>
 // );
 
-// import { PDFViewer } from '@react-pdf/renderer'
-// import React from 'react'
-// import Resume from './Resume'
+import { PDFViewer } from '@react-pdf/renderer'
+import React from 'react'
+import Resume from './Resume'
 
-// const GeneratePdf = () => {
-//   return (
-//     <PDFViewer>
-//       <Resume/>
-//     </PDFViewer>
-//   )
-// }
-
-// export default GeneratePdf
-
-
-
-import React from 'react';
-import html2pdf from 'html2pdf.js';
-import jsPDF from 'jspdf';
-import Resume from './Resume';
-
-class PDFGenerator extends React.Component {
-  convertAndDownloadPDF = () => {
-    const element = document.getElementById('html-element'); // Replace with your HTML element's ID
-
-    const pdfOptions = {
-      margin: 10,
-      filename: 'downloaded.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    };
-
-    html2pdf()
-      .from(element)
-      .set(pdfOptions)
-      .outputPdf()
-      .then((pdf) => {
-        // Trigger download by creating a data URL and link
-        const dataUri = pdf.output('datauristring');
-        const link = document.createElement('a');
-        link.href = dataUri;
-        link.download = pdfOptions.filename;
-        link.click();
-      });
-  };
-
-  render() {
-    return (
-      <div>
-        <button onClick={this.convertAndDownloadPDF}>Convert to PDF and Download</button>
-        <div id="html-element">
-          {/* Your HTML content to be converted goes here */}
-          <h1>Hello, World!</h1>
-          <Resume/>
-        </div>
-      </div>
-    );
-  }
+const GeneratePdf = () => {
+  return (
+    <PDFViewer>
+      <Resume/>
+    </PDFViewer>
+  )
 }
 
-export default PDFGenerator;
+export default GeneratePdf
+
+
+
+// import React from 'react';
+// import html2pdf from 'html2pdf.js';
+// import jsPDF from 'jspdf';
+// import Resume from './Resume';
+
+// class PDFGenerator extends React.Component {
+//   convertAndDownloadPDF = () => {
+//     const element = document.getElementById('html-element'); // Replace with your HTML element's ID
+
+//     const pdfOptions = {
+//       margin: 10,
+//       filename: 'downloaded.pdf',
+//       image: { type: 'jpeg', quality: 0.98 },
+//       html2canvas: { scale: 2 },
+//       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+//     };
+
+//     html2pdf()
+//       .from(element)
+//       .set(pdfOptions)
+//       .outputPdf()
+//       .then((pdf) => {
+//         // Trigger download by creating a data URL and link
+//         const dataUri = pdf.output('datauristring');
+//         const link = document.createElement('a');
+//         link.href = dataUri;
+//         link.download = pdfOptions.filename;
+//         link.click();
+//       });
+//   };
+
+//   render() {
+//     return (
+//       <div>
+//         <button onClick={this.convertAndDownloadPDF}>Convert to PDF and Download</button>
+//         <div id="html-element">
+//           {/* Your HTML content to be converted goes here */}
+//           <h1>Hello, World!</h1>
+//           <Resume/>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
+
+// export default PDFGenerator;
 

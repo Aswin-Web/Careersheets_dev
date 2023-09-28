@@ -24,7 +24,6 @@ const EditJobOppourtunity = () => {
   const jobbID = location.pathname.split("/").pop();
   const allJobs = useSelector((state) => state.allJobs.value);
   const currentJob = allJobs.filter((x) => x._id === jobbID);
-  console.log(currentJob.length);
 
   const NetworkRequest = async (info) => {
     const data = await axios.put(
@@ -89,6 +88,7 @@ const EditJobOppourtunity = () => {
       roleName: currentJob[0].roleName,
       role_Category: currentJob[0].role_Category,
       salary: currentJob[0].salary,
+      pincode:currentJob[0].pincode
     },
     // validationSchema: { userSchema },
 
@@ -110,7 +110,8 @@ const EditJobOppourtunity = () => {
         values.location !== "" &&
         values.roleName !== "" &&
         values.role_Category !== "" &&
-        values.salary !== ""
+        values.salary !== "" &&
+        values.pincode !== ""
       ) {
         NetworkRequest(values);
         // navigate("/admin/jobs");
@@ -204,6 +205,25 @@ const EditJobOppourtunity = () => {
           />
           <br />
           <br />
+          <TextField
+          fullWidth
+          name="pincode"
+          label="Pincode"
+          type="text"
+          value={formik.values.pincode}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          placeholder="641110"
+          error={
+            formik.touched.pincode &&
+            Boolean(formik.errors.pincode)
+          }
+          helperText={
+            formik.touched.companyAddress && formik.errors.companyAddress
+          }
+        />
+        <br/>
+        <br/>
           <Typography variant="h5">Job Description</Typography>
           <TextareaAutosize
             name="JobDescription"

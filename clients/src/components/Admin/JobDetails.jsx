@@ -5,11 +5,13 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import DoneIcon from "@mui/icons-material/Done";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { green } from "@mui/material/colors";
+import axios from "axios";
 
 const centerItems = {
   display: "flex",
@@ -23,9 +25,14 @@ const JobDetails = () => {
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
   const allJobs = useSelector((state) => state.allJobs.value);
-  const currentJob = allJobs.filter((x) => x._id === jobbID);
-  console.log(currentJob[0]);
-
+  let currentJob = allJobs.filter((x) => x._id === jobbID);
+  let applied = [];
+  if (currentJob.length !== 0) {
+    let a = currentJob[0].appliedUsers;
+    let b = [...a];
+    applied = b.reverse();
+  }
+console.log(currentJob)
   return (
     <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
       <Box
@@ -45,10 +52,10 @@ const JobDetails = () => {
           }}
         >
           {currentJob[0] !== undefined ? (
-            currentJob[0].appliedUsers.map((item, index) => (
+            applied.map((item, index) => (
               <Box
                 key={index}
-                sx={{
+                style={{
                   display: "flex",
                   flexDirection: "row",
                   // justifyContent:'space-between',
@@ -57,6 +64,7 @@ const JobDetails = () => {
                   padding: "0.5rem",
                   borderRadius: "10px",
                   marginBottom: "0.5rem",
+                  textDecoration: "none",
                 }}
               >
                 <Box
@@ -77,14 +85,49 @@ const JobDetails = () => {
                   <h6
                     style={{
                       fontSize: "1rem",
+                      textDecoration: "none",
+                      color: "black",
                     }}
                   >
-                    {item.userId.name.slice(0,7)}....
+                    <Link
+                      to={`/admin/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
+                      style={{ textDecoration: "none", color: "black" }}
+                      onClick={()=>{
+                        if (!item.isViewed){
+                          const pageViewed=async ()=>{
+                            const response = await axios
+                              .post(`${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+                              {
+                                userId:item.userId._id,
+                                jobId:currentJob[0]._id
+                              }, {
+                                headers: {
+                                  "Content-type": "application/json",
+                                  Authorization: `Bearer ${localStorage.getItem("admin")}`,
+                                },
+                              })
+                              .catch((err) => console.log(err));
+                            
+                          }
+                          pageViewed()
+                        }
+                      }}
+                    >
+                      {item.userId.name.slice(0, 7)}....
+                    </Link>
                   </h6>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
-                  <DoneIcon sx={{ color: "green" }} />
-                  <FavoriteBorderIcon sx={{ color: "red" }} />
+                  {/* {item.isWishlisted ? (
+                    <FavoriteIcon sx={{ color: "red" }} />
+                  ) : (
+                    <FavoriteBorderIcon sx={{ color: "red" }} />
+                  )} */}
+
+                  {item.isViewed ? <DoneIcon sx={{ color: "green" }} /> : <></>}
+
+                  {/* <DoneIcon sx={{ color: "green" }} /> */}
+                  {/* <FavoriteBorderIcon sx={{ color: "red" }} /> */}
                 </Box>
               </Box>
             ))
@@ -154,7 +197,7 @@ const JobDetails = () => {
             >
               <Box sx={centerItems}>
                 <DateRangeIcon />
-                {new Date().toLocaleDateString()}
+                {new Date(currentJob[0].createdAt).toLocaleDateString()}
               </Box>
               {/* <Box>
             <Button>View</Button>
@@ -190,7 +233,10 @@ const JobDetails = () => {
                 >
                   Skills :{" "}
                 </Typography>
-                <Typography variant="p"> {currentJob[0].SkillsRequired}</Typography>
+                <Typography variant="p">
+                  {" "}
+                  {currentJob[0].SkillsRequired}
+                </Typography>
               </Box>
               <Box>
                 <Typography

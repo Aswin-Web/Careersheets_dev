@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Formik, useFormik } from "formik";
 import { object, string } from "yup";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
+import { AddJobs, AddNewJob } from "../../redux/reducers/AllJobDetails";
+import { useDispatch } from "react-redux";
 
 // Schema
 // let userSchema = object().shape({
@@ -72,13 +74,14 @@ import axios from "axios";
 // });
 
 const CreateOppourtunity = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errors, seterrors] = useState({
     errors: false,
     message: "",
   });
   const NetworkRequest = async (info) => {
-    const { data } = await axios.post(
+    const data = await axios.post(
       `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
       info,
       {
@@ -88,8 +91,10 @@ const CreateOppourtunity = () => {
         },
       }
     );
-    console.log(data);
-    // dispatch(AddJobs(data.allJobs));
+
+    if (data.status === 200) {
+      dispatch(AddNewJob(data.data.job));
+    }
   };
 
   const formik = useFormik({
@@ -111,6 +116,7 @@ const CreateOppourtunity = () => {
       roleName: "",
       role_Category: "",
       salary: "",
+      pincode:""
     },
     // validationSchema: { userSchema },
 
@@ -134,10 +140,11 @@ const CreateOppourtunity = () => {
         values.location !== "" &&
         values.roleName !== "" &&
         values.role_Category !== "" &&
-        values.salary !== ""
+        values.salary !== ""&&
+        values.pincode !==""
       ) {
         NetworkRequest(values);
-        navigate("/admin/jobs")
+        navigate("/admin/jobs");
         return seterrors({
           errors: false,
           message: "Every fields are inserted properly",
@@ -148,7 +155,6 @@ const CreateOppourtunity = () => {
           message: "*Some fields are not inserted properly",
         });
       }
-     
     },
   });
 
@@ -163,6 +169,7 @@ const CreateOppourtunity = () => {
           value={formik.values.companyName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          placeholder="I-BACUS-TECH"
         />
         <br />
         <br />
@@ -176,6 +183,7 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.roleName && Boolean(formik.errors.roleName)}
           helperText={formik.touched.roleName && formik.errors.roleName}
+          placeholder="Software Developer"
         />
         <br />
         <br />
@@ -189,6 +197,7 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.location && Boolean(formik.errors.location)}
           helperText={formik.touched.location && formik.errors.location}
+          placeholder="Coimbatore"
         />
         <br />
         <br />
@@ -200,9 +209,29 @@ const CreateOppourtunity = () => {
           value={formik.values.companyAddress}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          placeholder="No.36/1, Raghav Towers, Amman Nagar, Sathy Rd, near Amman Kovil Bus Stop, Saravanampatti, Coimbatore, "
           error={
             formik.touched.companyAddress &&
             Boolean(formik.errors.companyAddress)
+          }
+          helperText={
+            formik.touched.companyAddress && formik.errors.companyAddress
+          }
+        />
+        <br />
+        <br />
+        <TextField
+          fullWidth
+          name="pincode"
+          label="Pincode"
+          type="text"
+          value={formik.values.pincode}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          placeholder="641110"
+          error={
+            formik.touched.pincode &&
+            Boolean(formik.errors.pincode)
           }
           helperText={
             formik.touched.companyAddress && formik.errors.companyAddress
@@ -218,6 +247,26 @@ const CreateOppourtunity = () => {
           type="text"
           value={formik.values.JobDescription}
           onChange={formik.handleChange}
+          placeholder="*Healthcare integration experiencedeveloping interfaces using Orion Health Rhapsody (5.X/6.X)
+          *Rhapsody Associate Certification Required
+          *Rhapsody Professional Certification Preferred
+          *CorePoint
+          *Experience developing with HL7 2.X interfaces (ADT, SIU, ORM, ORU, MDM, DFT) , certification preferred
+          *Developing JDBC interfaces
+          *Experience with XDR Provide-and-Register
+          *Experience with XDS.b interfaces / HIE interfacing
+          *Knowledge of DIRECT secure messaging preferred
+          HL7 messaging standards
+          *CCD/C-CDA/IHE profiles
+          *PIX/PDQ
+          *Building integrationsusing SOAP and RESTful Web Services, JDBC database connections using SQL and stored procedures, and vendor specified APIs
+          *Working knowledge of building interfaces to and from AllScripts TouchWorks EMR platform
+          *SDLC process, the Interface Developer works closely with teammates to understand and provide feedback
+          *Coding, unit and integration Testing
+          *Understanding of a scripting language (SQL, Perl, PHP, TCL, etc.) and/or other software development languages like Python, JavaScript, Java, C#, etc.
+          *Epic Bridges Certified a plus
+          *Proficient in HL7, x12, XML, and other EDI standards
+          *Proficient in FTP, File listening, MLLP, and Webservices communication protocols"
           onBlur={formik.handleBlur}
           error={
             formik.touched.JobDescription &&
@@ -239,6 +288,8 @@ const CreateOppourtunity = () => {
             formik.touched.companyDescription &&
             Boolean(formik.errors.companyDescription)
           }
+          placeholder="I- Bacus-Tech, a Coimbatore-based Technology company launches its first Labs Product. I- Bacus-Tech runs a Labs Program where college students can hone their technical skills to develop experimental products. College students are given a project challenge to work on which is a problem to solve.
+          As part of this program, I- Bacus-Tech hired two college students Amal and Aswin from Sri Ranganathar Institute of Engineering and Technology (SRIET). Students received a problem to solve from a US-based Tech Professional/entrepreneur. Amal and Aswin came up with a product concept design and got approval to proceed with the project. This kicked off the project and within weeks evolved into a working product. During this process, a weekly review of progress was conducted to ensure the experiment is going as planned, launching CareerSheets Beta Version."
         />
         <br />
         <br />
@@ -259,6 +310,26 @@ const CreateOppourtunity = () => {
             formik.touched.Responsibilites &&
             Boolean(formik.errors.Responsibilites)
           }
+          placeholder="*Healthcare integration experiencedeveloping interfaces using Orion Health Rhapsody (5.X/6.X)
+          *Rhapsody Associate Certification Required
+          *Rhapsody Professional Certification Preferred
+          *CorePoint
+          *Experience developing with HL7 2.X interfaces (ADT, SIU, ORM, ORU, MDM, DFT) , certification preferred
+          *Developing JDBC interfaces
+          *Experience with XDR Provide-and-Register
+          *Experience with XDS.b interfaces / HIE interfacing
+          *Knowledge of DIRECT secure messaging preferred
+          HL7 messaging standards
+          *CCD/C-CDA/IHE profiles
+          *PIX/PDQ
+          *Building integrationsusing SOAP and RESTful Web Services, JDBC database connections using SQL and stored procedures, and vendor specified APIs
+          *Working knowledge of building interfaces to and from AllScripts TouchWorks EMR platform
+          *SDLC process, the Interface Developer works closely with teammates to understand and provide feedback
+          *Coding, unit and integration Testing
+          *Understanding of a scripting language (SQL, Perl, PHP, TCL, etc.) and/or other software development languages like Python, JavaScript, Java, C#, etc.
+          *Epic Bridges Certified a plus
+          *Proficient in HL7, x12, XML, and other EDI standards
+          *Proficient in FTP, File listening, MLLP, and Webservices communication protocols"
         />
         {/*  */}
         <br />
@@ -278,7 +349,10 @@ const CreateOppourtunity = () => {
           helperText={
             formik.touched.SkillsRequired && formik.errors.SkillsRequired
           }
+          placeholder="C++,Java,Python"
         />
+        <Typography variant="p" sx={{color:"grey"}}>*Keep your skills with a "comma", separated </Typography>
+        <Typography variant="p" sx={{color:"grey"}}>(i.e) C++,Java,Python </Typography>
         <br />
         <br />
         <TextField
@@ -291,8 +365,12 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.experience && Boolean(formik.errors.experience)}
           helperText={formik.touched.experience && formik.errors.experience}
+          placeholder="5"
         />
+        <Typography variant="p" sx={{color:"grey"}}>Enter a Number. (i.e)"5" which will show as 5 years </Typography>
+        <Typography variant="p" sx={{color:"grey"}}>*If fresher please enter 0 </Typography>
         <br />
+        
         <br />
         <TextField
           fullWidth
@@ -302,6 +380,7 @@ const CreateOppourtunity = () => {
           value={formik.values.employmentType}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          placeholder="Fulltime"
           error={
             formik.touched.employmentType &&
             Boolean(formik.errors.employmentType)
@@ -310,6 +389,7 @@ const CreateOppourtunity = () => {
             formik.touched.employmentType && formik.errors.employmentType
           }
         />
+        <Typography variant="p" sx={{color:"grey"}}>*Enter wheather its FullTime, Parttime, Contract, Internship </Typography>
         <br />
         <br />
         <TextField
@@ -326,7 +406,9 @@ const CreateOppourtunity = () => {
           helperText={
             formik.touched.role_Category && formik.errors.role_Category
           }
+          placeholder="Software Developenment"
         />
+        <Typography variant="p" sx={{color:"grey"}}>Enter the Category wheather its an (i.e) Developenment, Designing</Typography>
         <br />
         <br />
         <TextField
@@ -339,7 +421,9 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.salary && Boolean(formik.errors.salary)}
           helperText={formik.touched.salary && formik.errors.salary}
+          placeholder="5 - 8 lpa"
         />
+        <Typography variant="p" sx={{color:"grey"}}>*If it is varying then insert in the range (i.e) 5-6 lpa Or give it as a fixed value (i.e) 2 lpa </Typography>
         <br />
         <br />
         <TextField
@@ -352,6 +436,7 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
           error={formik.touched.education && Boolean(formik.errors.education)}
           helperText={formik.touched.education && formik.errors.education}
+          placeholder="Any Graduate"
         />
         <br />
         <br />
@@ -370,6 +455,7 @@ const CreateOppourtunity = () => {
           helperText={
             formik.touched.departmentType && formik.errors.departmentType
           }
+          placeholder="Engineering Software & QA"
         />
         <br />
         <br />
@@ -381,6 +467,7 @@ const CreateOppourtunity = () => {
           value={formik.values.IndustryType}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          placeholder="IT Servicing and Consulting"
           error={
             formik.touched.IndustryType && Boolean(formik.errors.IndustryType)
           }

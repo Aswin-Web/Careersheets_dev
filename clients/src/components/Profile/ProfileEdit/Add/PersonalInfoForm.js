@@ -44,6 +44,7 @@ const PersonalInfoForm = (props) => {
   const [hometown, setHometown] = React.useState("");
   const [birth, setBirth] = useState("");
   const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
   const [arrlanguages, setLanguages] = React.useState([]);
 
   // user details fetching
@@ -65,15 +66,18 @@ const PersonalInfoForm = (props) => {
   useEffect(() => {
     sendRequest()
       .then((data) => {
-        // console.log(data.personal[0], "formm");
-        const { gender, fullName, dateOfBirth, languages, hometown } =
-          data.personal[0];
-        setFullName(fullName);
-        // console.log("effect:", languages);
-        setGender(gender);
-        setLanguages(languages);
-        setHometown(hometown);
-        setBirth(dateOfBirth);
+        console.log(data.personal[0], "formm");
+        if (data.personal[0]) {
+          const { gender, fullName, dateOfBirth, languages, hometown } =
+            data.personal[0];
+          setFullName(fullName);
+          // console.log("effect:", languages);
+          setGender(gender);
+          setLanguages(languages);
+          setHometown(hometown);
+          setBirth(dateOfBirth);
+          setPhone(phone)
+        }
         // dispatch(summaryAction.addSummary({ summary:data.summary }));
       })
       .catch((error) => console.log(error));
@@ -90,6 +94,7 @@ const PersonalInfoForm = (props) => {
           birth,
           languages: arrlanguages,
           fullName,
+          phone
         },
         {
           headers: {
@@ -109,15 +114,16 @@ const PersonalInfoForm = (props) => {
       e.preventDefault();
       // console.log(arrlanguages, "languages");
       const data = await updateRequest();
-      const { gender, fullName, dateOfBirth, languages, hometown } = data;
-      // console.log(
-      //   gender,
-      //   fullName,
-      //   dateOfBirth,
-      //   languages,
-      //   hometown,
-      //   "lllllll"
-      // );
+      const { gender, fullName, dateOfBirth, languages, hometown,phone } = data;
+      console.log(
+        gender,
+        fullName,
+        dateOfBirth,
+        languages,
+        hometown,
+        phone,
+        "lllllll"
+      );
       dispatch(
         personalActions.addInfo({
           dob: dateOfBirth,
@@ -125,6 +131,7 @@ const PersonalInfoForm = (props) => {
           hometown,
           languages,
           fullName,
+          phone
         })
       );
       console.log(data);
@@ -175,6 +182,26 @@ const PersonalInfoForm = (props) => {
               value={fullName}
               onChange={(e) => {
                 setFullName(e.target.value);
+              }}
+            />
+          </div>
+          <div style={{ marginLeft: "20px",marginTop:"10px" }}>
+            <InputLabel
+              htmlFor="filled-adornment-amount"
+              sx={{ color: "#1976d2" }}
+            >
+              Phone
+            </InputLabel>
+            <FilledInput
+              required
+              type="number"
+              sx={{ width: "550px" }}
+              id="filled-adornment-amount"
+              placeholder="Phone"
+              name="Phone"
+              value={phone}
+              onChange={(e) => {
+                setPhone(e.target.value);
               }}
             />
           </div>

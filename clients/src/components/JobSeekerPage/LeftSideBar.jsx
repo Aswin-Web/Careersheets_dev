@@ -1,12 +1,13 @@
 import { Box, Button, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import GradingIcon from "@mui/icons-material/Grading";
 import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +39,9 @@ const LeftSideBar = () => {
   const data = useSelector((state) => state.application.value);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
+  // console.log(useSelector((state) => state))
+  const [admin, setAdmin] = useState(false);
+
   const getApplication = async () => {
     if (data.length === 0) {
       const { data } = await axios.get(
@@ -86,6 +90,9 @@ const LeftSideBar = () => {
       dispatch(skillActions.replaceSkill(data.skill));
       dispatch(statusActions.changeStatus(status));
       dispatch(roleActions.changeRole(data.profileRole));
+      if (data.role === "superuser") {
+        setAdmin(true);
+      }
     });
     return;
   }, []);
@@ -198,6 +205,21 @@ const LeftSideBar = () => {
             </Typography>
           </Button>
         </Link>
+        {admin ? (
+          <Link to="/admin/verify" className="LinkAnchorTag">
+            <Button variant="outlined" sx={ButtonStyles}>
+              <AdminPanelSettingsIcon />
+              <Typography
+                component="h6"
+                sx={{ fontWeight: "bold", marginLeft: "7px" }}
+              >
+                Admin
+              </Typography>
+            </Button>
+          </Link>
+        ) : (
+          <></>
+        )}
       </Box>
     </div>
   );

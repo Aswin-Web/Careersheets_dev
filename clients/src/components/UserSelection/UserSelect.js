@@ -58,7 +58,7 @@ const UserSelect = () => {
   const token = searchParams.get("token") || cookies.get("email");
 
   const navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   useEffect(() => {
     const dataFetch = async () => {
       const data = await axios.get(
@@ -74,6 +74,7 @@ const UserSelect = () => {
         verification: data.data.verification,
         _id: data.data._id,
         token: data.data.token,
+        userType: data.data.userType,
       };
 
       localStorage.setItem("user", JSON.stringify(userInfo.token));
@@ -82,6 +83,13 @@ const UserSelect = () => {
         (await userInfo.role) === "user" &&
         (await userInfo.verification) === true
       ) {
+        navigate("/user");
+      }
+      if (
+        (await userInfo.role) === "superuser" &&
+        (await userInfo.verification) === true
+      ) {
+        localStorage.setItem("admin", userInfo.token);
         navigate("/user");
       }
       if (userInfo.role === "collegeadmin" && userInfo.verification === true) {
