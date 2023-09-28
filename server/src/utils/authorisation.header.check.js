@@ -1,4 +1,4 @@
-const { verifyToken } = require("../utils/jwt.decode");
+const { verifyToken, verifyAdminToken } = require("../utils/jwt.decode");
 const jwt = require("jsonwebtoken");
 const User=require('../models/user.models')
 
@@ -43,10 +43,10 @@ const authenticateAdmin = async (req, res, next) => {
     if (authToken) {
       const token = authToken.split(" ").pop();
 
-      const _id = await verifyToken(token);
+      const {role,_id} = await verifyAdminToken(token);
 
       //   IF decoded ID from JWT verify function returns an _id
-      if (_id === "admin@gmail.com") {
+      if (role==='superuser') {
         req.user = "admin";
         return next();
       } else {

@@ -1,4 +1,4 @@
-const mongoose =require('mongoose')
+const mongoose = require("mongoose");
 
 const Schema = new mongoose.Schema(
   {
@@ -6,8 +6,8 @@ const Schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    profileRole:{
-      type:String
+    profileRole: {
+      type: String,
     },
     email: {
       type: String,
@@ -31,7 +31,7 @@ const Schema = new mongoose.Schema(
       type: String,
     },
     collegeName: { type: String },
-    collegeVerification: { type: Boolean,default:false  },
+    collegeVerification: { type: Boolean, default: false },
     contact: { type: String },
 
     education: [{ type: mongoose.Types.ObjectId, ref: "Education" }],
@@ -42,15 +42,25 @@ const Schema = new mongoose.Schema(
         ref: "Skill",
       },
     ],
+    summary: {
+      type: String,
+    },
+    personal: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Personal",
+      },
+    ],
     appliedPlatformJobs:[{
       type: mongoose.Types.ObjectId, ref: "Job",unique:true
-    }]
+    }],
+   
   },
   {
     timestamps: true,
   }
 );
 
-const User=mongoose.model('User',Schema)
+const User = mongoose.model("User", Schema);
 
-module.exports=User
+module.exports = User;

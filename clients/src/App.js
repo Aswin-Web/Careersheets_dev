@@ -46,6 +46,10 @@ import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
+import ResumeMain from "./components/Profile/Resume/ResumeMain";
+import PDF from "./components/Profile/Resume/PDFview";
+
+
 import AllJobsSection from "./components/Admin/AllJobsSection";
 import CreateJobOppourtunity from "./components/Admin/CreateJobOppourtunity";
 import JobDetails from "./components/Admin/JobDetails";
@@ -54,6 +58,8 @@ import JobsMenuComponent from "./components/JobSeekerPage/JobsMenu/JobsMenuCompo
 import ViewJobApplications from "./components/JobSeekerPage/JobsMenu/ViewJobApplications";
 import AppliedJobsMenuComponent from "./components/JobSeekerPage/JobsMenu/AppliedJobsComponent";
 import ViewAppliedJobApplications from "./components/JobSeekerPage/JobsMenu/ViewAppliedJobApplication";
+import ResumeViewAdmin from "./components/Admin/ResumeView";
+import PDFViewAdmin from "./components/Admin/PDFViewAdmin";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -113,6 +119,8 @@ function App() {
           <Route path="training" element={<Training />} />
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
+          <Route path="profile/resume" element={<ResumeMain/>}/>
+          <Route path="profile/resume/pdf" element={<PDF/>}/>
           {/* Jobs Menu */}
           <Route path="jobs" element={<JobsMenuComponent />} />
           <Route path="jobs/*" element={<ViewJobApplications />} />
@@ -138,8 +146,10 @@ function App() {
           <Route path="jobs/*" element={<JobDetails />} />
           <Route path="edit/*" element={<EditJobOppourtunity />} />
           <Route path="new" element={<CreateJobOppourtunity />} />
+          <Route path="profile/resume/pdf/*" element={<PDFViewAdmin/>}/>
+          <Route path="profile/resume/*" element={<ResumeViewAdmin/>}/>
         </Route>
-        <Route path="/adminlogin" element={<LoginSection />} />
+        {/* <Route path="/adminlogin" element={<LoginSection />} /> */}
       </Routes>
 
       <Stack spacing={2} sx={{ width: "100%" }}>

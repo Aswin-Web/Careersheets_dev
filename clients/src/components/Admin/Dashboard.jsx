@@ -47,6 +47,17 @@ const Dashboard = () => {
             gap: "1rem",
           }}
         >
+          <Button variant="contained" color="success" onClick={()=>navigate(-1)}>
+          Go Back
+        </Button>
+          <Button
+            variant="outlined"
+            
+            sx={{ margin: "0 1rem",color:"white",backgroundColor:"#11144C" }}
+            onClick={() => navigate("/user")}
+          >
+            Goto User Dashboard
+          </Button>
           <Button
             variant="outlined"
             color="error"

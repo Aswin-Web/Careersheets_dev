@@ -123,7 +123,7 @@ const ViewJobApplications = () => {
           >
             <Box sx={centerItems}>
               <DateRangeIcon />
-              {new Date().toLocaleDateString()}
+              {new Date(currentJob[0].createdAt).toLocaleDateString()}
             </Box>
             {/* <Box>
             <Button>View</Button>

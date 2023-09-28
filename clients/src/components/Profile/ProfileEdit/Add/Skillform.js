@@ -21,7 +21,7 @@ import { skillActions } from "../../../../redux/reducers/Skill-data";
 const skills = [
   { skill: "Java" },
   { skill: "Python" },
-  { skill: "C" },
+  { skill: "C Programming" },
   { skill: "C++" },
   { skill: "C#" },
   { skill: "Javascript" },

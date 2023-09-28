@@ -1,9 +1,10 @@
 import React from "react";
 import classes from "./ProfileCard.module.css";
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 
 import Add from "../ProfileEdit/Add/Add";
 import { Helmet } from "react-helmet-async";
+
 
 const ProfileCard = (props) => {
   return (
@@ -19,6 +20,7 @@ const ProfileCard = (props) => {
       <Box display="flex" sx={{ padding: "0.5em" }}>
         <Box sx={{ marginLeft: "auto", display: "flex" }}>
           {/* <Edit Card={props.CardName} /> */}
+       
           <Add Card={props.CardName} />
         </Box>
       </Box>
