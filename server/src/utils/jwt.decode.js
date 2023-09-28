@@ -12,5 +12,18 @@ const verifyToken = async (token) => {
   });
   return _id;
 };
+const verifyAdminToken = async (token) => {
+  const _id = await jwt.verify(token, process.env.JWT_KEY, function (err, decoded) {
+    try {
+     
+      return decoded; // bar
+      
+    } catch (error) {
+      console.log(err);
+      return null
+    }
+  });
+  return _id;
+};
 
-module.exports = { verifyToken };
+module.exports = { verifyToken,verifyAdminToken };

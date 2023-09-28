@@ -53,7 +53,8 @@ const Schema = new mongoose.Schema(
     ],
     appliedPlatformJobs:[{
       type: mongoose.Types.ObjectId, ref: "Job",unique:true
-    }]
+    }],
+   
   },
   {
     timestamps: true,

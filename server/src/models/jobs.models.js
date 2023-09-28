@@ -18,7 +18,7 @@ const JobSchema = new mongoose.Schema(
     employmentType: String,
     role_Category: String,
     jobStatus: String,
-
+    pincode:String,
     isClosed: {
       type: Boolean,
       default: false,

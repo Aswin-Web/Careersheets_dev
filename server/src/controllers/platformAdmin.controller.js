@@ -172,6 +172,13 @@ const InputValidationJob = [
     .withMessage("it is not a valid string")
     .isLength({ min: 5 })
     .withMessage(" is too short"),
+  body("pincode")
+    .exists()
+    .withMessage(" did not exist")
+    .isString()
+    .withMessage("it is not a valid string")
+    .isLength({ min: 5 })
+    .withMessage(" is too short"),
 ];
 
 const JobCreationRoute = async (req, res, next) => {
@@ -199,6 +206,7 @@ const JobCreationRoute = async (req, res, next) => {
       departmentType,
       employmentType,
       role_Category,
+      pincode,
     } = req.body;
 
     console.log(Responsibilites);
@@ -218,9 +226,12 @@ const JobCreationRoute = async (req, res, next) => {
       departmentType,
       employmentType,
       role_Category,
+      pincode,
     });
     const modify = await doc.save();
-    return res.status(200).json({ msg: "Job Poster Created Successfully" });
+    return res
+      .status(200)
+      .json({ msg: "Job Poster Created Successfully", job: modify });
   } catch (error) {
     console.log(error);
     return next();
@@ -229,7 +240,7 @@ const JobCreationRoute = async (req, res, next) => {
 
 const GetAllJobs = async (req, res, next) => {
   const jobs = await Jobs.find({})
-    .sort({ createdAt: -1 })
+    
     .populate({
       path: "appliedUsers.userId",
       populate: {
@@ -250,7 +261,7 @@ const GetAllJobs = async (req, res, next) => {
       populate: {
         path: "education",
       },
-    });
+    }).sort({ createdAt: -1 });
   return res.status(200).json({ allJobs: jobs });
 };
 
@@ -343,6 +354,59 @@ const DisableJob = async (req, res, next) => {
     return next();
   }
 };
+
+const GetUserInfoAdmin = async (req, res) => {
+  const id = req.params.id;
+
+  let userEducation;
+  try {
+    userDetails = await User.findById(id)
+      .populate("education")
+      .populate("skill")
+      .populate("project")
+      .populate("personal");
+  } catch (error) {
+    console.log(error);
+  }
+  if (!userDetails) {
+    return res.status(400).json({ message: "Could not find user" });
+  }
+
+  return res.status(200).json(userDetails);
+};
+
+const AddViewedToUser = async (req, res, next) => {
+  const { userId, jobId } = req.body;
+  try {
+    const jobs = await Jobs.updateOne(
+      { _id: jobId,"appliedUsers.userId":userId },
+      { $set: { "appliedUsers.$.isViewed": true } }
+    );
+
+    // console.log(jobs)
+    return res.status(200).json({ msg: "Success" });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const AddWishlistedToUser = async (req, res, next) => {
+  const { userId, jobId,isWishlisted } = req.body;
+  try {
+    const jobs = await Jobs.updateOne(
+      { _id: jobId,"appliedUsers.userId":userId },
+      { $set: { "appliedUsers.$.Wishlisted": isWishlisted } }
+    );
+
+    // console.log(jobs)
+    return res.status(200).json({ msg: "Success" });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
 module.exports = {
   GetAllCollegeAdmin,
   UpdateAdminVerification,
@@ -352,4 +416,7 @@ module.exports = {
   GetAllJobs,
   EditJobs,
   DisableJob,
+  GetUserInfoAdmin,
+  AddViewedToUser,
+  AddWishlistedToUser
 };

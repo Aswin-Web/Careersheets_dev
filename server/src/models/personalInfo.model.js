@@ -19,6 +19,10 @@ const personalSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  phone:{
+    type:Number,
+    min:10,
+  }
 });
 
 const PersonalInfo = mongoose.model("Personal", personalSchema);
