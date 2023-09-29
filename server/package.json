@@ -16,9 +16,6 @@
   "dependencies": {
     "@google-cloud/language": "^6.1.0",
     "@google-cloud/translate": "^8.0.2",
-    "@tensorflow/tfjs": "^4.11.0",
-    "@tensorflow/tfjs-node": "^4.11.0",
-    "@xenova/transformers": "^2.6.1",
     "axios": "^1.5.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
