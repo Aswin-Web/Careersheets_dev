@@ -32,7 +32,10 @@ const {
 
 // -----PERSONAL INFO CONTROLLER IMPORT
 
-const {addSummary,addPersonalInfo}=require("../controllers/personal.controller")
+const {addSummary,addPersonalInfo}=require("../controllers/personal.controller");
+const { authenticateUser } = require("../utils/authorisation.header.check");
+
+router.use(authenticateUser);
 
 router
   .route("/application")

@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "(cd clients && npm start) & (cd server && npm run dev)",
+    "startProduct":"(cd clients && npm run build) && (cd server && npm start)",
+    "installDep":"(cd clients && npm install) && (cd server && npm install)",
+    "onlyBackendProduct":"cd server && npm start",
+    "onlyFrontendProduct":"cd clients && npm run build",
+    "installBackendDep":"cd server && npm install"
   },
   "author": "",
   "license": "ISC",

@@ -6,6 +6,8 @@ const cookieSession = require("cookie-session");
 const session=require('express-session')
 var morgan = require("morgan");
 const ejs=require('ejs')
+const path=require('path')
+// const __dirname=requiure()
 
 // Authorisation Header Check
 const {authenticateUser} =require('./utils/authorisation.header.check')
@@ -41,6 +43,11 @@ app.use(cookieParser());
 app.use(morgan("combined"));
 
 // app.set("view engine", "ejs");
+app.use(express.static(path.resolve(__dirname, '../../clients/build')));
+
+// app.get('*', (req, res) => {
+  
+// });
 
 app.use(
   cors({
@@ -64,36 +71,36 @@ app.use((req, res, next) => {
 
 
 ///COLLEGE LIST 
-app.use("/collegelist",collegeListRouter)
+app.use("/api/collegelist",collegeListRouter)
 
 // PlatformAdmin
-app.use("/admin",  platformAdminRoutes);
+app.use("/api/admin",  platformAdminRoutes);
 
 
 // Create an CSV
-app.use('/csv',CSVroutes)
+app.use('/api/csv',CSVroutes)
 
 // Authentication Routes
 // app.use("/auth", authRoutes);
 
 // Google SignUp 
-app.use('/auth/google',googleAuthRoutes)
+app.use('/api/auth/google',googleAuthRoutes)
 
 // Authorisation Controller
-app.use(authenticateUser);
 
 ////collegeadmin routes////
-app.use("/collegeadmin",collegeAdminRouter)
+app.use("/api/collegeadmin",collegeAdminRouter)
 
 // User Routes
-app.use("/user", userRoutes);
+app.use("/api/user", userRoutes);
 // Resume generation Routes
-app.use("/user/profile/generateresume",resumeRoutes)
+app.use("/api/user/profile/generateresume",resumeRoutes)
 
 
-app.use("/*",(req, res) => {
+app.use("*",(req, res) => {
   console.log("Could not match any Route")
-  res.status(500).json({ msg: "Something went wrong" });
+  // return res.sendFile(path.resolve(__dirname, '../../clients/build', 'index.html'));
+   res.status(500).json({ msg: "Something went wrong" });
 });
 
 app.use((req, res) => {
