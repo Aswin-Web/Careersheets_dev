@@ -54,7 +54,7 @@ function Resume({ data }) {
                 <p style={{ marginRight: "5px" }}>
                   <RxDotFilled size={16} />
                 </p>
-                <p>{data.personal[0].phone}</p>
+                <p>{data.personal[0].phone || ""}</p>
               </div>
             ) : (
               ""
