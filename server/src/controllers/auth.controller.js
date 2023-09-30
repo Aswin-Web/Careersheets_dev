@@ -1,5 +1,5 @@
 const Login = require("../models/login.models");
-const SendSMS = require("../utils/twillo.sms");
+// const SendSMS = require("../utils/twillo.sms");
 const Mail = require("../utils/nodemailer.email");
 const jwt = require("jsonwebtoken");
 const { hashPassword, compareHash } = require("../utils/bcrypt");
