@@ -32,29 +32,43 @@ function Resume({ data }) {
           <div className={classes.phone}>
             {data.personal[0] ? (
               <div className={classes.phoneItems}>
-                <p style={{ marginRight: "5px" }}>
+                {/* <p style={{ marginRight: "5px" }}>
                   <ImLocation2 size={16} />
-                </p>
-                <p>{data.personal[0].hometown}</p>
+                </p> */}
+                <p>{data.personal[0].hometown?<>
+                  <p style={{ display:"flex" ,alignItems:"center"}}>
+                        {" "}
+                        <ImLocation2 size={16} />
+                        {data.personal[0].hometown}
+                      </p>
+                </>:""}</p>
               </div>
             ) : (
               ""
             )}
 
-            <RxDotFilled size={24} />
-
             <div className={classes.phoneItems}>
-              <p style={{ marginRight: "5px" }}>
-                <HiMail size={20} />
-              </p>
+              <HiMail size={20} style={{ marginLeft: "5px" }} />
+
               <p>{data.email}</p>
             </div>
-            {data.personal[0].phone ? (
+
+            {data.personal[0] ? (
               <div className={classes.phoneItems}>
-                <p style={{ marginRight: "5px" }}>
-                  <RxDotFilled size={16} />
+                <p>
+                  {data.personal[0].phone ? (
+                    <>
+                      {" "}
+                      <p style={{ display:"flex" ,alignItems:"center"}}>
+                        {" "}
+                        <RxDotFilled size={24} />
+                        {data.personal[0].phone}
+                      </p>
+                    </>
+                  ) : (
+                    ""
+                  )}
                 </p>
-                <p>{data.personal[0].phone}</p>
               </div>
             ) : (
               ""

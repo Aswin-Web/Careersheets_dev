@@ -48,13 +48,19 @@ const MyDocument = (props) => {
                       alignItems: "center",
                     }}
                   >
-                    <Image
-                      style={{ height: "10x", width: "10px" }}
-                      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAADT09OgoKDFxcVoaGiUlJSvr6/Ozs7Y2Nijo6P09PRTU1OQkJBkZGSZmZmpqank5OR+fn5vb28qKiq/v7/q6urx8fHe3t63t7c4ODhaWlo/Pz8KCgqCgoJfX18VFRVERER2dnZLS0sfHx87OzswMDAZGRkWeO8lAAADj0lEQVR4nO3ciVbiQBSEYZrIJiBLWEQQBUXf/w2HDOSgGExC+lY1M/U9Qf4TJeklXauJiIiIiIiIiIiIiIiIiIiIiIiIiIiIlNatL5rb5dOrSzw/9eJ+qz1nX5Q3nejBZVsO2uyLq6zbulSX6g1v+V4uejl5B6sh+0KvMxoXyjuIO+zLLa1e7PZ9uZF37EsupbMp2ZeY3E7jbHlF39/7+Mi+9GL6V/YltuyLL6D+XCFwb8oOyLOu1rf3wE741WxSOXAv4CfH1EffXrBvAFV+Yr6L2SnZGt4CnduwY7K8eQzcP/7ZOT/tvAY699plF53xHRhc4sZ7oHPv7KivXgwCnXtiZ51Uf5HJ9sIOS7WMAp3rs9MOHs0CnQtjyGgY6FwI01R5k2nV7Nh5/t62LxmwA7vGgc7NyIU+X7ezrbiBdfNA5xbUQi9j+jzMwAUi0DWJhZBA53ijDLvXte94L28Vp0aLYwVaP+xPIlLhClZIuokjXCBpjGE17s3CGQsDAzkPjDa0sEUoLLNMX12PUAgNZPyaWs7OZMH/mt6DC9fwQptJ4MvwSzXgQPzzYgYvRG/yw711p+7BhQN4IXqrTQwvRC98A0dOKXAhPvA/KMROfs8JhditUsjxfQr7ZtohFGJ3LSLWK85h1y9UqMLwC9Ej/AT2txQ/eEIPn+yX738Cf6pAKARvWYAtrJ1gAz3vCA6xEDvjnUDPeqOnS/ETpth1mQR6bQY/QIR/SQP/MUUH1rbgQPw3Jqi9NCn8xij0m2kdXojZtHeCD6w1oYGMr9mwQ0TKhpp3ZCEjsBYBA8eUQuQomPShvv0u9hTrGy/cxDftI/0NqpAVCBtCMTa1HYFWgnmBoKlv6icliJ1RH8xAyFCffEyG/b4a+pE15oModqD5in4AXwLb/p3S/0YTlhP8gZyrYFjI/kT2yG60H8A/4YHVZlP6d9wnNsN9zsD+AotvoAI71sz/euKSnXTO910M5uSWE78zxEGeZ+ZzrSaQg2nO+ZvU4B6j8Iu5p4FGyMeY+lg3De5H9Lu7yoHEibWCqs2Ev4VwbFKe9uf1gcGfQHs0vLKPeYhJWdc8/tdhHZSYq+xwo39jfYlp8WPZd8E+4nPMo48CeZ/NEftCq5gNfz+gvRfddN5RZ7jNupeT+J6wDcjOrL2I+uO40WjE4360aP8Lt05ERERERERERERERERERERERERERERERERETPwB76g8UgSSGiUAAAAASUVORK5CYII="
-                    />
-                    <Text style={{ marginLeft: "5px" }}>
-                      {data.personal[0].hometown}
-                    </Text>
+                    {data.personal[0].hometown ? (
+                      <>
+                        <Image
+                          style={{ height: "10x", width: "10px" }}
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAADT09OgoKDFxcVoaGiUlJSvr6/Ozs7Y2Nijo6P09PRTU1OQkJBkZGSZmZmpqank5OR+fn5vb28qKiq/v7/q6urx8fHe3t63t7c4ODhaWlo/Pz8KCgqCgoJfX18VFRVERER2dnZLS0sfHx87OzswMDAZGRkWeO8lAAADj0lEQVR4nO3ciVbiQBSEYZrIJiBLWEQQBUXf/w2HDOSgGExC+lY1M/U9Qf4TJeklXauJiIiIiIiIiIiIiIiIiIiIiIiIiIiIlNatL5rb5dOrSzw/9eJ+qz1nX5Q3nejBZVsO2uyLq6zbulSX6g1v+V4uejl5B6sh+0KvMxoXyjuIO+zLLa1e7PZ9uZF37EsupbMp2ZeY3E7jbHlF39/7+Mi+9GL6V/YltuyLL6D+XCFwb8oOyLOu1rf3wE741WxSOXAv4CfH1EffXrBvAFV+Yr6L2SnZGt4CnduwY7K8eQzcP/7ZOT/tvAY699plF53xHRhc4sZ7oHPv7KivXgwCnXtiZ51Uf5HJ9sIOS7WMAp3rs9MOHs0CnQtjyGgY6FwI01R5k2nV7Nh5/t62LxmwA7vGgc7NyIU+X7ezrbiBdfNA5xbUQi9j+jzMwAUi0DWJhZBA53ijDLvXte94L28Vp0aLYwVaP+xPIlLhClZIuokjXCBpjGE17s3CGQsDAzkPjDa0sEUoLLNMX12PUAgNZPyaWs7OZMH/mt6DC9fwQptJ4MvwSzXgQPzzYgYvRG/yw711p+7BhQN4IXqrTQwvRC98A0dOKXAhPvA/KMROfs8JhditUsjxfQr7ZtohFGJ3LSLWK85h1y9UqMLwC9Ej/AT2txQ/eEIPn+yX738Cf6pAKARvWYAtrJ1gAz3vCA6xEDvjnUDPeqOnS/ETpth1mQR6bQY/QIR/SQP/MUUH1rbgQPw3Jqi9NCn8xij0m2kdXojZtHeCD6w1oYGMr9mwQ0TKhpp3ZCEjsBYBA8eUQuQomPShvv0u9hTrGy/cxDftI/0NqpAVCBtCMTa1HYFWgnmBoKlv6icliJ1RH8xAyFCffEyG/b4a+pE15oModqD5in4AXwLb/p3S/0YTlhP8gZyrYFjI/kT2yG60H8A/4YHVZlP6d9wnNsN9zsD+AotvoAI71sz/euKSnXTO910M5uSWE78zxEGeZ+ZzrSaQg2nO+ZvU4B6j8Iu5p4FGyMeY+lg3De5H9Lu7yoHEibWCqs2Ev4VwbFKe9uf1gcGfQHs0vLKPeYhJWdc8/tdhHZSYq+xwo39jfYlp8WPZd8E+4nPMo48CeZ/NEftCq5gNfz+gvRfddN5RZ7jNupeT+J6wDcjOrL2I+uO40WjE4360aP8Lt05ERERERERERERERERERERERERERERERERETPwB76g8UgSSGiUAAAAASUVORK5CYII="
+                        />
+                        <Text style={{ marginLeft: "5px" }}>
+                          {data.personal[0].hometown}
+                        </Text>
+                      </>
+                    ) : (
+                      ""
+                    )}
                   </View>
                 ) : (
                   <Text>{""}</Text>
@@ -74,23 +80,35 @@ const MyDocument = (props) => {
                     {data.email}
                   </Text>
                 </View>
-                ) : (<Text>{""}</Text>
-                <View
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <Image
-                    style={{ height: "10px", width: "10px" }}
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAADT09OgoKDFxcVoaGiUlJSvr6/Ozs7Y2Nijo6P09PRTU1OQkJBkZGSZmZmpqank5OR+fn5vb28qKiq/v7/q6urx8fHe3t63t7c4ODhaWlo/Pz8KCgqCgoJfX18VFRVERER2dnZLS0sfHx87OzswMDAZGRkWeO8lAAADj0lEQVR4nO3ciVbiQBSEYZrIJiBLWEQQBUXf/w2HDOSgGExC+lY1M/U9Qf4TJeklXauJiIiIiIiIiIiIiIiIiIiIiIiIiIiIlNatL5rb5dOrSzw/9eJ+qz1nX5Q3nejBZVsO2uyLq6zbulSX6g1v+V4uejl5B6sh+0KvMxoXyjuIO+zLLa1e7PZ9uZF37EsupbMp2ZeY3E7jbHlF39/7+Mi+9GL6V/YltuyLL6D+XCFwb8oOyLOu1rf3wE741WxSOXAv4CfH1EffXrBvAFV+Yr6L2SnZGt4CnduwY7K8eQzcP/7ZOT/tvAY699plF53xHRhc4sZ7oHPv7KivXgwCnXtiZ51Uf5HJ9sIOS7WMAp3rs9MOHs0CnQtjyGgY6FwI01R5k2nV7Nh5/t62LxmwA7vGgc7NyIU+X7ezrbiBdfNA5xbUQi9j+jzMwAUi0DWJhZBA53ijDLvXte94L28Vp0aLYwVaP+xPIlLhClZIuokjXCBpjGE17s3CGQsDAzkPjDa0sEUoLLNMX12PUAgNZPyaWs7OZMH/mt6DC9fwQptJ4MvwSzXgQPzzYgYvRG/yw711p+7BhQN4IXqrTQwvRC98A0dOKXAhPvA/KMROfs8JhditUsjxfQr7ZtohFGJ3LSLWK85h1y9UqMLwC9Ej/AT2txQ/eEIPn+yX738Cf6pAKARvWYAtrJ1gAz3vCA6xEDvjnUDPeqOnS/ETpth1mQR6bQY/QIR/SQP/MUUH1rbgQPw3Jqi9NCn8xij0m2kdXojZtHeCD6w1oYGMr9mwQ0TKhpp3ZCEjsBYBA8eUQuQomPShvv0u9hTrGy/cxDftI/0NqpAVCBtCMTa1HYFWgnmBoKlv6icliJ1RH8xAyFCffEyG/b4a+pE15oModqD5in4AXwLb/p3S/0YTlhP8gZyrYFjI/kT2yG60H8A/4YHVZlP6d9wnNsN9zsD+AotvoAI71sz/euKSnXTO910M5uSWE78zxEGeZ+ZzrSaQg2nO+ZvU4B6j8Iu5p4FGyMeY+lg3De5H9Lu7yoHEibWCqs2Ev4VwbFKe9uf1gcGfQHs0vLKPeYhJWdc8/tdhHZSYq+xwo39jfYlp8WPZd8E+4nPMo48CeZ/NEftCq5gNfz+gvRfddN5RZ7jNupeT+J6wDcjOrL2I+uO40WjE4360aP8Lt05ERERERERERERERERERERERERERERERERETPwB76g8UgSSGiUAAAAASUVORK5CYII="
-                  />
-                  <Text style={{ marginLeft: "3px", marginTop: "-2px" }}>
-                    {data.personal[0].phone}
-                  </Text>
-                </View>
-                ) : (<Text>{""}</Text>
+                {data.personal[0] ? (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    {data.personal[0].phone ? (
+                      <>
+                        {" "}
+                        <Image
+                          style={{
+                            height: "10x",
+                            width: "10px",
+                            marginRight: "5px",
+                          }}
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAADT09OgoKDFxcVoaGiUlJSvr6/Ozs7Y2Nijo6P09PRTU1OQkJBkZGSZmZmpqank5OR+fn5vb28qKiq/v7/q6urx8fHe3t63t7c4ODhaWlo/Pz8KCgqCgoJfX18VFRVERER2dnZLS0sfHx87OzswMDAZGRkWeO8lAAADj0lEQVR4nO3ciVbiQBSEYZrIJiBLWEQQBUXf/w2HDOSgGExC+lY1M/U9Qf4TJeklXauJiIiIiIiIiIiIiIiIiIiIiIiIiIiIlNatL5rb5dOrSzw/9eJ+qz1nX5Q3nejBZVsO2uyLq6zbulSX6g1v+V4uejl5B6sh+0KvMxoXyjuIO+zLLa1e7PZ9uZF37EsupbMp2ZeY3E7jbHlF39/7+Mi+9GL6V/YltuyLL6D+XCFwb8oOyLOu1rf3wE741WxSOXAv4CfH1EffXrBvAFV+Yr6L2SnZGt4CnduwY7K8eQzcP/7ZOT/tvAY699plF53xHRhc4sZ7oHPv7KivXgwCnXtiZ51Uf5HJ9sIOS7WMAp3rs9MOHs0CnQtjyGgY6FwI01R5k2nV7Nh5/t62LxmwA7vGgc7NyIU+X7ezrbiBdfNA5xbUQi9j+jzMwAUi0DWJhZBA53ijDLvXte94L28Vp0aLYwVaP+xPIlLhClZIuokjXCBpjGE17s3CGQsDAzkPjDa0sEUoLLNMX12PUAgNZPyaWs7OZMH/mt6DC9fwQptJ4MvwSzXgQPzzYgYvRG/yw711p+7BhQN4IXqrTQwvRC98A0dOKXAhPvA/KMROfs8JhditUsjxfQr7ZtohFGJ3LSLWK85h1y9UqMLwC9Ej/AT2txQ/eEIPn+yX738Cf6pAKARvWYAtrJ1gAz3vCA6xEDvjnUDPeqOnS/ETpth1mQR6bQY/QIR/SQP/MUUH1rbgQPw3Jqi9NCn8xij0m2kdXojZtHeCD6w1oYGMr9mwQ0TKhpp3ZCEjsBYBA8eUQuQomPShvv0u9hTrGy/cxDftI/0NqpAVCBtCMTa1HYFWgnmBoKlv6icliJ1RH8xAyFCffEyG/b4a+pE15oModqD5in4AXwLb/p3S/0YTlhP8gZyrYFjI/kT2yG60H8A/4YHVZlP6d9wnNsN9zsD+AotvoAI71sz/euKSnXTO910M5uSWE78zxEGeZ+ZzrSaQg2nO+ZvU4B6j8Iu5p4FGyMeY+lg3De5H9Lu7yoHEibWCqs2Ev4VwbFKe9uf1gcGfQHs0vLKPeYhJWdc8/tdhHZSYq+xwo39jfYlp8WPZd8E+4nPMo48CeZ/NEftCq5gNfz+gvRfddN5RZ7jNupeT+J6wDcjOrL2I+uO40WjE4360aP8Lt05ERERERERERERERERERERERERERERERERETPwB76g8UgSSGiUAAAAASUVORK5CYII="
+                        />
+                        <Text>{data.personal[0].phone}</Text>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </View>
+                ) : (
+                  <Text>{""}</Text>
+                )}
+                ) : (<Text>{""}</Text>)
               </View>
               {/* Summary section */}
               {data.summary && (
@@ -185,7 +203,7 @@ const MyDocument = (props) => {
                     ></View>
                   </View>
                   {/* skill items */}
-  
+
                   <View
                     style={{
                       maxHeight: "120px",
@@ -202,14 +220,14 @@ const MyDocument = (props) => {
                           style={styles.icon}
                           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAeFBMVEX///8AAADT09OgoKDFxcVoaGiUlJSvr6/Ozs7Y2Nijo6P09PRTU1OQkJBkZGSZmZmpqank5OR+fn5vb28qKiq/v7/q6urx8fHe3t63t7c4ODhaWlo/Pz8KCgqCgoJfX18VFRVERER2dnZLS0sfHx87OzswMDAZGRkWeO8lAAADj0lEQVR4nO3ciVbiQBSEYZrIJiBLWEQQBUXf/w2HDOSgGExC+lY1M/U9Qf4TJeklXauJiIiIiIiIiIiIiIiIiIiIiIiIiIiIlNatL5rb5dOrSzw/9eJ+qz1nX5Q3nejBZVsO2uyLq6zbulSX6g1v+V4uejl5B6sh+0KvMxoXyjuIO+zLLa1e7PZ9uZF37EsupbMp2ZeY3E7jbHlF39/7+Mi+9GL6V/YltuyLL6D+XCFwb8oOyLOu1rf3wE741WxSOXAv4CfH1EffXrBvAFV+Yr6L2SnZGt4CnduwY7K8eQzcP/7ZOT/tvAY699plF53xHRhc4sZ7oHPv7KivXgwCnXtiZ51Uf5HJ9sIOS7WMAp3rs9MOHs0CnQtjyGgY6FwI01R5k2nV7Nh5/t62LxmwA7vGgc7NyIU+X7ezrbiBdfNA5xbUQi9j+jzMwAUi0DWJhZBA53ijDLvXte94L28Vp0aLYwVaP+xPIlLhClZIuokjXCBpjGE17s3CGQsDAzkPjDa0sEUoLLNMX12PUAgNZPyaWs7OZMH/mt6DC9fwQptJ4MvwSzXgQPzzYgYvRG/yw711p+7BhQN4IXqrTQwvRC98A0dOKXAhPvA/KMROfs8JhditUsjxfQr7ZtohFGJ3LSLWK85h1y9UqMLwC9Ej/AT2txQ/eEIPn+yX738Cf6pAKARvWYAtrJ1gAz3vCA6xEDvjnUDPeqOnS/ETpth1mQR6bQY/QIR/SQP/MUUH1rbgQPw3Jqi9NCn8xij0m2kdXojZtHeCD6w1oYGMr9mwQ0TKhpp3ZCEjsBYBA8eUQuQomPShvv0u9hTrGy/cxDftI/0NqpAVCBtCMTa1HYFWgnmBoKlv6icliJ1RH8xAyFCffEyG/b4a+pE15oModqD5in4AXwLb/p3S/0YTlhP8gZyrYFjI/kT2yG60H8A/4YHVZlP6d9wnNsN9zsD+AotvoAI71sz/euKSnXTO910M5uSWE78zxEGeZ+ZzrSaQg2nO+ZvU4B6j8Iu5p4FGyMeY+lg3De5H9Lu7yoHEibWCqs2Ev4VwbFKe9uf1gcGfQHs0vLKPeYhJWdc8/tdhHZSYq+xwo39jfYlp8WPZd8E+4nPMo48CeZ/NEftCq5gNfz+gvRfddN5RZ7jNupeT+J6wDcjOrL2I+uO40WjE4360aP8Lt05ERERERERERERERERERERERERERERERERETPwB76g8UgSSGiUAAAAASUVORK5CYII="
                         />
-  
+
                         <Text style={{ fontSize: "13px" }}>{item.skill}</Text>
                       </View>
                     ))}
                   </View>
                 </>
               )}
-  
+
               {/* Education Section */}
               {data.education.length !== 0 && (
                 <>
@@ -409,7 +427,7 @@ const MyDocument = (props) => {
                         <View
                           style={{
                             display: "flex",
-  
+
                             fontSize: "13px",
                           }}
                         >
@@ -438,9 +456,9 @@ const MyDocument = (props) => {
                   </View>
                 </View>
               )}
-  
+
               {/* Personal Information section */}
-  
+
               {data.personal.length !== 0 && (
                 <View style={{ marginTop: "10px" }}>
                   <View
@@ -529,25 +547,25 @@ const MyDocument = (props) => {
       </Page>
     </Document>
   );
-  };
-  
-  Font.register({
+};
+
+Font.register({
   family: "Roboto",
   fonts: [
     { src: RobotoBold, fontStyle: "bold" },
     { src: RobotoRegular, fontStyle: "normal" },
     { src: RobotoMedium, fontStyle: "medium" },
   ],
-  });
-  
-  const styles = StyleSheet.create({
+});
+
+const styles = StyleSheet.create({
   body: {
     paddingTop: 35,
     paddingBottom: 65,
     paddingHorizontal: 35,
     fontFamily: "Roboto",
   },
-  
+
   pageNumber: {
     position: "absolute",
     fontSize: 12,
@@ -568,7 +586,7 @@ const MyDocument = (props) => {
     height: "8px",
     width: "8px",
   },
-  
+
   list: {
     display: "flex",
     flexDirection: "row",
@@ -576,5 +594,5 @@ const MyDocument = (props) => {
     marginTop: "8px",
     gap: "6px",
   },
-  });
-  export default MyDocument;
+});
+export default MyDocument;
