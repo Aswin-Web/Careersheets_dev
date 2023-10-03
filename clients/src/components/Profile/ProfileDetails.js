@@ -373,7 +373,7 @@ const ProfileDetails = () => {
             Languages known
           </h4>
 
-          <ul style={{ display: "flex", width: "500px" }}>
+          <ul style={{ display: "flex",flexWrap:"wrap" }}>
             {Languages.map((item) => (
               <li
                 style={{

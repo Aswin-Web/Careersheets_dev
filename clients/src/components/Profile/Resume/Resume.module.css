@@ -116,6 +116,8 @@
 }
 .languages ul {
   display: flex;
+  flex-wrap: wrap;
+  line-height: 2.5px;
 }
 .languages ul li {
   margin: 10px;
