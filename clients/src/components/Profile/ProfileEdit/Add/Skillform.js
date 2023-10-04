@@ -17,31 +17,7 @@ import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { skillActions } from "../../../../redux/reducers/Skill-data";
-
-const skills = [
-  { skill: "Java" },
-  { skill: "Python" },
-  { skill: "C Programming" },
-  { skill: "C++" },
-  { skill: "C#" },
-  { skill: "Javascript" },
-  { skill: "NodeJS" },
-  { skill: "HTML" },
-  { skill: "SQL" },
-  { skill: "Photoshop" },
-  { skill: "Content writer" },
-  { skill: "Database" },
-  { skill: "PHP" },
-  { skill: "UI/UX" },
-  { skill: "Salesforce" },
-  { skill: "Web developement" },
-  { skill: "Tableau" },
-  { skill: "Software Architect" },
-  { skill: "ERP developement" },
-  { skill: "Power BI" },
-  {skill:"CRM"},
-  {skill:"Xmind"}
-];
+import { skillData } from "./skills";
 
 const Skillform = (props) => {
   const skillItems = useSelector((state) => state.skill.skills);
@@ -50,6 +26,19 @@ const Skillform = (props) => {
   const [inputs, setInputs] = useState();
   const [level, setLevel] = useState();
   const [err, setErr] = useState(false);
+
+  // skills
+  function compare(a, b) {
+    if (a.skill < b.skill) {
+      return -1;
+    }
+    if (a.skill > b.skill) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const skills = skillData.sort(compare);
 
   //validating the form///
   let formValid = false;
