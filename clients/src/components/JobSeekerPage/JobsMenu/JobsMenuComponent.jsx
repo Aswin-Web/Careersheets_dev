@@ -26,7 +26,7 @@ const JobsMenuComponent = () => {
       }}
     >
       {allJobs.length === 0 ? (
-        <p>Your skillset does not match any Jobs</p>
+        <p style={{fontSize:"24px",fontWeight:"bold"}}> We didn't find any matching jobs for your skills. Please ensure your profile (link to profile) lists all skills you have. Come back again as we will be adding jobs every day.</p>
       ) : (
         <Typography variant="h6">
           Jobs Based on your Skill

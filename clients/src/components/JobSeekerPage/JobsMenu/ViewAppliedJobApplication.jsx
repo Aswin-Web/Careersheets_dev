@@ -88,7 +88,7 @@ const ViewAppliedJobApplications = () => {
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <h4>{currentJob[0].companyName}</h4>
             <Box>
-              <p style={{ color: "grey" }}>{`${views} people's viewed`}</p>
+              <p style={{ color: "grey" }}>{`${views} Views`}</p>
             </Box>
           </Box>
           {/* Horizontal Columns */}
@@ -139,7 +139,7 @@ const ViewAppliedJobApplications = () => {
 
             <br />
             <Box>
-              <h4>Responaibilities : </h4>
+              <h4>Responsibilities : </h4>
               <p> {currentJob[0].Responsibilites}</p>
             </Box>
             <br />

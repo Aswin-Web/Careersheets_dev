@@ -132,7 +132,7 @@ console.log(currentJob)
               </Box>
             ))
           ) : (
-            <p> No users have applied </p>
+            <p> None applied </p>
           )}
         </Box>
       </Box>
@@ -219,7 +219,7 @@ console.log(currentJob)
 
               <br />
               <Box>
-                <h4>Responaibilities : </h4>
+                <h4>Responsibilities : </h4>
                 <p> {currentJob[0].Responsibilites}</p>
               </Box>
               <br />

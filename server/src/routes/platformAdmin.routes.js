@@ -10,7 +10,8 @@ const {
   EditJobs,
   DisableJob,
   GetUserInfoAdmin,
-  AddViewedToUser,AddWishlistedToUser
+  AddViewedToUser,AddWishlistedToUser,
+  ViewLastLoginUsers
 } = require("../controllers/platformAdmin.controller");
 const { authenticateAdmin } = require("../utils/authorisation.header.check");
 
@@ -37,6 +38,8 @@ router.post("/user/view",AddViewedToUser)
 router.post("/user/wishlist",AddWishlistedToUser)
 // Get all CollgeAdmin and Update their Verification
 router.route("/").get(GetAllCollegeAdmin).put(UpdateAdminVerification);
+
+router.get("/lastseen", ViewLastLoginUsers)
 
 
 

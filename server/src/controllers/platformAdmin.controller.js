@@ -1,5 +1,6 @@
 // MONGODB Models
 const Jobs = require("../models/jobs.models");
+const LoginHistory = require("../models/login.history.model");
 const User = require("../models/user.models");
 const generateToken = require("../utils/jwt.token");
 
@@ -407,6 +408,19 @@ const AddWishlistedToUser = async (req, res, next) => {
   }
 };
 
+const ViewLastLoginUsers=async (req,res,next)=>{
+  
+  try {
+  const resultData=await LoginHistory.find().populate({path:"user_id",select:"name email displayPicture"}).select("createdAt ")
+   .sort({createdAt:"-1"})
+    // console.log(resultData)
+    return res.status(200).json({list: resultData})
+  } catch (error) {
+    console.log(error)
+    return next()
+  }
+}
+
 module.exports = {
   GetAllCollegeAdmin,
   UpdateAdminVerification,
@@ -418,5 +432,6 @@ module.exports = {
   DisableJob,
   GetUserInfoAdmin,
   AddViewedToUser,
-  AddWishlistedToUser
+  AddWishlistedToUser,
+  ViewLastLoginUsers
 };
