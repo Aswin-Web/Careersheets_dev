@@ -38,15 +38,15 @@ const ResumeMain = () => {
   }, []);
 
   return (
-    <div className="app">
+    <a className="app" href="pdf" target="_blank" style={{color:'black',textDecoration:'none'}}>
       <DownloadButton
         onClick={() => {
-          navigate("pdf");
+          // navigate("pdf");
         }}
       />
       {/* <PDFGenerator /> */}
       <Resume data={data} />
-    </div>
+    </a>
   );
 };
 

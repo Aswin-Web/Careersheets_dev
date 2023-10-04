@@ -87,6 +87,15 @@ const Dashboard = () => {
           </Button>
 
           <Button
+            sx={{ margin: "0 1rem" }}
+            variant="outlined"
+            color="error"
+            onClick={() => navigate("/admin/lastseen")}
+          >
+            View Last Seen
+          </Button>
+
+          <Button
             variant="outlined"
             color="error"
             sx={{ margin: "0 1rem" }}

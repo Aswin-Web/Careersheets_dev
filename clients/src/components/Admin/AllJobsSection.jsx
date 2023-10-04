@@ -125,7 +125,7 @@ const AllJobsSection = () => {
                 <p style={{ color: "grey" }}>
                   {`${
                     item.appliedUsers.length !== 0
-                      ? item.appliedUsers.length + " has applied"
+                      ? item.appliedUsers.length + " Applications received"
                       : "None applied"
                   } `}
                 </p>

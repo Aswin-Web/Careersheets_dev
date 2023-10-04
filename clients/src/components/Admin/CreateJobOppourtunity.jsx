@@ -293,7 +293,7 @@ const CreateOppourtunity = () => {
         />
         <br />
         <br />
-        <Typography variant="h5">Responaibilities</Typography>
+        <Typography variant="h5">Responsibilities</Typography>
         <br />
         <br />
         <TextareaAutosize
@@ -301,7 +301,7 @@ const CreateOppourtunity = () => {
           cols={100}
           style={{ width: "60vw", height: "40vh" }}
           name="Responsibilites"
-          label="Responibilities"
+          label="Responsibilities"
           type="text"
           value={formik.values.Responsibilites}
           onChange={formik.handleChange}
@@ -389,7 +389,7 @@ const CreateOppourtunity = () => {
             formik.touched.employmentType && formik.errors.employmentType
           }
         />
-        <Typography variant="p" sx={{color:"grey"}}>*Enter wheather its FullTime, Parttime, Contract, Internship </Typography>
+        <Typography variant="p" sx={{color:"grey"}}>*Enter whether its FullTime, Parttime, Contract, Internship </Typography>
         <br />
         <br />
         <TextField

@@ -1,5 +1,6 @@
 import React from "react";
 import ReactGA from "react-ga";
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import { Route, Routes, useNavigate } from "react-router-dom";
 import JobseekerPage from "./components/JobSeekerPage/main";
 // import "./Pages/JobSeeker_Page/main.css";
@@ -60,6 +61,7 @@ import AppliedJobsMenuComponent from "./components/JobSeekerPage/JobsMenu/Applie
 import ViewAppliedJobApplications from "./components/JobSeekerPage/JobsMenu/ViewAppliedJobApplication";
 import ResumeViewAdmin from "./components/Admin/ResumeView";
 import PDFViewAdmin from "./components/Admin/PDFViewAdmin";
+import LastSeen from "./components/Admin/LastSeen";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -146,6 +148,7 @@ function App() {
           <Route path="jobs/*" element={<JobDetails />} />
           <Route path="edit/*" element={<EditJobOppourtunity />} />
           <Route path="new" element={<CreateJobOppourtunity />} />
+          <Route path="lastseen" element={<LastSeen />} />
           <Route path="profile/resume/pdf/*" element={<PDFViewAdmin/>}/>
           <Route path="profile/resume/*" element={<ResumeViewAdmin/>}/>
         </Route>

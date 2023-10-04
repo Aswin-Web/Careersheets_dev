@@ -3,7 +3,7 @@ import DownloadButton from "./DownloadResume";
 import Resume from "./Resume";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useNavigation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { dataAction } from "../../redux/reducers/data";
 import Button from "@mui/material/Button";
@@ -11,8 +11,10 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box } from "@mui/material";
 const ResumeViewAdmin = () => {
-  console.log(useSelector(x=>x))
+  console.log(`${process.env.REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`)
+
   const [data, SetData] = useState();
+  console.log(data , "Please HElp")
   const navigate = useNavigate();
   const location=useLocation()
   const sendRequest = async () => {
@@ -77,11 +79,27 @@ const ResumeViewAdmin = () => {
     <div className="app">
       <Box sx={{display:'flex' ,padding:'1rem',gap:'1rem'}}>
         
-        <DownloadButton
+      {data !== undefined ?<a className="app" href={`${process.env.REACT_APP_CLIENT_URL}/admin/profile/resume/pdf/${data._id}`}rel='noreferrer' target="_blank" style={{color:'black',textDecoration:'none'}}>
+      <DownloadButton
+        onClick={() => {
+          // navigate(`pdf/${data._id}`,'_blank');
+          // navigate("pdf");
+        }}
+      />
+      </a>  :<></> } 
+
+        {/* <Link to={`pdf/${data._id}`} target="_blank"> */}
+
+        {/* <DownloadButton
           onClick={() => {
-            navigate(`pdf/${data._id}`);
+            console.log(data._id,"DATAS")
+            
           }}
-        />
+          /> */}
+
+          
+           {/* onClick={()=>window.open(`pdf/${data._id}`,'_blank', 'rel=noopener noreferrer')} */}
+          {/* </Link> */}
         {/* <Button onClick={()=>{
 
         }}>
