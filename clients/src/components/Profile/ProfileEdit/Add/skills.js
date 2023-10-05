@@ -67,7 +67,10 @@ const skillData = [
   { skill: "Photography" },
   {skill:"Leadership"},
   {skill:"Networking"},
-  
+  {skill:"Time Management"},
+  {skill:"Listening"},
+  {skill:"Understanding"},
+  {skill:"Decision Making"},
 
 ];
 export { skillData };
