@@ -65,5 +65,9 @@ const skillData = [
   { skill: "BI modeling" },
   { skill: "Project planning" },
   { skill: "Photography" },
+  {skill:"Leadership"},
+  {skill:"Networking"},
+  
+
 ];
 export { skillData };
