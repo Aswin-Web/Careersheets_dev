@@ -77,7 +77,7 @@ const SingleProfile = () => {
                 onChange={handleChange}
               >
                 <MenuItem value={false}>Not Verified</MenuItem>
-                <MenuItem value={true}>Verify Him</MenuItem>
+                <MenuItem value={true}>Verify</MenuItem>
               </Select>
             </FormControl>
             <br />
