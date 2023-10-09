@@ -6,6 +6,7 @@ const generateToken = require("../utils/jwt.token");
 
 //npm Libraries
 const { validationResult, body } = require("express-validator");
+const { SkillMatch } = require("../utils/skillmatch.utils");
 
 const GetAllCollegeAdmin = async (req, res, next) => {
   try {
@@ -229,7 +230,11 @@ const JobCreationRoute = async (req, res, next) => {
       role_Category,
       pincode,
     });
-    const modify = await doc.save();
+    const modify = await doc.save().then((x) => {
+      SkillMatch(companyName, roleName,SkillsRequired);
+      return x;
+    });
+
     return res
       .status(200)
       .json({ msg: "Job Poster Created Successfully", job: modify });
@@ -241,7 +246,7 @@ const JobCreationRoute = async (req, res, next) => {
 
 const GetAllJobs = async (req, res, next) => {
   const jobs = await Jobs.find({})
-    
+
     .populate({
       path: "appliedUsers.userId",
       populate: {
@@ -262,7 +267,8 @@ const GetAllJobs = async (req, res, next) => {
       populate: {
         path: "education",
       },
-    }).sort({ createdAt: -1 });
+    })
+    .sort({ createdAt: -1 });
   return res.status(200).json({ allJobs: jobs });
 };
 
@@ -380,7 +386,7 @@ const AddViewedToUser = async (req, res, next) => {
   const { userId, jobId } = req.body;
   try {
     const jobs = await Jobs.updateOne(
-      { _id: jobId,"appliedUsers.userId":userId },
+      { _id: jobId, "appliedUsers.userId": userId },
       { $set: { "appliedUsers.$.isViewed": true } }
     );
 
@@ -393,10 +399,10 @@ const AddViewedToUser = async (req, res, next) => {
 };
 
 const AddWishlistedToUser = async (req, res, next) => {
-  const { userId, jobId,isWishlisted } = req.body;
+  const { userId, jobId, isWishlisted } = req.body;
   try {
     const jobs = await Jobs.updateOne(
-      { _id: jobId,"appliedUsers.userId":userId },
+      { _id: jobId, "appliedUsers.userId": userId },
       { $set: { "appliedUsers.$.Wishlisted": isWishlisted } }
     );
 
@@ -408,18 +414,19 @@ const AddWishlistedToUser = async (req, res, next) => {
   }
 };
 
-const ViewLastLoginUsers=async (req,res,next)=>{
-  
+const ViewLastLoginUsers = async (req, res, next) => {
   try {
-  const resultData=await LoginHistory.find().populate({path:"user_id",select:"name email displayPicture"}).select("createdAt ")
-   .sort({createdAt:"-1"})
+    const resultData = await LoginHistory.find()
+      .populate({ path: "user_id", select: "name email displayPicture" })
+      .select("createdAt ")
+      .sort({ createdAt: "-1" });
     // console.log(resultData)
-    return res.status(200).json({list: resultData})
+    return res.status(200).json({ list: resultData });
   } catch (error) {
-    console.log(error)
-    return next()
+    console.log(error);
+    return next();
   }
-}
+};
 
 module.exports = {
   GetAllCollegeAdmin,
@@ -433,5 +440,5 @@ module.exports = {
   GetUserInfoAdmin,
   AddViewedToUser,
   AddWishlistedToUser,
-  ViewLastLoginUsers
+  ViewLastLoginUsers,
 };

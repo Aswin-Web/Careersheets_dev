@@ -19,6 +19,7 @@ const email = (to, subject, html) => {
       if (err) {
         return rej({ msg: "Error" });
       } else {
+        console.log("Email Send")
         resolve({ msg: "email send" });
       }
     });

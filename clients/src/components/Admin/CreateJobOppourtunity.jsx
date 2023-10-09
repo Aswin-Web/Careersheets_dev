@@ -94,6 +94,7 @@ const CreateOppourtunity = () => {
 
     if (data.status === 200) {
       dispatch(AddNewJob(data.data.job));
+      navigate("/admin/jobs");
     }
   };
 
@@ -144,7 +145,7 @@ const CreateOppourtunity = () => {
         values.pincode !==""
       ) {
         NetworkRequest(values);
-        navigate("/admin/jobs");
+        
         return seterrors({
           errors: false,
           message: "Every fields are inserted properly",
