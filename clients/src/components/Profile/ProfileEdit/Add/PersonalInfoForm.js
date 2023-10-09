@@ -76,7 +76,7 @@ const PersonalInfoForm = (props) => {
           setLanguages(languages);
           setHometown(hometown);
           setBirth(dateOfBirth);
-          setPhone(phone)
+          setPhone(phone);
         }
         // dispatch(summaryAction.addSummary({ summary:data.summary }));
       })
@@ -94,7 +94,7 @@ const PersonalInfoForm = (props) => {
           birth,
           languages: arrlanguages,
           fullName,
-          phone
+          phone,
         },
         {
           headers: {
@@ -114,7 +114,8 @@ const PersonalInfoForm = (props) => {
       e.preventDefault();
       // console.log(arrlanguages, "languages");
       const data = await updateRequest();
-      const { gender, fullName, dateOfBirth, languages, hometown,phone } = data;
+      const { gender, fullName, dateOfBirth, languages, hometown, phone } =
+        data;
       console.log(
         gender,
         fullName,
@@ -131,7 +132,7 @@ const PersonalInfoForm = (props) => {
           hometown,
           languages,
           fullName,
-          phone
+          phone,
         })
       );
       console.log(data);
@@ -185,7 +186,7 @@ const PersonalInfoForm = (props) => {
               }}
             />
           </div>
-          <div style={{ marginLeft: "20px",marginTop:"10px" }}>
+          <div style={{ marginLeft: "20px", marginTop: "10px" }}>
             <InputLabel
               htmlFor="filled-adornment-amount"
               sx={{ color: "#1976d2" }}
@@ -194,12 +195,13 @@ const PersonalInfoForm = (props) => {
             </InputLabel>
             <FilledInput
               required
-              type="number"
+              type="Number"
               sx={{ width: "550px" }}
               id="filled-adornment-amount"
               placeholder="Phone"
               name="Phone"
               value={phone}
+              pattern="^\d{3}-\d{3}-\d{4}$"
               onChange={(e) => {
                 setPhone(e.target.value);
               }}
