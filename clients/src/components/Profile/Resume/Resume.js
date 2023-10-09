@@ -35,22 +35,29 @@ function Resume({ data }) {
                 {/* <p style={{ marginRight: "5px" }}>
                   <ImLocation2 size={16} />
                 </p> */}
-                <p>{data.personal[0].hometown?<>
-                  <p style={{ display:"flex" ,alignItems:"center"}}>
+                <p>
+                  {data.personal[0].hometown ? (
+                    <>
+                      <p style={{ display: "flex", alignItems: "center" }}>
                         {" "}
                         <ImLocation2 size={16} />
                         {data.personal[0].hometown}
                       </p>
-                </>:""}</p>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </p>
               </div>
             ) : (
               ""
             )}
 
             <div className={classes.phoneItems}>
-              <HiMail size={20} style={{ marginLeft: "5px" }} />
-
-              <p>{data.email}</p>
+              <p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+                <HiMail size={20} style={{ marginRight: "2px" }} />
+                {data.email}
+              </p>
             </div>
 
             {data.personal[0] ? (
@@ -59,7 +66,7 @@ function Resume({ data }) {
                   {data.personal[0].phone ? (
                     <>
                       {" "}
-                      <p style={{ display:"flex" ,alignItems:"center"}}>
+                      <p style={{ display: "flex", alignItems: "center" }}>
                         {" "}
                         <RxDotFilled size={24} />
                         {data.personal[0].phone}
