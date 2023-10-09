@@ -75,7 +75,7 @@ const AllJobsSection = () => {
               <Box>
                 <h3>
                   {" "}
-                  {item.roleName}{" "}
+                  {item.roleName ? item.roleName: ""}{" "}
                   <div
                     style={{
                       width: "10px",

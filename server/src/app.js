@@ -28,7 +28,8 @@ const platformAdminRoutes=require("./routes/platformAdmin.routes")
 const resumeRoutes=require("./routes/resume.routes")
 
 
-const cors =require('cors')
+const cors =require('cors');
+const { SkillMatch } = require("./utils/skillmatch.utils");
 const app = express();
 
 // Cookie-Parser
@@ -40,7 +41,7 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(morgan("combined"));
+app.use(morgan("tiny"));
 
 // app.set("view engine", "ejs");
 app.use(express.static(path.resolve(__dirname, '../../clients/build')));
@@ -69,7 +70,7 @@ app.use((req, res, next) => {
 });
 
 
-
+app.get("/newb",SkillMatch)
 ///COLLEGE LIST 
 app.use("/api/collegelist",collegeListRouter)
 
@@ -97,17 +98,19 @@ app.use("/api/user", userRoutes);
 app.use("/api/user/profile/generateresume",resumeRoutes)
 
 
-app.use("*",(req, res) => {
+app.use("*",(req, res,next) => {
   console.log("Could not match any Route")
   // return res.sendFile(path.resolve(__dirname, '../../clients/build', 'index.html'));
-   res.status(500).json({ msg: "Something went wrong" });
+   res.status(500).json({ msg: "Something went wrong Routes" });
 });
 
 app.use((req, res) => {
-  console.log("Controller Error")
+  // if (err){
+
+  //   console.log("Controller Error")
+  // }
   res.status(500).json({ msg: "Something went wrong" });
 });
-
 
 
 // 
