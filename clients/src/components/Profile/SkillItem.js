@@ -55,6 +55,7 @@ const SkillItem = (props) => {
       </div>
       <IconButton onClick={removeSkillHandler}>
         <ClearIcon />
+        
       </IconButton>
     </div>
   );

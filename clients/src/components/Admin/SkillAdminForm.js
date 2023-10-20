@@ -15,17 +15,20 @@ import FormControl from "@mui/material/FormControl";
 
 import axios from "axios";
 
-import { useDispatch, useSelector } from "react-redux";
-import { skillActions } from "../../../../redux/reducers/Skill-data";
+import { useSelector } from "react-redux";
+// import { skillActions } from "../../../../redux/reducers/Skill-data";
 // import { skillData } from "./skills";
 
-const Skillform = (props) => {
+const SkillAdminform = (props) => {
   // const skillItems = useSelector((state) => state.skill.skills);
-  const [skillItems,setskillItems]=useState([])
+  const [skillItems, setskillItems] = useState([]);
+
+
   const token = useSelector((state) => state.auth.value);
-  const dispatch = useDispatch();
+
   const [inputs, setInputs] = useState();
-  const [level, setLevel] = useState();
+  const [addedSkills, setaddedSkills] = useState([...props.SkillValues]);
+  // console.log(addedSkills,"Please Verify")
   const [err, setErr] = useState(false);
   //
   const getAllSkills = async () => {
@@ -43,14 +46,14 @@ const Skillform = (props) => {
     // console.log(response,"Skills From Backend");
     const data = await response.data;
 
-    if (response.status=== 200) {
-      setskillItems([...response.data.skill])
+    if (response.status === 200) {
+      setskillItems([...response.data.skill]);
       return data;
     }
   };
 
   useEffect(() => {
-    getAllSkills()
+    getAllSkills();
   }, []);
 
   // skills
@@ -69,73 +72,77 @@ const Skillform = (props) => {
   //validating the form///
   let formValid = false;
 
-  if (inputs && level) {
+  if (inputs) {
     formValid = true;
   }
 
-  const postRequest = async () => {
-    const response = await axios
-      .post(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/skill",
-        {
-          skill: inputs,
-          level: level,
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .catch((error) => {
-        return error.response.data.message;
-      });
-
-    const data = await response.data;
-
-    if (data) {
-      return data;
-    }
+  const handleDelete = (skill) => {
+    const deleteSkill = addedSkills.filter((x) => x !== skill);
+    setaddedSkills([...deleteSkill]);
   };
-
-  const skillFormSubmitHandler = (event) => {
-    event.preventDefault();
+  const skillFormSubmitHandler = () => {
+    // props.onClose
 
     if (formValid) {
-      postRequest()
-        .then((data) => {
-          if (!data) {
-            setErr(true);
-            dispatch(
-              skillActions.skillError(
-                "This skill is already in your skill list.\n Try to add new Skill!!"
-              )
-            );
+      setaddedSkills((prev) => {
+        if (prev.length !== 0) {
+          const newArray = prev.filter((x) => x === inputs);
+          if (newArray.length === 0) {
+            return [...prev, inputs];
+          } else {
+            return prev;
           }
-          let skill = data.newSkill;
-          setErr(false);
-          if (data) {
-            dispatch(skillActions.addSkill({ ...skill }));
-          }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      console.log("falseee");
+        } else {
+          return [...[inputs]];
+        }
+      });
+    //   setInputs("")
     }
   };
 
   const inputChangeHandler = (event, values) => {
     setInputs(values);
   };
-  const levelChange = (event) => {
-    setLevel(event.target.value);
-  };
-  return (
+  props.getSkills(addedSkills.toString())
+    return (
     <div>
-      <form onSubmit={skillFormSubmitHandler}>
+      <form
+      //   onSubmit={skillFormSubmitHandler}
+      >
         <DialogTitle>Add skills</DialogTitle>
-
+        {addedSkills.length !== 0 ? (
+          <div style={{ display: "flex", gap: "3px", flexWrap:"wrap"}}>
+            {addedSkills.map((x,key) => {
+              return (
+                <div
+                  style={{
+                    border: "1px solid grey",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "3px",
+                    margin: "2px",
+                    gap:"5px"
+                  }}
+                  key={key}
+                >
+                  <p>{x}</p>
+                  <p
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDelete(x);
+                    }}
+                    style={{ color: "red", fontWeight: "bolder" }}
+                  >
+                    X
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <></>
+        )}
         <DialogContent>
           <DialogContentText>
             <Autocomplete
@@ -157,34 +164,15 @@ const Skillform = (props) => {
                 />
               )}
             />
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby="demo-row-radio-buttons-group-label"
-                name="row-radio-buttons-group"
-                onChange={levelChange}
-              >
-                <FormControlLabel
-                  value="Beginner"
-                  control={<Radio />}
-                  label="Beginner"
-                />
-                <FormControlLabel
-                  value="Intermediate"
-                  control={<Radio />}
-                  label="Intermediate"
-                />
-                <FormControlLabel
-                  value="Advanced"
-                  control={<Radio />}
-                  label="Advanced"
-                />
-              </RadioGroup>
-            </FormControl>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button disabled={!formValid} onClick={props.onClose} type="submit">
+          <Button
+            disabled={!formValid}
+            onClick={() => {
+              skillFormSubmitHandler();
+            }}
+          >
             Add
           </Button>
         </DialogActions>
@@ -193,4 +181,4 @@ const Skillform = (props) => {
   );
 };
 
-export default Skillform;
+export default SkillAdminform;

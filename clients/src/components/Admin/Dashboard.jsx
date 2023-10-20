@@ -11,7 +11,7 @@ const Dashboard = () => {
   const dispatch =useDispatch()
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("Working")
+    
     NetworkRequest();
   },[]);
   const NetworkRequest = async () => {
@@ -24,7 +24,6 @@ const Dashboard = () => {
         },
       }
     );
-    console.log(data.allJobs,"DASHBOARD")
     dispatch(AddJobs(data.allJobs));
   };
 

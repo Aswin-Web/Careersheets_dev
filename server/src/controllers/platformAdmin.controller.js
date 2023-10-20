@@ -7,6 +7,8 @@ const generateToken = require("../utils/jwt.token");
 //npm Libraries
 const { validationResult, body } = require("express-validator");
 const { SkillMatch } = require("../utils/skillmatch.utils");
+const { generateHTML } = require("../utils/alerts.email.utils");
+const email = require("../utils/nodemailer.email");
 
 const GetAllCollegeAdmin = async (req, res, next) => {
   try {
@@ -231,7 +233,7 @@ const JobCreationRoute = async (req, res, next) => {
       pincode,
     });
     const modify = await doc.save().then((x) => {
-      SkillMatch(companyName, roleName,SkillsRequired);
+      // SkillMatch(companyName, roleName,SkillsRequired);
       return x;
     });
 
@@ -302,7 +304,7 @@ const EditJobs = async (req, res, next) => {
     const { jobId } = req.params;
     let jobOppourtunity = await Jobs.findOne({ _id: jobId });
 
-    console.log(jobOppourtunity);
+    // console.log(jobOppourtunity);
 
     if (jobOppourtunity !== null) {
       jobOppourtunity = {
@@ -324,10 +326,11 @@ const EditJobs = async (req, res, next) => {
       };
       const modify = await Jobs.findOneAndUpdate(
         { _id: jobId },
-        jobOppourtunity
+        jobOppourtunity,
+        { new: true }
       );
       // console.log(modify);
-      return res.json({ msg: "edited successfully", job: jobOppourtunity });
+      return res.json({ msg: "edited successfully", job: modify });
     }
     return res.json({ msg: "The Job you applied does not exist" });
   } catch (error) {
@@ -339,6 +342,7 @@ const EditJobs = async (req, res, next) => {
 const DisableJob = async (req, res, next) => {
   try {
     const jobId = req.params.jobId;
+    console.log("Worked For ME");
     const currentJob = await Jobs.find({ _id: jobId });
     if (currentJob[0].length !== 0) {
       const modifyJob = await Jobs.findOneAndUpdate(
@@ -348,7 +352,8 @@ const DisableJob = async (req, res, next) => {
       return res.status(200).json({
         msg: "Edited Successfully",
         job: {
-          ...modifyJob,
+          ...modifyJob._doc,
+          isClosed: !modifyJob._doc.isClosed,
         },
       });
     } else {
@@ -428,6 +433,71 @@ const ViewLastLoginUsers = async (req, res, next) => {
   }
 };
 
+const showUsersWithTheRequiredSkillSets = async (req, res, next) => {
+  try {
+    const skill = req.body.skills;
+    if (skill !== "") {
+      const users = await SkillMatch(skill);
+      console.log(users);
+      return res
+        .status(200)
+        .json({ msg: "successfully generated", userlist: users });
+    } else {
+      return res.status(200).json({ msg: "No Skills Was Specified" });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const sendEmailToAllShownUsers = async (req, res, next) => {
+  try {
+    const { skill, companyName, role } = req.body;
+    console.log(skill, "jshfjids");
+    if (skill !== "") {
+      const users = await SkillMatch(skill);
+      if (users.length !== 0) {
+        users.map((x) => {
+          //  Transmit Email
+          let html = generateHTML(x.name, companyName, role);
+          email(x.email, "Job Alert For You", html);
+        });
+
+        return res
+          .status(200)
+          .json({
+            msg: "Mail Transmitted Successfully",
+            mailTransmit: users.length,
+          });
+      } else {
+        return res.status(200).json({
+          msg: "No mail was shared because no one has the skill set.",
+        });
+      }
+    } else {
+      return res.status(200).json({ msg: "No Skills Was Specified" });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+const GetAParticularJob = async (req, res, next) => {
+  try {
+    const job_id = req.params.jobId;
+    const job = await Jobs.find({ _id: job_id });
+    if (job.length !== 0) {
+      return res.status(200).json({ msg: "Successfully got job", job: job });
+    } else {
+      return res.status(400).json({ msg: "No job found", job: [] });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
 module.exports = {
   GetAllCollegeAdmin,
   UpdateAdminVerification,
@@ -441,4 +511,7 @@ module.exports = {
   AddViewedToUser,
   AddWishlistedToUser,
   ViewLastLoginUsers,
+  showUsersWithTheRequiredSkillSets,
+  sendEmailToAllShownUsers,
+  GetAParticularJob,
 };
