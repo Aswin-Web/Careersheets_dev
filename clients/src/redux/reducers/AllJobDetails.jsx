@@ -10,17 +10,21 @@ export const allJobsSlice = createSlice({
       state.value = [...action.payload];
     },
     DisAbleJobs(state, action) {
+      // console.log(action.payload)
       const afterDisable = state.value.map((x) => {
-        if (x._id === action.payload) {
+        if (x._id === action.payload._id) {
           x.isClosed = !x.isClosed;
+          return action.payload.job;
         }
+        return x;
       });
+      
       state.value = [...afterDisable];
     },
     updateJobs(state, action) {
       const afterUpdate = state.value.map((x) => {
         if (x._id === action.payload.job_id) {
-          return { ...action.payload.jobDetails };
+          return action.payload.jobDetails 
         } else {
           return x;
         }

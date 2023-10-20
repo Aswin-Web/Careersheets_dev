@@ -21,7 +21,7 @@ const JobSchema = new mongoose.Schema(
     pincode:String,
     isClosed: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     appliedUsers: [
       {

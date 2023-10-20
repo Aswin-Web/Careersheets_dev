@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { AddJobs, AddNewJob } from "../../redux/reducers/AllJobDetails";
 import { useDispatch } from "react-redux";
+import SkillAdminform from "./SkillAdminForm";
 
 // Schema
 // let userSchema = object().shape({
@@ -80,6 +81,11 @@ const CreateOppourtunity = () => {
     errors: false,
     message: "",
   });
+  const [skills, setSkills] = useState("");
+
+  const GenerateSkills = (skill) => {
+    setSkills(skill);
+  };
   const NetworkRequest = async (info) => {
     const data = await axios.post(
       `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
@@ -117,7 +123,7 @@ const CreateOppourtunity = () => {
       roleName: "",
       role_Category: "",
       salary: "",
-      pincode:""
+      pincode: "",
     },
     // validationSchema: { userSchema },
 
@@ -125,6 +131,7 @@ const CreateOppourtunity = () => {
       // console.log(values);
 
       console.log(errors);
+      values.SkillsRequired = skills;
 
       if (
         values.IndustryType !== "" &&
@@ -141,11 +148,11 @@ const CreateOppourtunity = () => {
         values.location !== "" &&
         values.roleName !== "" &&
         values.role_Category !== "" &&
-        values.salary !== ""&&
-        values.pincode !==""
+        values.salary !== "" &&
+        values.pincode !== ""
       ) {
         NetworkRequest(values);
-        
+
         return seterrors({
           errors: false,
           message: "Every fields are inserted properly",
@@ -230,10 +237,7 @@ const CreateOppourtunity = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           placeholder="641110"
-          error={
-            formik.touched.pincode &&
-            Boolean(formik.errors.pincode)
-          }
+          error={formik.touched.pincode && Boolean(formik.errors.pincode)}
           helperText={
             formik.touched.companyAddress && formik.errors.companyAddress
           }
@@ -340,7 +344,8 @@ const CreateOppourtunity = () => {
           name="SkillsRequired"
           label="Skills Required"
           type="text"
-          value={formik.values.SkillsRequired}
+          disabled
+          value={skills}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={
@@ -352,9 +357,14 @@ const CreateOppourtunity = () => {
           }
           placeholder="C++,Java,Python"
         />
-        <Typography variant="p" sx={{color:"grey"}}>*Keep your skills with a "comma", separated </Typography>
-        <Typography variant="p" sx={{color:"grey"}}>(i.e) C++,Java,Python </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          *Keep your skills with a "comma", separated{" "}
+        </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          (i.e) C++,Java,Python{" "}
+        </Typography>
         <br />
+        <SkillAdminform SkillValues={[]} getSkills={GenerateSkills} />
         <br />
         <TextField
           fullWidth
@@ -368,10 +378,13 @@ const CreateOppourtunity = () => {
           helperText={formik.touched.experience && formik.errors.experience}
           placeholder="5"
         />
-        <Typography variant="p" sx={{color:"grey"}}>Enter a Number. (i.e)"5" which will show as 5 years </Typography>
-        <Typography variant="p" sx={{color:"grey"}}>*If fresher please enter 0 </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          Enter a Number. (i.e)"5" which will show as 5 years{" "}
+        </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          *If fresher please enter 0{" "}
+        </Typography>
         <br />
-        
         <br />
         <TextField
           fullWidth
@@ -390,7 +403,9 @@ const CreateOppourtunity = () => {
             formik.touched.employmentType && formik.errors.employmentType
           }
         />
-        <Typography variant="p" sx={{color:"grey"}}>*Enter whether its FullTime, Parttime, Contract, Internship </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          *Enter whether its FullTime, Parttime, Contract, Internship{" "}
+        </Typography>
         <br />
         <br />
         <TextField
@@ -409,7 +424,9 @@ const CreateOppourtunity = () => {
           }
           placeholder="Software Developenment"
         />
-        <Typography variant="p" sx={{color:"grey"}}>Enter the Category wheather its an (i.e) Developenment, Designing</Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          Enter the Category wheather its an (i.e) Developenment, Designing
+        </Typography>
         <br />
         <br />
         <TextField
@@ -424,7 +441,10 @@ const CreateOppourtunity = () => {
           helperText={formik.touched.salary && formik.errors.salary}
           placeholder="5 - 8 lpa"
         />
-        <Typography variant="p" sx={{color:"grey"}}>*If it is varying then insert in the range (i.e) 5-6 lpa Or give it as a fixed value (i.e) 2 lpa </Typography>
+        <Typography variant="p" sx={{ color: "grey" }}>
+          *If it is varying then insert in the range (i.e) 5-6 lpa Or give it as
+          a fixed value (i.e) 2 lpa{" "}
+        </Typography>
         <br />
         <br />
         <TextField

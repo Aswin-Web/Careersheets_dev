@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Typography } from "@mui/material";
-
+import { useState } from "react";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
@@ -20,19 +20,82 @@ const centerItems = {
   gap: "10px",
   margin: "0.5rem 0",
 };
+
 const JobDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
   const allJobs = useSelector((state) => state.allJobs.value);
   let currentJob = allJobs.filter((x) => x._id === jobbID);
+  const [showEmailusers, setshow] = useState(false);
+  const [emailUsers, setEmailUsers] = useState([]);
+  const [emailres, setemailres] = useState("");
+  const [btn,setbtn]=useState(false)
+
   let applied = [];
   if (currentJob.length !== 0) {
     let a = currentJob[0].appliedUsers;
     let b = [...a];
     applied = b.reverse();
   }
-console.log(currentJob)
+  // console.log(currentJob);
+  const handleGetAllUsers = async () => {
+    try {
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL + `/admin/getUsers`}`,
+        {
+          skills: currentJob[0].SkillsRequired,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+          },
+        }
+      );
+      if (data.status === 200) {
+        // console.log(data);
+        setshow(true);
+        setEmailUsers([...data.data.userlist]);
+        // console.log(emailUsers);
+      }
+    } catch (error) {}
+  };
+
+  const handleTransmitEmail = async () => {
+    try {
+      setbtn(!btn)
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
+        {
+          skill: currentJob[0].SkillsRequired,
+          companyName: currentJob[0].companyName,
+          role: currentJob[0].roleName,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+          },
+        }
+      );
+
+      if (data.status === 200) {
+        
+        setemailres(data.data.msg);
+        // console.log(data);
+        // setshow(true);
+        // setEmailUsers([...data.data.userlist]);
+        // console.log(emailUsers);
+      } else {
+        
+        setemailres(data.data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
       <Box
@@ -92,24 +155,28 @@ console.log(currentJob)
                     <Link
                       to={`/admin/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
                       style={{ textDecoration: "none", color: "black" }}
-                      onClick={()=>{
-                        if (!item.isViewed){
-                          const pageViewed=async ()=>{
+                      onClick={() => {
+                        if (!item.isViewed) {
+                          const pageViewed = async () => {
                             const response = await axios
-                              .post(`${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
-                              {
-                                userId:item.userId._id,
-                                jobId:currentJob[0]._id
-                              }, {
-                                headers: {
-                                  "Content-type": "application/json",
-                                  Authorization: `Bearer ${localStorage.getItem("admin")}`,
+                              .post(
+                                `${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+                                {
+                                  userId: item.userId._id,
+                                  jobId: currentJob[0]._id,
                                 },
-                              })
+                                {
+                                  headers: {
+                                    "Content-type": "application/json",
+                                    Authorization: `Bearer ${localStorage.getItem(
+                                      "admin"
+                                    )}`,
+                                  },
+                                }
+                              )
                               .catch((err) => console.log(err));
-                            
-                          }
-                          pageViewed()
+                          };
+                          pageViewed();
                         }
                       }}
                     >
@@ -305,6 +372,53 @@ console.log(currentJob)
                   Education UG:
                 </Typography>
                 <Typography variant="p"> {currentJob[0].education}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  margin: "10px",
+                }}
+              >
+                <Button variant="contained" onClick={() => handleGetAllUsers()}>
+                  {" "}
+                  Generate Users{" "}
+                </Button>
+                <p>
+                  This will generate the users with the same skillset you are
+                  looking for the oppourtunity
+                  <Button onClick={() => setshow(!showEmailusers)}>
+                    {showEmailusers ? "Hide" : "Show"}
+                  </Button>
+                </p>
+                <div hidden={showEmailusers ? false : true}>
+                  {emailUsers.length !== 0 ? (
+                    <>
+                      <ol>
+                        {emailUsers.map((el, index) => (
+                          <li key={index}>{el.name}</li>
+                        ))}
+                      </ol>
+                      <div>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => handleTransmitEmail()}
+                          disabled={btn}
+                        >
+                          Send Mail to all Individual's
+                        </Button>
+                        {emailres !== "" ? (
+                          <p style={{ color: "green", margin: "10px" }}>
+                            {emailres}
+                          </p>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <p>No users present with the skillset</p>
+                  )}
+                </div>
               </Box>
             </Box>
           </Box>

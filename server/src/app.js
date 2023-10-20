@@ -9,6 +9,8 @@ const ejs=require('ejs')
 const path=require('path')
 // const __dirname=requiure()
 
+
+
 // Authorisation Header Check
 const {authenticateUser} =require('./utils/authorisation.header.check')
 
@@ -85,7 +87,7 @@ app.use('/api/csv',CSVroutes)
 // app.use("/auth", authRoutes);
 
 // Google SignUp 
-app.use('/api/auth/google',googleAuthRoutes)
+app.use('/api/auth/google',googleAuthRoutes)  
 
 // Authorisation Controller
 
@@ -94,7 +96,7 @@ app.use("/api/collegeadmin",collegeAdminRouter)
 
 // User Routes
 app.use("/api/user", userRoutes);
-// Resume generation Routes
+// Resume generation Routes 
 app.use("/api/user/profile/generateresume",resumeRoutes)
 
 

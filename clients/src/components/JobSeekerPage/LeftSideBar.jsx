@@ -80,7 +80,6 @@ const LeftSideBar = () => {
     getApplication();
     getJobs();
     sendRequest().then((data) => {
-      console.log(data, "data");
       let status = data.status;
       let details = data.education.reverse();
       let project = data.project.reverse();

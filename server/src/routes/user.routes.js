@@ -20,6 +20,7 @@ const {
   AddUserToJobHistory,
   AppliedJobs,
   SearchAppliedJobs,
+  GetAllPlatFormSkills
 } = require("../controllers/user.profile.conroller");
 
 const {
@@ -37,6 +38,9 @@ const { authenticateUser } = require("../utils/authorisation.header.check");
 
 router.use(authenticateUser);
 
+
+// Route Name
+// api/user + ""
 router
   .route("/application")
   .post(postApplication)
@@ -90,4 +94,6 @@ router.get("/appliedjobs/:id", SearchAppliedJobs);
 // To update The Job history to increase the user count
 router.get("/history/:id", AddUserToJobHistory);
 
+// To Get all the Skills
+router.get("/platformskills",GetAllPlatFormSkills)
 module.exports = router;

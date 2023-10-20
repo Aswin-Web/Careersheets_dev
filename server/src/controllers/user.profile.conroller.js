@@ -2,6 +2,7 @@ const Education = require("../models/education.model");
 const Skill = require("../models/skill.models");
 const JobSeeker = require("../models/user.models");
 const User = require("../models/user.models");
+const PlatformSkill = require("../models/platformSkills.models");
 const Project = require("../models/project.models");
 const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
@@ -440,6 +441,18 @@ const SearchAppliedJobs = async (req, res, next) => {
   }
 };
 
+const GetAllPlatFormSkills = async (req, res, next) => {
+  try {
+    const skill = await PlatformSkill.find({});
+    return res.status(200).json({ skill });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+
+
 module.exports = {
   getUserInfo,
   postEducation,
@@ -455,4 +468,6 @@ module.exports = {
   AddUserToJobHistory,
   AppliedJobs,
   SearchAppliedJobs,
+  GetAllPlatFormSkills,
+  
 };
