@@ -4,9 +4,11 @@ const {
   ViewRecruiterJobs,
   GetAParticularJobForRecruiter,
   GetUserInfoRecruiter,
+  ViewProfile
 } = require("../controllers/recruiter.controller");
 const {
-  authenticateRecruiter, isRecruiterController,
+  authenticateRecruiter,
+  isRecruiterController,
 } = require("../utils/authorisation.header.check");
 
 const router = express.Router();
@@ -17,10 +19,10 @@ router.use(authenticateRecruiter);
 // ROUTE: api/recruiter/profile
 
 // To Create an Profile
-router.post("/profile", CreateProfile);
+router.route("/profile").post(CreateProfile).get(ViewProfile);
 
 // IS THE RECRUITER IS VERIFIED
-router.use(isRecruiterController)
+router.use(isRecruiterController);
 
 // To Add the jobs
 router.get("/jobs", ViewRecruiterJobs);

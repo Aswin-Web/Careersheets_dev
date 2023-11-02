@@ -41,6 +41,7 @@ const SelectingCollege = () => {
       .catch((err) => console.log(err));
   },[])
 
+  console.log(collegeList)
 
   ///sorting the college list
 

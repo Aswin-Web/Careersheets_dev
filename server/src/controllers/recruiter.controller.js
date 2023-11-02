@@ -151,9 +151,33 @@ const GetUserInfoRecruiter = async (req, res, next) => {
   }
 };
 
+const ViewProfile = async (req, res, next) => {
+  try {
+    const isUser = await User.findOne({ _id: req.user }).populate(
+      "recruiterInfo"
+    );
+    if (isUser.recruiterInfo !== undefined) {
+      return res.status(200).json({ info: isUser.recruiterInfo });
+    } else {
+      return res.status(200).json({
+        info: {
+          employeeName: "",
+          employeePosition: "",
+          companyName: "",
+          contactNumber: "",
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
 module.exports = {
   CreateProfile,
   ViewRecruiterJobs,
   GetAParticularJobForRecruiter,
   GetUserInfoRecruiter,
+  ViewProfile,
 };
