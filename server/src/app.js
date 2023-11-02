@@ -28,6 +28,7 @@ const collegeAdminRouter=require("./routes/college.routes")
 const collegeListRouter=require("./routes/collegeList.routes")
 const platformAdminRoutes=require("./routes/platformAdmin.routes")
 const resumeRoutes=require("./routes/resume.routes")
+const recruiterRoutes=require("./routes/recruiter.routes")
 
 
 const cors =require('cors');
@@ -89,7 +90,8 @@ app.use('/api/csv',CSVroutes)
 // Google SignUp 
 app.use('/api/auth/google',googleAuthRoutes)  
 
-// Authorisation Controller
+// Recruiter Routes
+app.use('/api/recruiter',recruiterRoutes)
 
 ////collegeadmin routes////
 app.use("/api/collegeadmin",collegeAdminRouter)

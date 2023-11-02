@@ -64,7 +64,7 @@ router.get(
       const name = req.user.displayName;
       const photo = req.user.photos[0].value;
       const isUser = await User.find({ email: email });
-
+      console.log(isUser);
       // User Creation start
       if (isUser.length === 0) {
         const savedUser = await User.create({
@@ -155,11 +155,11 @@ Method        POST
 
 router.put("/verify", authenticateUser, async (req, res, next) => {
   try {
-    const { type } = req.body;
+    const { type, recruiterVerification } = req.body;
 
     const resp = await User.updateOne(
       { _id: req.user._id },
-      { role: type, verification: true },
+      { role: type, ...type==='recruiter'?{verification: false}:{verification: true} },
       { new: true }
     );
 

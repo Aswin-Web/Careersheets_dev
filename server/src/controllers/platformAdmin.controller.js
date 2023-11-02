@@ -35,6 +35,64 @@ const GetAllCollegeAdmin = async (req, res, next) => {
   }
 };
 
+const GetAllRecruiters = async (req, res, next) => {
+  try {
+    console.log("Asking");
+    const Userlist = await User.find({
+      role: "recruiter",
+    })
+      .select({
+        _id: 1,
+        name: 1,
+        email: 1,
+        displayPicture: 1,
+        verification: 1,
+        contact: 1,
+      })
+      .sort({ createdAt: -1 });
+    console.log(await Userlist);
+    return res.json({ user: Userlist });
+  } catch (error) {
+    console.log(error.message);
+    return next();
+  }
+};
+
+const VerifyRecruiter = async (req, res, next) => {
+  try {
+    const recruiterID = req.params.userid;
+    const Userlist = await User.find({
+      _id: recruiterID,
+      role: "recruiter",
+    })
+      .select({
+        _id: 1,
+        name: 1,
+        email: 1,
+        displayPicture: 1,
+        verification: 1,
+        contact: 1,
+      })
+      .sort({ createdAt: -1 });
+    console.log(await Userlist);
+    if (Userlist.length !== 0) {
+      const recruiter = await User.findByIdAndUpdate(
+        { _id: recruiterID },
+        { verification: !Userlist[0].verification },
+        { new: true }
+      );
+      return res
+        .status(200)
+        .json({ isEdited: true, msg: "Successfully Edited" });
+    } else {
+      return res.status(200).json({ isEdited: false, msg: "User not found" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    return next();
+  }
+};
+
 const UpdateAdminVerification = async (req, res, next) => {
   try {
     const { user_id, userVerification } = req.body;
@@ -248,6 +306,10 @@ const JobCreationRoute = async (req, res, next) => {
 
 const GetAllJobs = async (req, res, next) => {
   const jobs = await Jobs.find({})
+    .populate({
+      path: "recruitersInfo",
+      select: "name email",
+    })
 
     .populate({
       path: "appliedUsers.userId",
@@ -464,12 +526,10 @@ const sendEmailToAllShownUsers = async (req, res, next) => {
           email(x.email, "Job Alert For You", html);
         });
 
-        return res
-          .status(200)
-          .json({
-            msg: "Mail Transmitted Successfully",
-            mailTransmit: users.length,
-          });
+        return res.status(200).json({
+          msg: "Mail Transmitted Successfully",
+          mailTransmit: users.length,
+        });
       } else {
         return res.status(200).json({
           msg: "No mail was shared because no one has the skill set.",
@@ -486,11 +546,167 @@ const sendEmailToAllShownUsers = async (req, res, next) => {
 const GetAParticularJob = async (req, res, next) => {
   try {
     const job_id = req.params.jobId;
-    const job = await Jobs.find({ _id: job_id });
+    const job = await Jobs.find({ _id: job_id }).populate("recruitersInfo");
     if (job.length !== 0) {
       return res.status(200).json({ msg: "Successfully got job", job: job });
     } else {
       return res.status(400).json({ msg: "No job found", job: [] });
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const FindARecruiter = async (req, res, next) => {
+  try {
+    const keyword = req.query.find;
+    const job_id = req.body.jobbID;
+    const job_users = await Jobs.find({ _id: job_id }).select("recruitersInfo");
+    console.log(job_users);
+    // console.log(job_users.map((x) => x._id.toString()));
+    if (keyword !== "") {
+      if (job_users[0].recruitersInfo.length !== 0) {
+        const user = await User.find({
+          role: "recruiter",
+          // recruiterInfo: { $ne: null },
+          _id: { $nin: job_users.map((x) => x.recruitersInfo.toString()) },
+          $or: [
+            { name: { $regex: `^${keyword}`, $options: "i" } },
+            { email: { $regex: `^${keyword}`, $options: "i" } },
+          ],
+        }).select("name email displayPicture");
+
+        // console.log(user);
+        return res.status(200).json(user);
+      } else {
+        const user = await User.find({
+          role: "recruiter",
+          recruiterInfo: { $ne: null },
+          $or: [
+            { name: { $regex: `^${keyword}`, $options: "i" } },
+            { email: { $regex: `^${keyword}`, $options: "i" } },
+          ],
+        }).select("name email displayPicture");
+
+        console.log(user);
+        return res.status(200).json(user);
+      }
+    } else {
+      return res.status(200).json([]);
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const AddRecruiterToJobPosting = async (req, res, next) => {
+  try {
+    const { recruiter, jobbID } = req.body;
+    let isJob = await Jobs.find({ _id: jobbID });
+    const isRecruiter = await User.find({ _id: recruiter, role: "recruiter" });
+    if ((isJob.length && isRecruiter.length) !== 0) {
+      const isUser = isJob[0].recruitersInfo.filter(
+        (x) => x.toString() === recruiter
+      );
+      if (isUser.length === 0) {
+        const addRecruiter = await Jobs.findOneAndUpdate(
+          { _id: jobbID },
+          { $push: { recruitersInfo: recruiter } },
+          { new: true }
+        )
+          .populate({
+            path: "recruitersInfo",
+            select: "email name displayPicture",
+          })
+          .populate({
+            path: "appliedUsers.userId",
+            populate: {
+              path: "project",
+            },
+            // populate:{
+            //   path:"education"
+            // }
+          })
+          .populate({
+            path: "appliedUsers.userId",
+            populate: {
+              path: "skill",
+            },
+          })
+          .populate({
+            path: "appliedUsers.userId",
+            populate: {
+              path: "education",
+            },
+          })
+          .sort({ createdAt: -1 });
+        // console.log(addRecruiter);
+        return res
+          .status(200)
+          .json({ msg: "added recruiter", job: addRecruiter });
+      } else {
+        return res.status(200).json({ msg: "User alerady exists", job: isJob });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ msg: "You dont have a Job or a recruiter" });
+    }
+
+    return res.send("HELLOWINN");
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const RemoveRecruiterFromJobPosting = async (req, res, next) => {
+  try {
+    const { recruiter, jobbID } = req.body;
+    let isJob = await Jobs.find({ _id: jobbID });
+    const isRecruiter = await User.find({ _id: recruiter, role: "recruiter" });
+    if ((isJob.length && isRecruiter.length) !== 0) {
+      const removeRecruiter = await Jobs.findOneAndUpdate(
+        { _id: jobbID },
+        { $pull: { recruitersInfo: isRecruiter[0]._id.toString() } },
+        { new: true }
+      )
+        .populate({
+          path: "recruitersInfo",
+          select: "email name displayPicture",
+        })
+        .populate({
+          path: "appliedUsers.userId",
+          populate: {
+            path: "project",
+          },
+          // populate:{
+          //   path:"education"
+          // }
+        })
+        .populate({
+          path: "appliedUsers.userId",
+          populate: {
+            path: "skill",
+          },
+        })
+        .populate({
+          path: "appliedUsers.userId",
+          populate: {
+            path: "education",
+          },
+        })
+        .sort({ createdAt: -1 });
+      // console.log(removeRecruiter)
+      return res
+        .status(200)
+        .json({ msg: "added recruiter", job: removeRecruiter });
+    } else {
+      return res
+        .status(400)
+        .json({ msg: "You dont have a Job or a recruiter" });
     }
   } catch (error) {
     console.log(error);
@@ -514,4 +730,9 @@ module.exports = {
   showUsersWithTheRequiredSkillSets,
   sendEmailToAllShownUsers,
   GetAParticularJob,
+  GetAllRecruiters,
+  FindARecruiter,
+  AddRecruiterToJobPosting,
+  RemoveRecruiterFromJobPosting,
+  VerifyRecruiter,
 };

@@ -3,17 +3,16 @@ import React, { useEffect } from "react";
 import BasicTable from "./Table";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import  Axios  from "axios";
+import Axios from "axios";
 import { useDispatch } from "react-redux";
 import { AddJobs } from "../../redux/reducers/AllJobDetails";
 
 const Dashboard = () => {
-  const dispatch =useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    
     NetworkRequest();
-  },[]);
+  }, []);
   const NetworkRequest = async () => {
     const { data } = await Axios.get(
       `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
@@ -26,8 +25,6 @@ const Dashboard = () => {
     );
     dispatch(AddJobs(data.allJobs));
   };
-
-
 
   return (
     <div>
@@ -46,13 +43,20 @@ const Dashboard = () => {
             gap: "1rem",
           }}
         >
-          <Button variant="contained" color="success" onClick={()=>navigate(-1)}>
-          Go Back
-        </Button>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => navigate(-1)}
+          >
+            Go Back
+          </Button>
           <Button
             variant="outlined"
-            
-            sx={{ margin: "0 1rem",color:"white",backgroundColor:"#11144C" }}
+            sx={{
+              margin: "0 1rem",
+              color: "white",
+              backgroundColor: "#11144C",
+            }}
             onClick={() => navigate("/user")}
           >
             Goto User Dashboard
@@ -65,8 +69,12 @@ const Dashboard = () => {
           >
             Verify CollegeAdmin
           </Button>
-          <Button variant="outlined" color="error">
-            Download
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => navigate("/admin/verify/recruiter")}
+          >
+            Verify Recruiter
           </Button>
           <Button
             sx={{ margin: "0 1rem" }}

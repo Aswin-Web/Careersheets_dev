@@ -18,7 +18,7 @@ const JobSchema = new mongoose.Schema(
     employmentType: String,
     role_Category: String,
     jobStatus: String,
-    pincode:String,
+    pincode: String,
     isClosed: {
       type: Boolean,
       default: true,
@@ -30,13 +30,19 @@ const JobSchema = new mongoose.Schema(
           ref: "User",
         },
         isViewed: {
-          type:Boolean,
+          type: Boolean,
           default: false,
         },
-        isWishlisted:{
-          type:Boolean,
+        isWishlisted: {
+          type: Boolean,
           default: false,
-        }
+        },
+      },
+    ],
+    recruitersInfo: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
       },
     ],
   },
