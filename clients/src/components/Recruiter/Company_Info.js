@@ -28,8 +28,29 @@ const Company_Info = () => {
 
   ///// GETTING COLLEGE LIST/////
 
-  useEffect(() => {}, []);
-  console.log(localStorage.getItem("recruiter"));
+  const GetRecruiterInfo = async () => {
+    const response = await axios
+      .get(process.env.REACT_APP_SERVER_URL + "/recruiter/profile", {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
+        },
+      })
+      .catch((err) => setContactError({ isError: true, msg: err.msg }));
+    const data = await response.data;
+    console.log(data);
+    setProfile({
+      employeeName: data.info.employeeName,
+      employeePosition: data.info.employeePosition,
+      companyName: data.info.companyName,
+      contactNumber: data.info.contactNumber,
+    });
+    return data;
+  };
+
+  useEffect(() => {
+    GetRecruiterInfo();
+  }, []);
 
   //validating the form///
   let formValid = false;
@@ -51,7 +72,7 @@ const Company_Info = () => {
       )
       .catch((err) => setContactError({ isError: true, msg: err.msg }));
     const data = await response.data;
-    console.log(data)
+    console.log(data);
     setContactError({ isError: false });
     navigate("/recruiter");
     return data;
