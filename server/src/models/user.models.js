@@ -32,6 +32,7 @@ const Schema = new mongoose.Schema(
     },
     collegeName: { type: String },
     collegeVerification: { type: Boolean, default: false },
+    recruiterVerification: { type: Boolean },
     contact: { type: String },
 
     education: [{ type: mongoose.Types.ObjectId, ref: "Education" }],
@@ -51,10 +52,16 @@ const Schema = new mongoose.Schema(
         ref: "Personal",
       },
     ],
-    appliedPlatformJobs:[{
-      type: mongoose.Types.ObjectId, ref: "Job",unique:true
-    }],
-   
+    appliedPlatformJobs: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Job",
+      },
+    ],
+    recruiterInfo: {
+      type: mongoose.Types.ObjectId,
+      ref: "Recruiter",
+    },
   },
   {
     timestamps: true,

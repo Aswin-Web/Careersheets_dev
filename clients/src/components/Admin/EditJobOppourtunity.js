@@ -126,7 +126,7 @@ const EditJobOppourtunity = () => {
     GetCurrentJob();
     getAllSkills();
   }, []);
-  console.log(currentJob[0] ? currentJob[0]._id : "dfn");
+  console.log(currentJob[0] );
 
   const NetworkRequest = async (info) => {
     const data = await axios.put(
@@ -155,12 +155,12 @@ const EditJobOppourtunity = () => {
   };
 
   const JobDisable = async () => {
-    console.log("Clicked");
+    console.log(currentJob);
     try {
       const data = await axios.put(
         `${
           process.env.REACT_APP_SERVER_URL +
-          `/admin/jobs/disable/${currentJob[0]._id}`
+          `/admin/jobs/disable/${currentJob._id}`
         }`,
         {
           // This is the input Element REQ..BODY

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactGA from "react-ga";
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
-import { Route, Routes, useNavigate } from "react-router-dom";
+import "mdb-react-ui-kit/dist/css/mdb.min.css";
+import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 import JobseekerPage from "./components/JobSeekerPage/main";
 // import "./Pages/JobSeeker_Page/main.css";
 import "./components/JobSeekerPage/main.css";
@@ -50,7 +50,6 @@ import PlatFormAdminController from "./components/Controller/PlatFormAdminContro
 import ResumeMain from "./components/Profile/Resume/ResumeMain";
 import PDF from "./components/Profile/Resume/PDFview";
 
-
 import AllJobsSection from "./components/Admin/AllJobsSection";
 import CreateJobOppourtunity from "./components/Admin/CreateJobOppourtunity";
 import JobDetails from "./components/Admin/JobDetails";
@@ -62,6 +61,13 @@ import ViewAppliedJobApplications from "./components/JobSeekerPage/JobsMenu/View
 import ResumeViewAdmin from "./components/Admin/ResumeView";
 import PDFViewAdmin from "./components/Admin/PDFViewAdmin";
 import LastSeen from "./components/Admin/LastSeen";
+import RecruiterController from "./components/Controller/RecruiterController";
+import Jobs from "./components/Recruiter/Jobs";
+import RecruiterTable from "./components/Admin/RecruiterTable";
+import Company_Info from "./components/Recruiter/Company_Info";
+import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
+import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
+import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -121,14 +127,14 @@ function App() {
           <Route path="training" element={<Training />} />
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
-          <Route path="profile/resume" element={<ResumeMain/>}/>
-          <Route path="profile/resume/pdf" element={<PDF/>}/>
+          <Route path="profile/resume" element={<ResumeMain />} />
+          <Route path="profile/resume/pdf" element={<PDF />} />
           {/* Jobs Menu */}
           <Route path="jobs" element={<JobsMenuComponent />} />
           <Route path="jobs/*" element={<ViewJobApplications />} />
           {/* Applied Jobs */}
-          <Route path="applied" element={<AppliedJobsMenuComponent/>}/>
-          <Route path="applied/*" element={<ViewAppliedJobApplications/>}/>
+          <Route path="applied" element={<AppliedJobsMenuComponent />} />
+          <Route path="applied/*" element={<ViewAppliedJobApplications />} />
         </Route>
         {/* Admin Routes */}
         <Route
@@ -141,6 +147,7 @@ function App() {
         >
           {/* College Admin Verification */}
           <Route path="verify" element={<AdminTable />} />
+          <Route path="verify/recruiter" element={<RecruiterTable />} />
           <Route path="download" element={<h1>download</h1>} />
           <Route path="verify/:id" element={<SingleProfile />} />
           {/* Job postings */}
@@ -149,10 +156,25 @@ function App() {
           <Route path="edit/*" element={<EditJobOppourtunity />} />
           <Route path="new" element={<CreateJobOppourtunity />} />
           <Route path="lastseen" element={<LastSeen />} />
-          <Route path="profile/resume/pdf/*" element={<PDFViewAdmin/>}/>
-          <Route path="profile/resume/*" element={<ResumeViewAdmin/>}/>
+          <Route path="profile/resume/pdf/*" element={<PDFViewAdmin />} />
+          <Route path="profile/resume/*" element={<ResumeViewAdmin />} />
         </Route>
         {/* <Route path="/adminlogin" element={<LoginSection />} /> */}
+        {/* Recruiter Login */}
+        <Route
+          path="/recruiter"
+          element={
+            <RecruiterController>
+              <Outlet />
+            </RecruiterController>
+          }
+        >
+          <Route index element={<Jobs />} />
+          <Route path="profile" element={<Company_Info />} />
+          <Route path="jobs/*" element={<ViewRecruiterJobs />} />
+          <Route path="profile/resume/pdf/*" element={<PDFViewRecruiter />} />
+          <Route path="profile/resume/*" element={<ResumeViewRecruiter />} />
+        </Route>
       </Routes>
 
       <Stack spacing={2} sx={{ width: "100%" }}>

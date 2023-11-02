@@ -1,12 +1,12 @@
 import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@mui/icons-material/Done";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -22,19 +22,20 @@ const centerItems = {
   margin: "0.5rem 0",
 };
 
-const JobDetails = () => {
-  const dispatch=useDispatch()
+const ViewRecruiterJobs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
-  const allJobs = useSelector((state) => state.allJobs.value);
-  let currentJob = allJobs.filter((x) => x._id === jobbID);
-  const [searchKeyword, setSearchKeyword] = useState("");
-  const [showEmailusers, setshow] = useState(false);
-  const [emailUsers, setEmailUsers] = useState([]);
-  const [emailres, setemailres] = useState("");
-  const [btn, setbtn] = useState(false);
-  const [searchusers, setsearchusers] = useState([]);
+  const [currentJob, setCurrentJob] = useState([]);
+  const [error, seterror] = useState({isError:false,msg:""});
+
+  console.log(jobbID);
+  useEffect(() => {
+    GetJobInfo();
+  }, []);
+  //   const allJobs = useSelector((state) => state.allJobs.value);
+  //   let currentJob = allJobs.filter((x) => x._id === jobbID);
+  const allJobs = [];
 
   let applied = [];
   if (currentJob.length !== 0) {
@@ -42,149 +43,32 @@ const JobDetails = () => {
     let b = [...a];
     applied = b.reverse();
   }
-  console.log(applied);
-  const handleGetAllUsers = async () => {
+  const GetJobInfo = async () => {
     try {
-      const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/getUsers`}`,
-        {
-          skills: currentJob[0].SkillsRequired,
-        },
+      const data = await axios.get(
+        `${process.env.REACT_APP_SERVER_URL + `/recruiter/jobs/${jobbID}`}`,
         {
           headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+            Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
           },
         }
       );
+      console.log(data);
       if (data.status === 200) {
-        // console.log(data);
-        setshow(true);
-        setEmailUsers([...data.data.userlist]);
-        // console.log(emailUsers);
-      }
-    } catch (error) {}
-  };
-
-  const handleTransmitEmail = async () => {
-    try {
-      setbtn(!btn);
-      const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
-        {
-          skill: currentJob[0].SkillsRequired,
-          companyName: currentJob[0].companyName,
-          role: currentJob[0].roleName,
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("admin")}`,
-          },
-        }
-      );
-
-      if (data.status === 200) {
-        setemailres(data.data.msg);
-        // console.log(data);
+        setCurrentJob([...data.data.allJobs]);
         // setshow(true);
         // setEmailUsers([...data.data.userlist]);
         // console.log(emailUsers);
-      } else {
-        setemailres(data.data.msg);
+      }
+      if (data.status === 400) {
+        console.log("122121212212212121");
+        seterror({isError:true,msg:" Not authorised"})
       }
     } catch (error) {
-      console.log(error);
+      return null;
     }
   };
-
-  const SearchUser = async () => {
-    const data = await axios.post(
-      `${
-        process.env.REACT_APP_SERVER_URL +
-        `/admin/finduser?find=${searchKeyword}`
-      }`,
-      {jobbID:currentJob[0]._id},
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("admin")}`,
-        },
-      }
-    );
-    console.log(data);
-    if (data.status === 200) {
-      setsearchusers([...data.data]);
-    }
-  };
-  const AddRecruitersToJobs = async (user_id) => {
-    try {
-      // setbtn(!btn);
-      const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/addrecruiter`}`,
-        {
-          recruiter: user_id,
-          jobbID: currentJob[0]._id,
-        },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("admin")}`,
-          },
-        }
-      );
-
-      if (data.status === 200) {
-       
-        dispatch(
-          updateJobs({
-            job_id: data.data.job._id,
-            jobDetails: data.data.job,
-          })
-
-        );
-        setsearchusers([])
-      } else {
-        // setemailres(data.data.msg);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-const RemoveRecruitersToJobs=async (user_id) => {
-  try {
-    // setbtn(!btn);
-    const data = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL + `/admin/removerecruiter`}`,
-      {
-        recruiter: user_id,
-        jobbID: currentJob[0]._id,
-      },
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("admin")}`,
-        },
-      }
-    );
-      console.log(data)
-    if (data.status === 200) {
-      // console.log(data.data.job)
-      dispatch(
-        updateJobs({
-          job_id: data.data.job._id,
-          jobDetails: data.data.job,
-        })
-      ); 
-    } else {
-      // setemailres(data.data.msg);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
   return (
     <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
       <Box
@@ -242,14 +126,14 @@ const RemoveRecruitersToJobs=async (user_id) => {
                     }}
                   >
                     <Link
-                      to={`/admin/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
+                      to={`/recruiter/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
                       style={{ textDecoration: "none", color: "black" }}
                       onClick={() => {
                         if (!item.isViewed) {
                           const pageViewed = async () => {
                             const response = await axios
                               .post(
-                                `${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+                                `${process.env.REACT_APP_SERVER_URL}/recruiter/user/view`,
                                 {
                                   userId: item.userId._id,
                                   jobId: currentJob[0]._id,
@@ -258,7 +142,7 @@ const RemoveRecruitersToJobs=async (user_id) => {
                                   headers: {
                                     "Content-type": "application/json",
                                     Authorization: `Bearer ${localStorage.getItem(
-                                      "admin"
+                                      "recruiter"
                                     )}`,
                                   },
                                 }
@@ -300,6 +184,7 @@ const RemoveRecruitersToJobs=async (user_id) => {
           minHeight: "80vh",
         }}
       >
+        {error.isError ? <h1>Not Authorised</h1>:""}
         {currentJob.length !== 0 ? (
           <Box
             sx={{
@@ -315,15 +200,6 @@ const RemoveRecruitersToJobs=async (user_id) => {
             <Box>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <h3>{currentJob[0].roleName}</h3>
-                <Button
-                  sx={{
-                    color: "black",
-                    border: "1px solid black",
-                  }}
-                  onClick={() => navigate(`/admin/edit/${currentJob[0]._id}`)}
-                >
-                  Edit
-                </Button>
               </Box>
               <h4>{currentJob[0].companyName}</h4>
             </Box>
@@ -462,126 +338,6 @@ const RemoveRecruitersToJobs=async (user_id) => {
                 </Typography>
                 <Typography variant="p"> {currentJob[0].education}</Typography>
               </Box>
-              <Box
-                sx={{
-                  margin: "10px",
-                }}
-              >
-                <Button variant="contained" onClick={() => handleGetAllUsers()}>
-                  {" "}
-                  Generate Users{" "}
-                </Button>
-                <p>
-                  This will generate the users with the same skillset you are
-                  looking for the oppourtunity
-                  <Button onClick={() => setshow(!showEmailusers)}>
-                    {showEmailusers ? "Hide" : "Show"}
-                  </Button>
-                </p>
-                <div hidden={showEmailusers ? false : true}>
-                  {emailUsers.length !== 0 ? (
-                    <>
-                      <ol>
-                        {emailUsers.map((el, index) => (
-                          <li key={index}>{el.name}</li>
-                        ))}
-                      </ol>
-                      <div>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          onClick={() => handleTransmitEmail()}
-                          disabled={btn}
-                        >
-                          Send Mail to all Individual's
-                        </Button>
-                        {emailres !== "" ? (
-                          <p style={{ color: "green", margin: "10px" }}>
-                            {emailres}
-                          </p>
-                        ) : (
-                          <></>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <p>No users present with the skillset</p>
-                  )}
-                </div>
-              </Box>
-              <Box>
-                <h5>Recruiter access</h5>
-                {currentJob[0].recruitersInfo.map((el, index) => {
-                  return (
-                    <Box
-                      key={index}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                        margin: "1rem",
-                      }}
-                    >
-                      <h1>
-                        <Avatar src={el.displayPicture} />
-                      </h1>
-
-                      <h5>{el.name}</h5>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          color:"white",bgcolor:"Red"
-                        }}
-                        onClick={() => RemoveRecruitersToJobs(el._id)}
-                      >
-                        {" "}
-                        Remove
-                      </Button>
-                    </Box>
-                  );
-                })}
-              </Box>
-              <Button> Add Recruiters</Button>
-              <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <TextField
-                  value={searchKeyword}
-                  onChange={(e) => setSearchKeyword(e.target.value)}
-                />
-                <Button variant="contained" onClick={() => SearchUser()}>
-                  Search
-                </Button>
-              </Box>
-              {searchusers.length !== 0 ? (
-                searchusers.map((el, index) => {
-                  return (
-                    <Box
-                      key={index}
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                        margin: "1rem",
-                      }}
-                    >
-                      <h1>
-                        <Avatar src={el.displayPicture} />
-                      </h1>
-
-                      <h5>{el.name}</h5>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => AddRecruitersToJobs(el._id)}
-                      >
-                        {" "}
-                        Add
-                      </Button>
-                    </Box>
-                  );
-                })
-              ) : (
-                <p> No Recruiters Found</p>
-              )}
             </Box>
           </Box>
         ) : (
@@ -592,4 +348,4 @@ const RemoveRecruitersToJobs=async (user_id) => {
   );
 };
 
-export default JobDetails;
+export default ViewRecruiterJobs;
