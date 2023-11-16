@@ -66,9 +66,9 @@ const PersonalInfoForm = (props) => {
   useEffect(() => {
     sendRequest()
       .then((data) => {
-        console.log(data.personal[0], "formm");
+        
         if (data.personal[0]) {
-          const { gender, fullName, dateOfBirth, languages, hometown } =
+          const { gender, fullName, dateOfBirth, languages, hometown ,phone} =
             data.personal[0];
           setFullName(fullName);
           // console.log("effect:", languages);
@@ -259,7 +259,7 @@ const PersonalInfoForm = (props) => {
             </div>
             <div>
               <FormLabel
-                sx={{ color: "#1976d2", marginLeft: "20px", marginTop: "50px" }}
+                sx={{ color: "#1976d2", marginLeft: "20px" }}
                 id="demo-radio-buttons-group-label"
               >
                 Date of Birth

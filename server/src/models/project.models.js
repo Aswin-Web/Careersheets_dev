@@ -9,15 +9,16 @@ const projectSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  projectDescription:{
-    type:String,
+  projectDescription: {
+    type: String,
   },
   user: {
     type: mongoose.Types.ObjectId,
-    ref: "User", /////collection name
+    ref: "User",
     required: true,
   },
+  projectSkills: [String],
 });
 
 const Project = mongoose.model("Project", projectSchema);
-module.exports=Project
+module.exports = Project;

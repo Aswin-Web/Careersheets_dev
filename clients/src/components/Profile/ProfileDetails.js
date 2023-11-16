@@ -5,9 +5,7 @@ import ProfileCard from "./UI/ProfileCard";
 
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
-
 import EducationItems from "./EducationItems";
-
 import { skillActions } from "../../redux/reducers/Skill-data";
 import SkillItem from "./SkillItem";
 import { statusActions } from "../../redux/reducers/status-data";
@@ -33,6 +31,7 @@ const ProfileDetails = () => {
   const token = useSelector((state) => state.auth.value);
   const data = useSelector((state) => state.data.value);
   const Languages = personalState.languages.map((item) => item);
+  
 
   const sendRequest = async () => {
     const response = await axios
@@ -95,7 +94,7 @@ const ProfileDetails = () => {
           {eduErrState && <p className={classes.skillError}>{eduErrMsg}</p>}
           <ul className={classes.educationList}>
             {eduItems.map((edu, index) => (
-              <li key={edu._id}>
+              <li key={index}>
                 <EducationItems
                   key={edu._id}
                   id={edu._id}
@@ -123,7 +122,7 @@ const ProfileDetails = () => {
           {skillItems.map((skill,index) => (
             <div className={classes.skillCard} key={index}>
               <SkillItem
-                key={skill._id}
+                key={index}
                 skillName={skill.skill}
                 id={skill._id}
                 level={skill.level}
@@ -143,13 +142,14 @@ const ProfileDetails = () => {
                 title={item.projectTitle}
                 domain={item.projectDomain}
                 description={item.projectDescription}
+                skills={item.projectSkills}
               />
             </li>
           ))}
         </ul>
       </ProfileCard>
       <ProfileCard CardName="info">
-        <h3>Pesonal Information</h3>
+        <h3>Personal Information</h3>
         <div>
           <h4 style={{ marginBottom: "5px" }}>
             <span style={{ color: "#2C3333" }}>Full Name</span> :{" "}
@@ -176,8 +176,9 @@ const ProfileDetails = () => {
           </h4>
 
           <ul style={{ display: "flex", flexWrap: "wrap" }}>
-            {Languages.map((item) => (
+            {Languages.map((item,index) => (
               <li
+              key={index}
                 style={{
                   textDecoration: "none",
                   listStyle: "none",

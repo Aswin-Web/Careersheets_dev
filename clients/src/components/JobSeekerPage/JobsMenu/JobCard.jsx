@@ -13,26 +13,35 @@ const centerItems = {
   margin: "0.5rem 0",
 };
 
-const JobCard = ({ item, skillofUser }) => {
-  const [acquiredScore,setScore]=useState(0)
+const JobCard = ({ item, skillofUser, skillOfProject }) => {
+  console.log(item);
+  const [acquiredScore, setScore] = useState(0);
+
   let score = 0;
+  let SkillMatch;
+  let projectScore = 0;
   // console.log(skillofUser,skillofUser.toString().match(/Jython/i))
   const JobSkillset = item.SkillsRequired.split(",");
+
   // const JobSkillset = ["c++", "java", "python","c++"];
-  const SkillMatch= JobSkillset.map(skill=>{
-    if (skillofUser.toString().toLowerCase().includes(skill.toLowerCase())){
-      score=score+1
+  SkillMatch = JobSkillset.map((skill) => {
+    if (skillofUser.toString().toLowerCase().includes(skill.toLowerCase())) {
+      score = score + 1;
     }
-  })
-  if (score > 0){
-    let acquiredPercentage= (score/JobSkillset.length)*100
-    // setScore(acquiredPercentage) 
+  });
+  const projectMatch = JobSkillset.map((skill) => {
+    if (skillOfProject.toString().toLowerCase().includes(skill.toLowerCase())) {
+      projectScore = projectScore + 1;
+    }
+  });
+
+  if (score > 0) {
+    let acquiredPercentage = (score / JobSkillset.length) * 100;
+    // setScore(acquiredPercentage)
   }
-
-  console.log(JobSkillset,skillofUser)
   console.log(score);
-
-  
+  console.log(projectScore);
+  console.log(item.projectLevel);
 
   return (
     <div>
@@ -64,7 +73,9 @@ const JobCard = ({ item, skillofUser }) => {
           </h3>
           <h4>{item.companyName}</h4>
         </Box>
-        <p style={{color:"#1A5D1A",fontWeight:600}}>{`${(score/JobSkillset.length)*100}% skill matches your skillset ` }</p>
+        <p style={{ color: "#1A5D1A", fontWeight: 600 }}>{`${
+          item.projectLevel ? (projectScore / JobSkillset.length) * 100 : (score / JobSkillset.length) * 100
+        }% skill matches your skillset `}</p>
         {/* Horizontal Columns */}
         <Box>
           <Box sx={centerItems}>
@@ -99,7 +110,6 @@ const JobCard = ({ item, skillofUser }) => {
             </Link>
           </Box>
         </Box>
-        
         <Box>
           <p style={{ color: "grey" }}>
             {`${
@@ -108,7 +118,6 @@ const JobCard = ({ item, skillofUser }) => {
                 : "None applied"
             } `}
           </p>
-          
         </Box>
       </Box>
     </div>

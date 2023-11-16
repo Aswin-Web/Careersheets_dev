@@ -11,9 +11,11 @@ const JobsMenuComponent = () => {
   const dispatch = useDispatch();
   const skillOfUser = useSelector((state) => state.skill.skills);
   const skills = skillOfUser.map((x) => x.skill);
+  const userProject=useSelector((state)=>state.project.items)
+  const skillOfProject=userProject.map((x)=>x.projectSkills)
   // const [Jobs, setJobs] = useState([]);
   // console.log(skills);
-  console.log(useSelector((state) => state));
+  // console.log(useSelector((state) => state));
 
   return (
     <Box
@@ -40,7 +42,7 @@ const JobsMenuComponent = () => {
         }}
       >
         {allJobs.map((item) => (
-          <JobCard item={item} skillofUser={skills} key={item._id} />
+          <JobCard item={item} skillofUser={skills} key={item._id} skillOfProject={skillOfProject} />
         ))}
       </Box>
       {/* <JobCard /> */}

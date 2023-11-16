@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -18,6 +18,46 @@ const ProjectForm = (props) => {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [domain, setDomain] = useState();
+  const [skillItems, setskillItems] = useState([]);
+  const [skill, setSkill] = useState([]);
+
+  const getAllSkills = async () => {
+    const response = await axios.get(
+      process.env.REACT_APP_SERVER_URL + "/user/platformskills",
+
+      {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    // console.log(response,"Skills From Backend");
+    const data = await response.data;
+
+    if (response.status === 200) {
+      setskillItems([...response.data.skill]);
+      return data;
+    }
+  };
+
+  useEffect(() => {
+    getAllSkills();
+  }, []);
+
+  // skills
+  function compare(a, b) {
+    if (a.skill < b.skill) {
+      return -1;
+    }
+    if (a.skill > b.skill) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const skills = skillItems.sort(compare);
 
   const postRequest = async () => {
     const response = await axios
@@ -27,6 +67,7 @@ const ProjectForm = (props) => {
           projectTitle: title,
           projectDomain: domain,
           projectDescription: description,
+          skill
         },
         {
           headers: {
@@ -36,7 +77,7 @@ const ProjectForm = (props) => {
         }
       )
       .catch((error) => console.log(error, "@status error"));
-    
+
     const data = await response.data;
 
     return data;
@@ -44,18 +85,18 @@ const ProjectForm = (props) => {
   const projectSubmitHandler = (event) => {
     event.preventDefault();
 
-    
     postRequest()
       .then((data) => {
-        
+        console.log(data)
         const obj = {
-          _id:data.newProject._id,
+          _id: data.newProject._id,
           projectTitle: data.newProject.projectTitle,
           projectDescription: data.newProject.projectDescription,
           projectDomain: data.newProject.projectDomain,
+          projectSkills:data.newProject.projectSkills
         };
-        
-        dispatch(projectActions.addProject({...obj}));
+
+        dispatch(projectActions.addProject({ ...obj }));
       })
       .catch((err) => console.log(err));
   };
@@ -70,10 +111,16 @@ const ProjectForm = (props) => {
     setDescription(event.target.value);
   };
 
+  const inputChangeHandler = (event, values) => {
+    // setSkill(values);
+    setSkill(values);
+    console.log(values)
+  };
+
   return (
     <div>
       <form onSubmit={projectSubmitHandler}>
-        <DialogContent>
+        <DialogContent sx={{ lineHeight: "25px" }}>
           <DialogContentText>Add projects</DialogContentText>
           <TextField
             name="projectTitle"
@@ -97,8 +144,43 @@ const ProjectForm = (props) => {
             variant="standard"
             sx={{ width: "35.5em" }}
             onChange={domainChangeHandler}
+          />{" "}
+          <Autocomplete
+            multiple
+            id="tags-standard"
+            options={skills.map((option) => option.skill)}
+            onChange={inputChangeHandler}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Skill"
+                variant="standard"
+                InputProps={{
+                  ...params.InputProps,
+                  type: "search",
+                }}
+              />
+            )}
           />
-
+          {/* <Autocomplete
+            freeSolo
+            id="free-solo-2-demo"
+            disableClearable
+            options={skills.map((option) => option.skill)}
+            onChange={inputChangeHandler}
+            sx={{ width: "fullWidth" }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Skill"
+                variant="standard"
+                InputProps={{
+                  ...params.InputProps,
+                  type: "search",
+                }}
+              />
+            )}
+          /> */}
           <div className={classes.projectDescription}>
             <TextField
               fullWidth
