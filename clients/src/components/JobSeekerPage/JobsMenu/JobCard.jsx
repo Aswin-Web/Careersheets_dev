@@ -33,7 +33,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
     if (skillOfProject.toString().toLowerCase().includes(skill.toLowerCase())) {
       projectScore = projectScore + 1;
     }
-  });git 
+  })
 
   if (score > 0) {
     let acquiredPercentage = (score / JobSkillset.length) * 100;
