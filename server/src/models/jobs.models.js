@@ -23,6 +23,7 @@ const JobSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    projectLevel: { type: Boolean, default: false },
     appliedUsers: [
       {
         userId: {

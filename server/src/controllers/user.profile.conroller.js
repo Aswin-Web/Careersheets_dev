@@ -97,7 +97,7 @@ const deleteEducation = async (req, res) => {
   if (!edu) {
     return res.status(500).json({ message: "Unable to delete" });
   }
-  return res.status(200).json({ message: "succeffully deleted", edu });
+  return res.status(200).json({ message: "successffully deleted", edu });
 };
 /////skill post ///////
 
@@ -150,7 +150,7 @@ const deleteSkill = async (req, res) => {
   }
   return res
     .status(200)
-    .json({ message: "succeffully deleted", existingSkill });
+    .json({ message: "successffully deleted", existingSkill });
 };
 
 const updateStatus = async (req, res) => {
@@ -171,7 +171,7 @@ const updateStatus = async (req, res) => {
 };
 ////////POSTING PROJECT/////
 const postProject = async (req, res) => {
-  const { projectTitle, projectDescription, projectDomain } = req.body;
+  const { projectTitle, projectDescription, projectDomain, skill } = req.body;
   const user = req.user._id.toString();
   let existingUser;
   try {
@@ -187,11 +187,14 @@ const postProject = async (req, res) => {
   // if (findProject) {
   //   return res.status(400).json({ message: "This skill is already present" });
   // }
+  const projectSkills = skill;
+  console.log(projectSkills, "kkkkkk");
 
   const newProject = new Project({
     projectTitle,
     projectDomain,
     projectDescription,
+    projectSkills,
     user,
   });
 
@@ -254,9 +257,11 @@ const GetAllJobs = async (req, res, next) => {
   try {
     const user = req.user._id.toString();
     const userInfo = await User.findOne({ _id: user }).populate("skill");
-    const jobs = await Jobs.find({
+
+    const skillJobs = await Jobs.find({
       _id: { $nin: userInfo.appliedPlatformJobs },
       isClosed: false,
+      projectLevel: false,
       SkillsRequired: {
         $in: userInfo.skill.map((x) => {
           try {
@@ -291,6 +296,57 @@ const GetAllJobs = async (req, res, next) => {
         }
       })
     );
+
+    const projectUser = await User.findOne({ _id: user })
+      .populate("project")
+      .populate("skill");
+
+    // project level job matching
+
+    const projectJobs = await Jobs.find({
+      _id: { $nin: projectUser.appliedPlatformJobs },
+      isClosed: false,
+      projectLevel: true,
+      SkillsRequired: {
+        $in: projectUser.project.map((x) => {
+          try {
+            if (x.projectSkills.length !== 1) {
+              return new RegExp(`.*${x.projectSkills}.*`, "i");
+            } else {
+              return new RegExp(x.projectSkills, "i");
+            }
+          } catch (error) {
+            return x.projectSkills;
+          }
+        }),
+      },
+      //  [/.*c.*/i ,/.*Java.*/i ]
+    })
+      .sort([["createdAt", -1]])
+      .select(
+        "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
+      );
+
+    console.log(
+      projectUser.project.map((x) => {
+        try {
+          if (x.projectSkills.length !== 1) {
+            console.log(x.projectSkills.length, x.projectSkills);
+            return new RegExp(`.*${x.projectSkills}.*`, "i");
+          } else {
+            return new RegExp(x.projectSkills, "i");
+          }
+        } catch (error) { 
+          return x.projectSkills;
+        }
+      })
+    );
+
+
+    const jobs = skillJobs.concat(projectJobs);
+    console.log(skillJobs)
+    console.log(jobs)
+    
     return res.json({ jobs });
   } catch (error) {
     console.log(error);
@@ -432,7 +488,7 @@ const SearchAppliedJobs = async (req, res, next) => {
       .select(
         "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
       );
-
+    const projectUser = await User.findOne({ _id: u });
     console.log(jobs);
     return res.json({ jobs });
   } catch (error) {
@@ -451,8 +507,6 @@ const GetAllPlatFormSkills = async (req, res, next) => {
   }
 };
 
-
-
 module.exports = {
   getUserInfo,
   postEducation,
@@ -469,5 +523,4 @@ module.exports = {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
-  
 };

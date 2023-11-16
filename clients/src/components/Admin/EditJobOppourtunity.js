@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Formik, useFormik } from "formik";
 import { object, string } from "yup";
 import { useLocation, useNavigate } from "react-router-dom";
+import Switch from "@mui/material/Switch";
+
 import {
   Autocomplete,
   Box,
@@ -10,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControlLabel,
   TextField,
   TextareaAutosize,
   Typography,
@@ -58,10 +61,12 @@ const EditJobOppourtunity = () => {
     role_Category: "",
     salary: "",
     pincode: "",
+    projectSwitch: false,
   });
   const [addedSkills, setaddedSkills] = useState([]);
   const [inputs, setInputs] = useState();
   const [skillItems, setskillItems] = useState([]);
+  // const [projectSwitch, setProjectSwitch] = useState(false);
 
   const handleDelete = (skill) => {
     const deleteSkill = addedSkills.filter((x) => x !== skill);
@@ -72,8 +77,7 @@ const EditJobOppourtunity = () => {
     setInputs(values);
   };
 
-  
-  const isAddbtn=false
+  const isAddbtn = false;
   const token = useSelector((state) => state.auth.value);
 
   const getAllSkills = async () => {
@@ -126,7 +130,7 @@ const EditJobOppourtunity = () => {
     GetCurrentJob();
     getAllSkills();
   }, []);
-  console.log(currentJob[0] );
+  console.log(currentJob[0]);
 
   const NetworkRequest = async (info) => {
     const data = await axios.put(
@@ -197,7 +201,10 @@ const EditJobOppourtunity = () => {
         if (prev.length !== 0) {
           const newArray = prev.filter((x) => x === inputs);
           if (newArray.length === 0) {
-            setjobss({ ...currentJob, SkillsRequired: [...prev, inputs].toString() });
+            setjobss({
+              ...currentJob,
+              SkillsRequired: [...prev, inputs].toString(),
+            });
             return [...prev, inputs];
           } else {
             setjobss({ ...currentJob, SkillsRequired: prev.toString() });
@@ -209,7 +216,6 @@ const EditJobOppourtunity = () => {
         }
       });
       //   setInputs("")
-      
     }
   };
 
@@ -296,38 +302,38 @@ const EditJobOppourtunity = () => {
   //   },
   // });
 
-  const handleSubmit=()=>{
+  const handleSubmit = () => {
     if (
-            currentJob.IndustryType !== "" &&
-            currentJob.JobDescription !== "" &&
-            currentJob.Responsibilites !== "" &&
-            currentJob.SkillsRequired !== "" &&
-            currentJob.companyAddress !== "" &&
-            currentJob.companyDescription !== "" &&
-            currentJob.companyName !== "" &&
-            currentJob.departmentType !== "" &&
-            currentJob.education !== "" &&
-            currentJob.employmentType !== "" &&
-            currentJob.experience !== "" &&
-            currentJob.location !== "" &&
-            currentJob.roleName !== "" &&
-            currentJob.role_Category !== "" &&
-            currentJob.salary !== "" &&
-            currentJob.pincode !== ""
-          ) {
-            NetworkRequest(currentJob);
-            navigate("/admin/jobs");
-            return seterrors({
-              errors: false,
-              message: "Every fields are inserted properly",
-            });
-          } else {
-            return seterrors({
-              errors: false,
-              message: "*Some fields are not inserted properly",
-            });
-          }
-  }
+      currentJob.IndustryType !== "" &&
+      currentJob.JobDescription !== "" &&
+      currentJob.Responsibilites !== "" &&
+      currentJob.SkillsRequired !== "" &&
+      currentJob.companyAddress !== "" &&
+      currentJob.companyDescription !== "" &&
+      currentJob.companyName !== "" &&
+      currentJob.departmentType !== "" &&
+      currentJob.education !== "" &&
+      currentJob.employmentType !== "" &&
+      currentJob.experience !== "" &&
+      currentJob.location !== "" &&
+      currentJob.roleName !== "" &&
+      currentJob.role_Category !== "" &&
+      currentJob.salary !== "" &&
+      currentJob.pincode !== ""
+    ) {
+      NetworkRequest(currentJob);
+      navigate("/admin/jobs");
+      return seterrors({
+        errors: false,
+        message: "Every fields are inserted properly",
+      });
+    } else {
+      return seterrors({
+        errors: false,
+        message: "*Some fields are not inserted properly",
+      });
+    }
+  };
 
   const handleGetAllUsers = async () => {
     try {
@@ -352,6 +358,15 @@ const EditJobOppourtunity = () => {
     } catch (error) {}
   };
 
+  // switch label for project-skill-level job
+
+  const label = { inputProps: { "aria-label": "off" } };
+  const switchHandler = (event) => {
+    // setProjectState(event.target.checked)
+    console.log(event);
+    setjobss({ ...currentJob, projectSwitch: event.target.checked });
+  };
+  console.log(currentJob.projectSwitch);
   return (
     <Box sx={{ padding: "1rem" }}>
       <Box
@@ -492,7 +507,7 @@ const EditJobOppourtunity = () => {
         getSkills={GenerateSkills}
       /> */}
       {/* ------------------------------------------------------------------------------------ */}
-      {/* GET SKILLSS */}
+      {/* GET SKILLS */}
       <div>
         <form
         //   onSubmit={skillFormSubmitHandler}
@@ -565,6 +580,26 @@ const EditJobOppourtunity = () => {
             </Button>
           </DialogActions>
         </form>
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "35px" }}>
+        <p>
+          Show Jobs on project level is{" "}
+          {currentJob.projectSwitch ? (
+            <span style={{ fontWeight: "bold" }}>Enabled</span>
+          ) : (
+            <span style={{ fontWeight: "bold" }}>Disabled</span>
+          )}
+          .
+        </p>
+        <FormControlLabel
+          sx={{ marginTop: "-12px" }}
+          control={
+            <Switch
+              checked={currentJob.projectSwitch}
+              onChange={switchHandler}
+            />
+          }
+        />
       </div>
       {/* --------------------------------------------------------------------------------------- */}
       <br />
@@ -679,7 +714,12 @@ const EditJobOppourtunity = () => {
         )}
       </div>
       <br />
-      <Button color="primary" variant="contained" fullWidth onClick={()=>handleSubmit()}>
+      <Button
+        color="primary"
+        variant="contained"
+        fullWidth
+        onClick={() => handleSubmit()}
+      >
         Submit
       </Button>
     </Box>

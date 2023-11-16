@@ -14,7 +14,6 @@ const ProjectItems = (props) => {
   const dispatch = useDispatch();
 
   const id = props.id;
- 
 
   const deleteRequest = async () => {
     const response = await axios.delete(
@@ -32,17 +31,14 @@ const ProjectItems = (props) => {
   };
 
   const deleteProjectHandler = () => {
-    
     deleteRequest()
       .catch((err) => {
         console.log(err);
       })
       .then((data) => {
-        
         dispatch(projectActions.removeProject(data.existingProject._id));
-        navigate("/user/profile")
-      })
-     
+        navigate("/user/profile");
+      });
   };
   return (
     <div
@@ -70,6 +66,12 @@ const ProjectItems = (props) => {
         <h4>Domain : </h4>
         <p> {props.domain}</p>
       </div>
+
+      <div>
+        <h4>Skills Used:</h4>
+        <div style={{display:"flex"}}>{props.skills && props.skills.map((skill,index) => <p key={index}>{skill}</p>)}</div>
+      </div>
+
       <div>
         <h4>Project Description:-</h4>
         <p>{props.description}</p>

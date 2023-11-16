@@ -251,6 +251,7 @@ const JobCreationRoute = async (req, res, next) => {
   if (errors.length !== 0) {
     return res.status(400).json({ msg: message });
   }
+  console.log(req.body);
   try {
     const {
       companyName,
@@ -269,7 +270,9 @@ const JobCreationRoute = async (req, res, next) => {
       employmentType,
       role_Category,
       pincode,
+      projectSwitch,
     } = req.body;
+    console.log(req.body);
 
     console.log(Responsibilites);
     const doc = await Jobs.create({
@@ -289,6 +292,7 @@ const JobCreationRoute = async (req, res, next) => {
       employmentType,
       role_Category,
       pincode,
+      projectLevel: projectSwitch,  
     });
     const modify = await doc.save().then((x) => {
       // SkillMatch(companyName, roleName,SkillsRequired);

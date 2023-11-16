@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
+  FormControlLabel,
   TextField,
   TextareaAutosize,
   Typography,
@@ -13,6 +14,7 @@ import axios from "axios";
 import { AddJobs, AddNewJob } from "../../redux/reducers/AllJobDetails";
 import { useDispatch } from "react-redux";
 import SkillAdminform from "./SkillAdminForm";
+import Switch from "@mui/material/Switch";
 
 // Schema
 // let userSchema = object().shape({
@@ -82,6 +84,7 @@ const CreateOppourtunity = () => {
     message: "",
   });
   const [skills, setSkills] = useState("");
+  // const [projectSwitch, setProjectSwitch] = useState(false);
 
   const GenerateSkills = (skill) => {
     setSkills(skill);
@@ -90,6 +93,7 @@ const CreateOppourtunity = () => {
     const data = await axios.post(
       `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
       info,
+
       {
         headers: {
           "Content-type": "application/json",
@@ -124,6 +128,7 @@ const CreateOppourtunity = () => {
       role_Category: "",
       salary: "",
       pincode: "",
+      projectSwitch: false,
     },
     // validationSchema: { userSchema },
 
@@ -165,7 +170,11 @@ const CreateOppourtunity = () => {
       }
     },
   });
-
+  // project switch change
+  // const switchHandler = (event) => {
+  //   setProjectSwitch(event.target.checked);
+  // };
+// console.log(formik.values.projectSwitch)
   return (
     <Box sx={{ padding: "1rem" }}>
       <form onSubmit={formik.handleSubmit}>
@@ -365,6 +374,27 @@ const CreateOppourtunity = () => {
         </Typography>
         <br />
         <SkillAdminform SkillValues={[]} getSkills={GenerateSkills} />
+        <div style={{ display: "flex", alignItems: "center", gap: "35px" }}>
+          <p>
+            Show Jobs on project level is{" "}
+            {formik.values.projectSwitch ? (
+              <span style={{ fontWeight: "bold" }}>Enabled</span>
+            ) : (
+              <span style={{ fontWeight: "bold" }}>Disabled</span>
+            )}
+            .
+          </p>
+          <FormControlLabel
+            sx={{ marginTop: "-12px" }}
+            control={
+              <Switch
+                name="projectSwitch"
+                checked={formik.values.projectSwitch}
+                onChange={formik.handleChange}
+              />
+            }
+          />
+        </div>
         <br />
         <TextField
           fullWidth
