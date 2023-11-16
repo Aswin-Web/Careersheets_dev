@@ -28,7 +28,7 @@ const SkillMatch = async (SkillsRequired) => {
                   if (matches) {
                     console.log(x.name);
                     let name = x.name;
-                    mailList.push({ name: x.name, email: x.email });
+                    mailList.push({ name: x.name, email: x.email ,id:x._id});
 
                     return x.name;
                   }

@@ -519,28 +519,42 @@ const showUsersWithTheRequiredSkillSets = async (req, res, next) => {
 
 const sendEmailToAllShownUsers = async (req, res, next) => {
   try {
-    const { skill, companyName, role } = req.body;
-    console.log(skill, "jshfjids");
-    if (skill !== "") {
-      const users = await SkillMatch(skill);
-      if (users.length !== 0) {
-        users.map((x) => {
-          //  Transmit Email
-          let html = generateHTML(x.name, companyName, role);
-          email(x.email, "Job Alert For You", html);
-        });
+    const { skill, companyName, role, selectedUsers } = req.body;
+    console.log(selectedUsers,"dd")
+    if (selectedUsers.length !== 0) {
+      selectedUsers.map((x) => {
+        //  Transmit Email
+        let html = generateHTML(x.name, companyName, role);
+        email(x.email, "Job Alert For You", html);
+      });
 
-        return res.status(200).json({
-          msg: "Mail Transmitted Successfully",
-          mailTransmit: users.length,
-        });
-      } else {
-        return res.status(200).json({
-          msg: "No mail was shared because no one has the skill set.",
-        });
-      }
+      return res.status(200).json({
+        msg: "Selected Mail Transmitted  Successfully",
+        mailTransmit: selectedUsers.length,
+      });
+
     } else {
-      return res.status(200).json({ msg: "No Skills Was Specified" });
+      if (skill !== "") {
+        const users = await SkillMatch(skill);
+        if (users.length !== 0) {
+          users.map((x) => {
+            //  Transmit Email
+            let html = generateHTML(x.name, companyName, role);
+            email(x.email, "Job Alert For You", html);
+          });
+
+          return res.status(200).json({
+            msg: "Mail Transmitted Successfully",
+            mailTransmit: users.length,
+          });
+        } else {
+          return res.status(200).json({
+            msg: "No mail was shared because no one has the skill set.",
+          });
+        }
+      } else {
+        return res.status(200).json({ msg: "No Skills Was Specified" });
+      }
     }
   } catch (error) {
     console.log(error);

@@ -24,7 +24,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
   const JobSkillset = item.SkillsRequired.split(",");
 
   // const JobSkillset = ["c++", "java", "python","c++"];
-  SkillMatch = JobSkillset.map((skill) => {
+  const SkillMatch = JobSkillset.map((skill) => {
     if (skillofUser.toString().toLowerCase().includes(skill.toLowerCase())) {
       score = score + 1;
     }
@@ -54,13 +54,18 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
           display: "inline-block",
           margin: "1rem",
           borderRadius: "10px",
+          width: "20vw",
         }}
       >
         {/* Heading */}
-        <Box>
+        <Box sx={{}}>
           <h3>
             {" "}
-            {item.roleName}{" "}
+            {item.roleName
+              ? item.roleName.length <= 14
+                ? item.roleName
+                : item.roleName.slice(0, 12) + "..."
+              : ""}{" "}
             <div
               style={{
                 width: "10px",
@@ -71,10 +76,17 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
               }}
             ></div>
           </h3>
-          <h4>{item.companyName}</h4>
+          <h4>
+          {item.companyName
+                    ? item.companyName.length <= 14
+                      ? item.companyName
+                      : item.companyName.slice(0, 14) + "..."
+                    : ""}{" "}
+          </h4>
         </Box>
         <p style={{ color: "#1A5D1A", fontWeight: 600 }}>{`${
-          item.projectLevel ? (projectScore / JobSkillset.length) * 100 : (score / JobSkillset.length) * 100
+          item.projectLevel ? Math.round((projectScore / JobSkillset.length) * 100 ): Math.round((score / JobSkillset.length) * 100)
+
         }% skill matches your skillset `}</p>
         {/* Horizontal Columns */}
         <Box>
@@ -105,11 +117,11 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
           </Box>
 
           <Box>
-            <Link to={`/user/jobs/${item._id}`}>
-              <Button>View</Button>
-            </Link>
+            
           </Box>
         </Box>
+
+
         <Box>
           <p style={{ color: "grey" }}>
             {`${
@@ -118,6 +130,10 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
                 : "None applied"
             } `}
           </p>
+
+          <Link to={`/user/jobs/${item._id}`}>
+              <p>View</p>
+            </Link>
         </Box>
       </Box>
     </div>

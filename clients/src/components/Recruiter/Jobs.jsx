@@ -59,7 +59,7 @@ const RecruiterJobsSection = () => {
         Application Access
       </Typography>
       {errors.isError === true ? <h1>Not Authorised</h1> : ""}
-      
+
       <Box
         sx={{
           display: "flex",
@@ -79,13 +79,18 @@ const RecruiterJobsSection = () => {
                 display: "inline-block",
                 margin: "1rem",
                 borderRadius: "10px",
+                width: "20vw",
               }}
             >
               {/* Heading */}
               <Box>
                 <h3>
                   {" "}
-                  {item.roleName ? item.roleName : ""}{" "}
+                  {item.roleName
+                    ? item.roleName.length <= 14
+                      ? item.roleName
+                      : item.roleName.slice(0, 12) + "..."
+                    : ""}{" "}
                   <div
                     style={{
                       width: "10px",
@@ -96,7 +101,13 @@ const RecruiterJobsSection = () => {
                     }}
                   ></div>
                 </h3>
-                <h4>{item.companyName}</h4>
+                <h4>
+                  {item.companyName
+                    ? item.companyName.length <= 14
+                      ? item.companyName
+                      : item.companyName.slice(0, 14) + "..."
+                    : ""}{" "}
+                </h4>
               </Box>
               {/* Horizontal Columns */}
               <Box>
