@@ -7,6 +7,7 @@ import { AddJobsUser } from "../../../redux/reducers/JobsUsers";
 
 const JobsMenuComponent = () => {
   const allJobs = useSelector((state) => state.allJobsUser.value);
+  console.log(allJobs)
 
   const dispatch = useDispatch();
   const skillOfUser = useSelector((state) => state.skill.skills);

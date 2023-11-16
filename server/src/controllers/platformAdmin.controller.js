@@ -366,6 +366,7 @@ const EditJobs = async (req, res, next) => {
       departmentType,
       employmentType,
       role_Category,
+      projectLevel
     } = req.body;
     const { jobId } = req.params;
     let jobOppourtunity = await Jobs.findOne({ _id: jobId });
@@ -389,6 +390,7 @@ const EditJobs = async (req, res, next) => {
         departmentType,
         employmentType,
         role_Category,
+        projectLevel
       };
       const modify = await Jobs.findOneAndUpdate(
         { _id: jobId },
