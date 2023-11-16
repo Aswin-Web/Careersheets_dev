@@ -344,8 +344,8 @@ const GetAllJobs = async (req, res, next) => {
 
 
     const jobs = skillJobs.concat(projectJobs);
-    console.log(skillJobs)
-    console.log(jobs)
+    // console.log(skillJobs)
+    // console.log(jobs)
     
     return res.json({ jobs });
   } catch (error) {

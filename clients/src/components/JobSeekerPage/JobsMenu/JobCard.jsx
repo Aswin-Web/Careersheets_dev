@@ -24,7 +24,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
   const JobSkillset = item.SkillsRequired.split(",");
 
   // const JobSkillset = ["c++", "java", "python","c++"];
-  const SkillMatch = JobSkillset.map((skill) => {
+  SkillMatch = JobSkillset.map((skill) => {
     if (skillofUser.toString().toLowerCase().includes(skill.toLowerCase())) {
       score = score + 1;
     }
