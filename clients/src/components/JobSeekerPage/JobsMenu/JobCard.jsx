@@ -33,7 +33,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
     if (skillOfProject.toString().toLowerCase().includes(skill.toLowerCase())) {
       projectScore = projectScore + 1;
     }
-  });
+  });git 
 
   if (score > 0) {
     let acquiredPercentage = (score / JobSkillset.length) * 100;
@@ -77,16 +77,17 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
             ></div>
           </h3>
           <h4>
-          {item.companyName
-                    ? item.companyName.length <= 14
-                      ? item.companyName
-                      : item.companyName.slice(0, 14) + "..."
-                    : ""}{" "}
+            {item.companyName
+              ? item.companyName.length <= 14
+                ? item.companyName
+                : item.companyName.slice(0, 14) + "..."
+              : ""}{" "}
           </h4>
         </Box>
         <p style={{ color: "#1A5D1A", fontWeight: 600 }}>{`${
-          item.projectLevel ? Math.round((projectScore / JobSkillset.length) * 100 ): Math.round((score / JobSkillset.length) * 100)
-
+          item.projectLevel
+            ? Math.round((projectScore / JobSkillset.length) * 100)
+            : Math.round((score / JobSkillset.length) * 100)
         }% skill matches your skillset `}</p>
         {/* Horizontal Columns */}
         <Box>
@@ -116,11 +117,8 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
             {new Date(item.createdAt).toLocaleDateString()}
           </Box>
 
-          <Box>
-            
-          </Box>
+          <Box></Box>
         </Box>
-
 
         <Box>
           <p style={{ color: "grey" }}>
@@ -132,8 +130,8 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
           </p>
 
           <Link to={`/user/jobs/${item._id}`}>
-              <p>View</p>
-            </Link>
+            <p>View</p>
+          </Link>
         </Box>
       </Box>
     </div>
