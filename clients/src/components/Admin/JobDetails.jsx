@@ -6,7 +6,7 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@mui/icons-material/Done";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -23,7 +23,7 @@ const centerItems = {
 };
 
 const JobDetails = () => {
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
@@ -35,6 +35,7 @@ const JobDetails = () => {
   const [emailres, setemailres] = useState("");
   const [btn, setbtn] = useState(false);
   const [searchusers, setsearchusers] = useState([]);
+  const [selectedEmailusers, setselectedEmailusers] = useState([]);
 
   let applied = [];
   if (currentJob.length !== 0) {
@@ -42,7 +43,7 @@ const JobDetails = () => {
     let b = [...a];
     applied = b.reverse();
   }
-  console.log(applied);
+  // console.log(applied);
   const handleGetAllUsers = async () => {
     try {
       const data = await axios.post(
@@ -65,6 +66,39 @@ const JobDetails = () => {
       }
     } catch (error) {}
   };
+  console.log(selectedEmailusers)
+  const handleTransmitSelectedEmail = async () => {
+    try {
+      setbtn(!btn);
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
+        {
+          skill: currentJob[0].SkillsRequired,
+          companyName: currentJob[0].companyName,
+          role: currentJob[0].roleName,
+          selectedUsers: selectedEmailusers,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+          },
+        }
+      );
+
+      if (data.status === 200) {
+        setemailres(data.data.msg);
+        // console.log(data);
+        // setshow(true);
+        // setEmailUsers([...data.data.userlist]);
+        // console.log(emailUsers);
+      } else {
+        setemailres(data.data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleTransmitEmail = async () => {
     try {
@@ -75,6 +109,7 @@ const JobDetails = () => {
           skill: currentJob[0].SkillsRequired,
           companyName: currentJob[0].companyName,
           role: currentJob[0].roleName,
+          selectedUsers: [],
         },
         {
           headers: {
@@ -104,7 +139,7 @@ const JobDetails = () => {
         process.env.REACT_APP_SERVER_URL +
         `/admin/finduser?find=${searchKeyword}`
       }`,
-      {jobbID:currentJob[0]._id},
+      { jobbID: currentJob[0]._id },
       {
         headers: {
           "Content-type": "application/json",
@@ -135,15 +170,13 @@ const JobDetails = () => {
       );
 
       if (data.status === 200) {
-       
         dispatch(
           updateJobs({
             job_id: data.data.job._id,
             jobDetails: data.data.job,
           })
-
         );
-        setsearchusers([])
+        setsearchusers([]);
       } else {
         // setemailres(data.data.msg);
       }
@@ -151,40 +184,56 @@ const JobDetails = () => {
       console.log(error);
     }
   };
-const RemoveRecruitersToJobs=async (user_id) => {
-  try {
-    // setbtn(!btn);
-    const data = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL + `/admin/removerecruiter`}`,
-      {
-        recruiter: user_id,
-        jobbID: currentJob[0]._id,
-      },
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("admin")}`,
+  const RemoveRecruitersToJobs = async (user_id) => {
+    try {
+      // setbtn(!btn);
+      const data = await axios.post(
+        `${process.env.REACT_APP_SERVER_URL + `/admin/removerecruiter`}`,
+        {
+          recruiter: user_id,
+          jobbID: currentJob[0]._id,
         },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("admin")}`,
+          },
+        }
+      );
+      // console.log(data);
+      if (data.status === 200) {
+        // console.log(data.data.job)
+        dispatch(
+          updateJobs({
+            job_id: data.data.job._id,
+            jobDetails: data.data.job,
+          })
+        );
+      } else {
+        // setemailres(data.data.msg);
       }
-    );
-      console.log(data)
-    if (data.status === 200) {
-      // console.log(data.data.job)
-      dispatch(
-        updateJobs({
-          job_id: data.data.job._id,
-          jobDetails: data.data.job,
-        })
-      ); 
-    } else {
-      // setemailres(data.data.msg);
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-};
+  };
 
-
+  const handleAddEmailUsers = (e, user) => {
+    // console.log(user);
+    if (selectedEmailusers.length === 0) {
+      setselectedEmailusers([user]);
+    } else {
+      const isUser = selectedEmailusers.filter((x) => x.id === e.target.name);
+      if (isUser.length !== 0) {
+        const deleteUser = selectedEmailusers.filter(
+          (x) => x.id !== e.target.name
+        );
+        setselectedEmailusers([...deleteUser]);
+      } else {
+        setselectedEmailusers([...selectedEmailusers, user]);
+      }
+    }
+  };
+  // console.log(selectedEmailusers, "REFER");
   return (
     <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
       <Box
@@ -469,7 +518,7 @@ const RemoveRecruitersToJobs=async (user_id) => {
               >
                 <Button variant="contained" onClick={() => handleGetAllUsers()}>
                   {" "}
-                  Generate Users{" "}
+                  View Jobseekers{" "}
                 </Button>
                 <p>
                   This will generate the users with the same skillset you are
@@ -481,9 +530,48 @@ const RemoveRecruitersToJobs=async (user_id) => {
                 <div hidden={showEmailusers ? false : true}>
                   {emailUsers.length !== 0 ? (
                     <>
+                      <li
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <h6> Sl.no </h6>
+                        <h6>Candidate Name</h6>
+                        <h6>View Resume</h6>
+                        <h6>Checkbox</h6>
+                      </li>
                       <ol>
                         {emailUsers.map((el, index) => (
-                          <li key={index}>{el.name}</li>
+                          <li
+                            key={index}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                            }}
+                          >
+                            <h6> {index + 1} </h6>
+                            <h6>{el.name}</h6>
+                            <h6>
+                              <Link
+                                to={`/admin/profile/resume/${currentJob[0]._id}/${el.id}`}
+                                target="_blank"
+                                style={{
+                                  textDecoration: "none",
+                                  color: "green",
+                                }}
+                              >
+                                Resume*
+                              </Link>
+                            </h6>
+                            <input
+                              type="checkbox"
+                              onChange={(e) => handleAddEmailUsers(e, el)}
+                              name={el.id}
+                            ></input>
+                          </li>
                         ))}
                       </ol>
                       <div>
@@ -494,6 +582,18 @@ const RemoveRecruitersToJobs=async (user_id) => {
                           disabled={btn}
                         >
                           Send Mail to all Individual's
+                        </Button>
+                        <Button
+                          sx={{ margin: "1rem" }}
+                          variant="contained"
+                          color="success"
+                          onClick={() =>  handleTransmitSelectedEmail()}
+                          disabled={
+                            selectedEmailusers.length === 0 ? true : false
+                          }
+                        >
+                          Send Mail to Selected Individual's (
+                          {selectedEmailusers.length})
                         </Button>
                         {emailres !== "" ? (
                           <p style={{ color: "green", margin: "10px" }}>
@@ -530,7 +630,8 @@ const RemoveRecruitersToJobs=async (user_id) => {
                       <Button
                         variant="contained"
                         sx={{
-                          color:"white",bgcolor:"Red"
+                          color: "white",
+                          bgcolor: "Red",
                         }}
                         onClick={() => RemoveRecruitersToJobs(el._id)}
                       >
