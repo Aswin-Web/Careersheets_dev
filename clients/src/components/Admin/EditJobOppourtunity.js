@@ -61,7 +61,7 @@ const EditJobOppourtunity = () => {
     role_Category: "",
     salary: "",
     pincode: "",
-    projectSwitch: false,
+    projectLevel: false,
   });
   const [addedSkills, setaddedSkills] = useState([]);
   const [inputs, setInputs] = useState();
@@ -364,9 +364,10 @@ const EditJobOppourtunity = () => {
   const switchHandler = (event) => {
     // setProjectState(event.target.checked)
     console.log(event);
-    setjobss({ ...currentJob, projectSwitch: event.target.checked });
+    setjobss({ ...currentJob, projectLevel: event.target.checked });
   };
   console.log(currentJob.projectSwitch);
+  console.log(currentJob)
   return (
     <Box sx={{ padding: "1rem" }}>
       <Box
@@ -584,7 +585,7 @@ const EditJobOppourtunity = () => {
       <div style={{ display: "flex", alignItems: "center", gap: "35px" }}>
         <p>
           Show Jobs on project level is{" "}
-          {currentJob.projectSwitch ? (
+          {currentJob.projectLevel ? (
             <span style={{ fontWeight: "bold" }}>Enabled</span>
           ) : (
             <span style={{ fontWeight: "bold" }}>Disabled</span>
@@ -595,7 +596,8 @@ const EditJobOppourtunity = () => {
           sx={{ marginTop: "-12px" }}
           control={
             <Switch
-              checked={currentJob.projectSwitch}
+              
+              checked={currentJob.projectLevel}
               onChange={switchHandler}
             />
           }
