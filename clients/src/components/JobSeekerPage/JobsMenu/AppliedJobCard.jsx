@@ -14,9 +14,8 @@ const centerItems = {
 };
 
 const AppliedJobCard = ({ item, skillofUser }) => {
-  
   return (
-    <div >
+    <div>
       <Box
         key={Math.random() * 0.9999}
         sx={{
@@ -26,13 +25,18 @@ const AppliedJobCard = ({ item, skillofUser }) => {
           display: "inline-block",
           margin: "1rem",
           borderRadius: "10px",
+          width:"20vw"
         }}
       >
         {/* Heading */}
         <Box>
           <h3>
             {" "}
-            {item.roleName}{" "}
+            {item.roleName
+              ? item.roleName.length <= 14
+                ? item.roleName
+                : item.roleName.slice(0, 12) + "..."
+              : ""}{" "}
             <div
               style={{
                 width: "10px",
@@ -43,7 +47,13 @@ const AppliedJobCard = ({ item, skillofUser }) => {
               }}
             ></div>
           </h3>
-          <h4>{item.companyName}</h4>
+          <h4>
+            {item.companyName
+              ? item.companyName.length <= 14
+                ? item.companyName
+                : item.companyName.slice(0, 14) + "..."
+              : ""}{" "}
+          </h4>
         </Box>
         {/* Horizontal Columns */}
         <Box>
@@ -74,9 +84,7 @@ const AppliedJobCard = ({ item, skillofUser }) => {
           </Box>
 
           <Box>
-            <Link to={`/user/applied/${item._id}`}>
-              <Button>View</Button>
-            </Link>
+            
           </Box>
         </Box>
         <Box>
@@ -87,6 +95,9 @@ const AppliedJobCard = ({ item, skillofUser }) => {
                 : "None applied"
             } `}
           </p>
+          <Link to={`/user/applied/${item._id}`}>
+              <p>View</p>
+            </Link>
         </Box>
       </Box>
     </div>

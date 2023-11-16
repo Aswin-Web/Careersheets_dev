@@ -25,7 +25,7 @@ const handleClick = () => {
     <div id="main" className={classes.main}>
       
       <Helmet>
-        <title>CareerSheets (Beta)</title>
+        <title>CareerSheets</title>
         <link
           rel="icon"
           type="image/x-icon"
@@ -43,7 +43,7 @@ const handleClick = () => {
           <Button
             variant="contained"
             size="large"
-            sx={{ margin: 1, borderRadius: 10, width: "8em", height: "3em" }}
+            sx={{ margin: 1, borderRadius: 6, width: "8em", height: "3em" }}
             onClick={handleClick}
           >
             Login

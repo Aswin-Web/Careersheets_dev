@@ -46,7 +46,7 @@ export default function DrawerAppBar(props) {
       sx={{ textAlign: "center", bgColor: "#11144C" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
-       CarrerSheets(Beta)
+       CareerSheets
       </Typography>
       <Divider />
       <List>
@@ -92,7 +92,7 @@ export default function DrawerAppBar(props) {
           >
             <Avatar alt="Remy Sharp" src={icon} />
        
-            CareerSheets(Beta)
+            CareerSheets
           </Typography>
           <Box
             sx={{

@@ -63,6 +63,7 @@ const AllJobsSection = () => {
             <Box
               key={Math.random() * 0.9999}
               sx={{
+                width: "20vw",
                 backgroundColor: "white",
                 padding: "1rem",
                 border: "1px solid black",
@@ -75,7 +76,11 @@ const AllJobsSection = () => {
               <Box>
                 <h3>
                   {" "}
-                  {item.roleName ? item.roleName: ""}{" "}
+                  {item.roleName
+                    ? item.roleName.length <= 14
+                      ? item.roleName
+                      : item.roleName.slice(0, 12) + "..."
+                    : ""}{" "}
                   <div
                     style={{
                       width: "10px",
@@ -86,7 +91,14 @@ const AllJobsSection = () => {
                     }}
                   ></div>
                 </h3>
-                <h4>{item.companyName}</h4>
+                <h4>
+                  {/* {item.companyName} */}
+                  {item.companyName
+                    ? item.companyName.length <= 14
+                      ? item.companyName
+                      : item.companyName.slice(0, 14) + "..."
+                    : ""}{" "}
+                </h4>
               </Box>
               {/* Horizontal Columns */}
               <Box>
@@ -105,8 +117,6 @@ const AllJobsSection = () => {
               </Box>
               <Box
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
                   margin: "0.5rem 0",
                   alignItems: "center",
                 }}
@@ -115,11 +125,11 @@ const AllJobsSection = () => {
                   <DateRangeIcon />
                   {new Date(item.createdAt).toLocaleDateString()}
                 </Box>
-                <Box>
+                {/* <Box>
                   <Link to={`/admin/jobs/${item._id}`}>
                     <Button>View</Button>
                   </Link>
-                </Box>
+                </Box> */}
               </Box>
               <Box>
                 <p style={{ color: "grey" }}>
@@ -129,6 +139,9 @@ const AllJobsSection = () => {
                       : "None applied"
                   } `}
                 </p>
+                <Link to={`/admin/jobs/${item._id}`}>
+                  <p>View</p>
+                </Link>
               </Box>
             </Box>
           ))

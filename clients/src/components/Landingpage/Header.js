@@ -20,8 +20,8 @@ const Header = () => {
       className={classes.header}
     >
       <Toolbar>
-        <img className={classes.logo} src={logo}/>
-        <h4 className={classes.logoName}>Careersheets(Beta)</h4>
+        <img className={classes.logo} src={logo} alt="Careersheets"/>
+        <h4 className={classes.logoName}>Careersheets</h4>
 
         <Box display={"flex"} marginLeft="auto">
           <Button
