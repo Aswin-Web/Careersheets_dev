@@ -1,7 +1,7 @@
 const { Client } = require("@elastic/elasticsearch");
 const User = require("../models/user.models");
 const client = new Client({
-  node: "http://localhost:9200",
+  node: "http://elasticsearch-p8q3:9200",
 });
 
 
