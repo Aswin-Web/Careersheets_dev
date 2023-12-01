@@ -100,6 +100,17 @@ app.use("/api/user", userRoutes);
 // Resume generation Routes
 app.use("/api/user/profile/generateresume", resumeRoutes);
 
+// Elastic Initialization
+
+app.get("/dev/es/install", async (req, res, next) => {
+  try {
+    await connectElasticServer();
+    return res.status(200).json({ msg: "Elastic search Initialized" });
+  } catch (error) {
+    return res.status(400).json({ msg: "Elastic search Not Initialized" });
+  }
+});
+
 app.use("*", (req, res, next) => {
   console.log("Could not match any Route");
   // return res.sendFile(path.resolve(__dirname, '../../clients/build', 'index.html'));
@@ -114,16 +125,7 @@ app.use((req, res) => {
   res.status(500).json({ msg: "Something went wrong" });
 });
 
-// Elastic Initialization
 
-app.get("/dev/es/install", async (req, res, next) => {
-  try {
-    await connectElasticServer();
-    return res.status(200).json({ msg: "Elastic search Initialized" });
-  } catch (error) {
-    return res.status(400).json({ msg: "Elastic search Not Initialized" });
-  }
-});
 
 //
 module.exports = app;
