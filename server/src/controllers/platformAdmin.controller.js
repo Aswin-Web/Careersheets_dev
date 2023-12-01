@@ -9,6 +9,7 @@ const { validationResult, body } = require("express-validator");
 const { SkillMatch } = require("../utils/skillmatch.utils");
 const { generateHTML } = require("../utils/alerts.email.utils");
 const email = require("../utils/nodemailer.email");
+const { findUserFromElasticSearch } = require("./elastic.controller");
 
 const GetAllCollegeAdmin = async (req, res, next) => {
   try {
@@ -516,7 +517,7 @@ const showUsersWithTheRequiredSkillSets = async (req, res, next) => {
 const sendEmailToAllShownUsers = async (req, res, next) => {
   try {
     const { skill, companyName, role, selectedUsers } = req.body;
-    console.log(selectedUsers,"dd")
+    console.log(selectedUsers, "dd");
     if (selectedUsers.length !== 0) {
       selectedUsers.map((x) => {
         //  Transmit Email
@@ -528,7 +529,6 @@ const sendEmailToAllShownUsers = async (req, res, next) => {
         msg: "Selected Mail Transmitted  Successfully",
         mailTransmit: selectedUsers.length,
       });
-
     } else {
       if (skill !== "") {
         const users = await SkillMatch(skill);
@@ -728,6 +728,27 @@ const RemoveRecruiterFromJobPosting = async (req, res, next) => {
   }
 };
 
+const GetSearchUsers = async (req, res, next) => {
+  try {
+    const { fromDate, ToDate } = req.body;
+    // console.log(fromDate, ToDate);
+
+    const result = await findUserFromElasticSearch(
+      req.query.key,
+      req.query.page,
+      fromDate,
+      ToDate
+    );
+    // console.log(result.hits.hits[0]._source.education)
+    return res
+      .status(200)
+      .json({ msg: "Routes Working", users: result.hits.hits,total:result.hits.total.value   });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
 module.exports = {
   GetAllCollegeAdmin,
   UpdateAdminVerification,
@@ -749,4 +770,5 @@ module.exports = {
   AddRecruiterToJobPosting,
   RemoveRecruiterFromJobPosting,
   VerifyRecruiter,
+  GetSearchUsers,
 };

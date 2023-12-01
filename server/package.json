@@ -2,7 +2,6 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  
   "main": "index.js",
   "scripts": {
     "start": "node src/index",
@@ -14,6 +13,7 @@
     "nodemon": "^2.0.21"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.10.0",
     "@google-cloud/language": "^6.1.0",
     "@google-cloud/translate": "^8.0.2",
     "axios": "^1.5.0",

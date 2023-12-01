@@ -41,6 +41,7 @@ const Dashboard = () => {
           sx={{
             margin: "1rem",
             gap: "1rem",
+            paddingTop:"1rem"
           }}
         >
           <Button
@@ -113,8 +114,19 @@ const Dashboard = () => {
           >
             Logout
           </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            sx={{ margin: "1rem" }}
+            onClick={() => {
+             
+              navigate("/admin/search");
+            }}
+          >
+            Search
+          </Button>
         </Box>
-
+        
         <Box
           sx={{
             minHeight: "80vh",

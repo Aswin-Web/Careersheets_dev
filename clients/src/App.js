@@ -68,6 +68,7 @@ import Company_Info from "./components/Recruiter/Company_Info";
 import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
+import SearchUser from "./components/Admin/SearchUser";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -158,6 +159,9 @@ function App() {
           <Route path="lastseen" element={<LastSeen />} />
           <Route path="profile/resume/pdf/*" element={<PDFViewAdmin />} />
           <Route path="profile/resume/*" element={<ResumeViewAdmin />} />
+          {/* Search */}
+          <Route path="search" element={<SearchUser />} />
+          
         </Route>
         {/* <Route path="/adminlogin" element={<LoginSection />} /> */}
         {/* Recruiter Login */}
