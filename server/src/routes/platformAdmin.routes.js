@@ -20,15 +20,16 @@ const {
   VerifyRecruiter,
   FindARecruiter,
   AddRecruiterToJobPosting,
-  RemoveRecruiterFromJobPosting
-
+  RemoveRecruiterFromJobPosting,
+  GetSearchUsers,
 } = require("../controllers/platformAdmin.controller");
 const { authenticateAdmin } = require("../utils/authorisation.header.check");
 
 const router = express.Router();
 
 // router.route("/login").post(AuthenticatePlatformAdmin);
-
+// To get the users
+router.post("/getusers", GetSearchUsers);
 // Platform authentication
 router.use(authenticateAdmin);
 
@@ -62,14 +63,16 @@ router.route("/").get(GetAllCollegeAdmin).put(UpdateAdminVerification);
 router.route("/recruiter").get(GetAllRecruiters).put(UpdateAdminVerification);
 
 // To verify a Recruiter
-router.get("/recruiter/verify/:userid",VerifyRecruiter)
+router.get("/recruiter/verify/:userid", VerifyRecruiter);
 
 // To Add a Recruiter to a Job posting
 router.route("/addrecruiter").post(AddRecruiterToJobPosting);
 
 // To Remove a Recruiter from a Job posting
-router.route("/removerecruiter").post(RemoveRecruiterFromJobPosting)
+router.route("/removerecruiter").post(RemoveRecruiterFromJobPosting);
 
 router.get("/lastseen", ViewLastLoginUsers);
+
+
 
 module.exports = router;

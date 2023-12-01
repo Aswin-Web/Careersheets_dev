@@ -33,12 +33,16 @@ const recruiterRoutes=require("./routes/recruiter.routes")
 
 const cors =require('cors');
 const { SkillMatch } = require("./utils/skillmatch.utils");
+const { connectElasticServer } = require("./utils/elastic.utils");
 const app = express();
 
 // Cookie-Parser
 
 // MongoDB Connection String
 connectDB();
+
+// Elastic SERVER
+// connectElasticServer()
 
 app.use(express.json());
 
