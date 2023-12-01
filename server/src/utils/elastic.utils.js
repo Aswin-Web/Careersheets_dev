@@ -140,3 +140,4 @@ const connectElasticServer = async () => {
   }
 };
 // connectElasticServer()
+module.exports={connectElasticServer}
