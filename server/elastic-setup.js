@@ -1,7 +1,7 @@
 const { Client } = require("@elastic/elasticsearch");
 const User = require("./src/models/user.models");
 const client = new Client({
-  node: "http://localhost:9200",
+  node: "http://elasticsearch-p8q3:9200",
 });
 
 const connectElasticServer = async () => {
