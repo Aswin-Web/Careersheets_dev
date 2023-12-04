@@ -40,7 +40,7 @@ const findUserFromElasticSearch = async (value, page, fromDate, ToDate) => {
                     flags: "ALL",
                     case_insensitive: true,
                     max_determinized_states: 10000,
-                    rewrite: "constant_score_blended",
+                    rewrite: "constant_score",
                   },
                 },
               },
@@ -102,7 +102,7 @@ const findUserFromElasticSearch = async (value, page, fromDate, ToDate) => {
               flags: "ALL",
               case_insensitive: true,
               max_determinized_states: 10000,
-              rewrite: "constant_score_blended",
+              rewrite: "constant_score",
             },
           },
 
