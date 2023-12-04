@@ -20,9 +20,12 @@ const SearchUser = () => {
   const NetworkRequest = async () => {
     console.log(outputNumber);
     // console.log(users, "ANALYZE");
-    console.log(fromDate, ToDate);
+    console.log(fromDate, ToDate); 
     const resp = await Axios.post(
+      // `${process.env.REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
       `${process.env.REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
+      
+      
       {
         fromDate,
         ToDate,
