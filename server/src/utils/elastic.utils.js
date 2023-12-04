@@ -15,7 +15,7 @@ const connectElasticServer = async () => {
       console.log("Index removed");
     };
     // removeIndex()
-    // await createIndex("users");
+    await createIndex("users");
     
     const user = await User.find({})
     .populate("education")
@@ -74,14 +74,14 @@ const connectElasticServer = async () => {
       
       bio.map(async (x) => {
         console.log(x, "USER ALKMDLKDFLKSDKLJSKLDJLKSDJJLKSJD");
-        const results = await client.index({
-            index: "users",
-            document: {
-                ...x,
-              },
-            });
+        // const results = await client.index({
+        //     index: "users",
+        //     document: {
+        //         ...x,
+        //       },
+        //     });
           });
-          console.log(bio,"results");
+          // console.log(bio,"results");
           console.log(
             "---------------------------------------------------------------------------"
             );
@@ -96,21 +96,7 @@ const connectElasticServer = async () => {
                   "---------------------------------------------------------------------------"
                   );
                   console.log("Index created");
-    console.log(
-      "---------------------------------------------------------------------------"
-    );
-    console.log(
-      "---------------------------------------------------------------------------"
-    );
-    console.log(
-      "---------------------------------------------------------------------------"
-    );
-    console.log(
-      "---------------------------------------------------------------------------"
-    );
-    console.log(
-      "---------------------------------------------------------------------------"
-    );
+    
 
     //  Metadata is the input field
     // const result = await client.search({

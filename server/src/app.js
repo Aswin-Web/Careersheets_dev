@@ -104,7 +104,7 @@ app.use("/api/user/profile/generateresume", resumeRoutes);
 
 app.get("/dev/es/install", async (req, res, next) => {
   try {
-    await connectElasticServer();
+    // await connectElasticServer();
     return res.status(200).json({ msg: "Elastic search Initialized" });
   } catch (error) {
     return res.status(400).json({ msg: "Elastic search Not Initialized" });
