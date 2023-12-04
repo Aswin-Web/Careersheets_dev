@@ -29,12 +29,14 @@ const router = express.Router();
 
 // router.route("/login").post(AuthenticatePlatformAdmin);
 
+// To get the users
+router.post("/getusers", GetSearchUsers);
+
 // Platform authentication
 router.use(authenticateAdmin);
 
 // NOTE: protected - Platform Job Creation
-// To get the users
-router.post("/getusers", GetSearchUsers);
+
 
 router
   .route("/jobs")
