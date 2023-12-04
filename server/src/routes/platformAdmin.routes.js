@@ -28,12 +28,14 @@ const { authenticateAdmin } = require("../utils/authorisation.header.check");
 const router = express.Router();
 
 // router.route("/login").post(AuthenticatePlatformAdmin);
-// To get the users
-router.post("/getusers", GetSearchUsers);
+
 // Platform authentication
 router.use(authenticateAdmin);
 
 // NOTE: protected - Platform Job Creation
+// To get the users
+router.post("/getusers", GetSearchUsers);
+
 router
   .route("/jobs")
   .get(GetAllJobs) //  To Get all Jobs
@@ -72,7 +74,5 @@ router.route("/addrecruiter").post(AddRecruiterToJobPosting);
 router.route("/removerecruiter").post(RemoveRecruiterFromJobPosting);
 
 router.get("/lastseen", ViewLastLoginUsers);
-
-
 
 module.exports = router;
