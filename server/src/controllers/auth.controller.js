@@ -13,7 +13,7 @@ const clientJWTToken = require("../utils/jwt.token");
 Route         /auth/user
 Description   To Save an user
 Access        PUBLIC
-Parameter     None
+Parameter     None  
 Method        POST
 */
 const createUser = async (req, res, next) => {
