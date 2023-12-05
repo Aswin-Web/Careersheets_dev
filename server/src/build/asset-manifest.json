@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.494307a5.css",
+    "main.js": "/static/js/main.a2a562ea.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Careersheets-logo.png": "/static/media/Careersheets-logo.99b72e90818938c99593.png",
+    "static/media/Roboto-Bold.ttf": "/static/media/Roboto-Bold.63311334b795ce3b76e2.ttf",
+    "static/media/Roboto-Medium.ttf": "/static/media/Roboto-Medium.d2d7f0c01bffaa5ec8f7.ttf",
+    "static/media/Roboto-Regular.ttf": "/static/media/Roboto-Regular.f25bd05915c1a3468d3d.ttf",
+    "index.html": "/index.html",
+    "main.494307a5.css.map": "/static/css/main.494307a5.css.map",
+    "main.a2a562ea.js.map": "/static/js/main.a2a562ea.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.494307a5.css",
+    "static/js/main.a2a562ea.js"
+  ]
+}
