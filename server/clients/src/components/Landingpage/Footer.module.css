@@ -1,0 +1,150 @@
+
+* {
+  scroll-behavior: smooth;
+}
+
+.parent {
+  background-color: #accbee;
+  max-height: 100%;
+  max-width: 100%;
+  margin-bottom: 0;
+}
+.footerSection {
+  width: 100%;
+  display: flex;
+  font-family: "Merriweather";
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.footerSection h1 {
+  text-align: center;
+  font-family: "Merriweather";
+  font-weight: 700;
+}
+.first {
+  width: 25%;
+  margin-left: 5em;
+}
+.first img {
+  width: 45%;
+  padding: 2em;
+  margin-left: 0;
+  border-radius: 50px;
+}
+
+.first p {
+  font-family: 'Playball', cursive;
+  padding-left: 1em;
+  margin: 0;
+  font-family: "Merriweather";
+  font-weight: 900;
+}
+.second {
+  margin-top: 5em;
+  margin-left: 10em;
+}
+.third {
+  margin-top: 5em;
+  margin-left: 10em;
+}
+
+.second p {
+  margin-bottom: 1.5em;
+}
+.third p {
+  margin-bottom: 1.5em;
+}
+.second a {
+  text-decoration: none;
+  color: #042345;
+}
+.third a {
+  text-decoration: none;
+  color: #042345;
+}
+.horizontalLine {
+  border-color: #91b9e7;
+  margin: 0 auto;
+  width: 55%;
+  opacity: 50%;
+}
+.socialMediaIcons {
+  display: flex;
+  justify-content: center;
+  margin-top: 2em;
+  padding-bottom: 1.5em;
+}
+.icons {
+  padding: 0.4em;
+}
+
+.last p {
+  display: flex;
+  padding: 1em;
+  justify-content: center;
+  align-items: center;
+}
+.footerLinks {
+  display: flex;
+  align-items: center;
+}
+.instagram {
+  background: radial-gradient(
+      circle farthest-corner at 35% 90%,
+      #fec564,
+      transparent 50%
+    ),
+    radial-gradient(circle farthest-corner at 0 140%, #fec564, transparent 50%),
+    radial-gradient(ellipse farthest-corner at 0 -25%, #5258cf, transparent 50%),
+    radial-gradient(
+      ellipse farthest-corner at 20% -50%,
+      #5258cf,
+      transparent 50%
+    ),
+    radial-gradient(ellipse farthest-corner at 100% 0, #893dc2, transparent 50%),
+    radial-gradient(
+      ellipse farthest-corner at 60% -20%,
+      #893dc2,
+      transparent 50%
+    ),
+    radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent),
+    linear-gradient(
+      #6559ca,
+      #bc318f 30%,
+      #e33f5f 50%,
+      #f77638 70%,
+      #fec66d 100%
+    );
+  border-radius: 10px;
+}
+.slogan p {
+  font-family: "Playball", cursive;
+  font-weight: 900;
+  font-size: 1rem;
+}
+
+@media (max-width: 650px) {
+  .parent {
+    max-height: 25%;
+    font-size: 0.5rem;
+  }
+
+  .socialMediaIcons {
+    font-size: 0.2rem;
+  }
+  .first {
+    margin: 0;
+  }
+  .footerLinks {
+    margin: 0;
+    padding: 0;
+    margin-right: 3em;
+  }
+  .third {
+    margin-left: 3em;
+  }
+  .second {
+    margin-left: 3em;
+  }
+}

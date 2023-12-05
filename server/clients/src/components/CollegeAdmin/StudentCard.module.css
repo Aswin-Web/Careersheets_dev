@@ -1,0 +1,84 @@
+.content {
+  /* border: 5px solid black; */
+  width: 80%;
+  margin-left: 3em;
+  padding: 0;
+  
+}
+.card {
+  width: 80%;
+  font-size: 1rem;
+  margin: 1em auto;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  background-color: #e7f0fd;
+  box-shadow: 5px 2px #ccc;
+  font-family: "Ubuntu", sans-serif;
+}
+.profile {
+  display: flex;
+  padding: 1em;
+}
+
+.namings {
+  margin-left: 0.5em;
+}
+.namings p {
+  opacity: 0.75;
+  font-size: 0.9rem;
+}
+
+.details {
+  display: flex;
+  padding: 0.4em;
+  line-height: 1.5;
+}
+.placementDetails {
+  margin-left: 3em;
+}
+.courseDetails {
+  padding: 0.5em;
+}
+
+.applicationNumbers {
+  font-weight: 700;
+}
+.courseTitle {
+  font-weight: 500;
+}
+.applicationStatus {
+  padding: 1em;
+}
+
+@media (max-width:620px) {
+  .content {
+    font-size: 0.1rem;
+    width: 100vw;
+    
+    padding:0 1.5em ;
+    margin: 10em;
+  }
+  .card {
+    width: 100%;
+    margin: 1em 0;
+    
+    
+    
+  }
+
+  .details {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: 50%;
+    font-size: 0.6rem;
+    
+  }
+  .namings,.namings p{
+    font-size: 0.6rem;
+  }
+  .navbar{
+    font-size: 0.6rem;
+  }
+ 
+}

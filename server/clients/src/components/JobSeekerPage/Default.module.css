@@ -1,0 +1,11 @@
+.body{
+    margin-top: 2rem;
+    height: fit-content;
+    width: fit-content;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}

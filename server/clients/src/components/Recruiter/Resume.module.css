@@ -1,0 +1,137 @@
+.name {
+  text-align: center;
+}
+.phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+
+}
+
+/* .phoneItems {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+} */
+
+
+.name h2 {
+  text-transform: uppercase;
+}
+.line {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.splitLineSummary {
+  width: 39%;
+  border-width: 1px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: black;
+}
+.summary {
+  margin-top: 10px;
+  line-height: 28px;
+  text-indent: 10%;
+  text-align: justify;
+}
+.splitLineSkills {
+  width: 45%;
+  border-width: 1px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: black;
+}
+.skill {
+  margin-top: 10px;
+}
+.skill ul {
+  padding: 5px 50px;
+  line-height: 28px;
+  max-height: 160px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.summaryDiv {
+  padding: 5px 10px;
+}
+.splitLineEducation {
+  width: 43%;
+  border-width: 1px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: black;
+}
+.eduData {
+  margin-bottom: 15px;
+  line-height: 25px;
+}
+.education {
+  padding: 5px 30px;
+}
+.education ul li {
+  list-style: none;
+}
+.splitLineProject {
+  width: 44%;
+  border-width: 1px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: black;
+}
+.project {
+  padding: 5px 30px;
+  text-align: justify;
+}
+.splitLinePersonal {
+  width: 36%;
+  border-width: 1px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  border-style: solid;
+  border-color: black;
+}
+.personal {
+  margin-top: 5px;
+  padding: 5px 30px;
+  line-height: 28px;
+}
+/* .lan{
+    list-style: none;
+} */
+.languages {
+  margin-left: 3em;
+}
+.languages ul {
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+.languages ul li {
+  margin: 10px;
+}
+
+.empty {
+  height: 1em;
+}
+.main {
+  padding: 20px;
+  padding-bottom: 50px;
+  background-color: aliceblue;
+  border-radius: 2px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+}

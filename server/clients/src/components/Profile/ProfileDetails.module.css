@@ -1,0 +1,67 @@
+.details h3 {
+  margin-bottom: 0.6em;
+}
+/* .details h4 {
+  margin-bottom: 1em;
+} */
+.details p {
+  margin-left: 0.5em;
+}
+.graduationDetails {
+  font-size: 1rem;
+  display: flex;
+}
+.skillCard {
+  text-align: center;
+  border: 1px solid #ffffff;
+  padding-top: 0.5em;
+  padding-left:0.5em ;
+  background-color: #accbee;
+  border-radius: 20px;
+  margin: 0.1em;
+
+}
+.skillItem {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+/* .skillCard p {
+  display: inline;
+} */
+.educationList li{
+    list-style: none;
+}
+.deleteIcon {
+  border: none;
+  width: 32px;
+  height: 32px;
+  background-color: #eee;
+  transition: all ease-in-out 0.2s;
+  cursor: pointer;
+}
+.deleteIcon:hover {
+  
+  background-color: #accbee;
+}
+.skillError{
+  font-size: 0.799rem;
+  color: #D63301;
+}
+
+
+@media (max-width: 620px) {
+  .details {
+    font-size: 0.7rem;
+  }
+  .graduationDetails {
+    font-size: 0.75rem;
+  }
+  .skillCard {
+    font-size: 0.6rem;
+  }
+  .skillItem {
+    width: 100%;
+  }
+}
