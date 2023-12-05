@@ -1,0 +1,18 @@
+.reviewSection {
+    padding:3em;
+    background-color: white;
+    
+}
+.reviewSection h1{
+    text-align: center;
+    font-family: "Merriweather";
+    font-weight: 700;
+
+}
+@media (max-width:620px){
+    .reviewSection h1{
+        font-size:1.5rem;
+    }
+
+}
+

@@ -110,13 +110,11 @@ app.get("/dev/es/install", async (req, res, next) => {
     return res.status(400).json({ msg: "Elastic search Not Initialized" });
   }
 });
-
 app.use("*", (req, res, next) => {
   console.log("Could not match any Route");
-  // return res.sendFile(path.resolve(__dirname, '../../clients/build', 'index.html'));
+  return res.sendFile(path.resolve(__dirname, '../clients/build', 'index.html'));
   res.status(500).json({ msg: "Something went wrong Routes" });
 });
-
 app.use((req, res) => {
   // if (err){
 
@@ -124,6 +122,7 @@ app.use((req, res) => {
   // }
   res.status(500).json({ msg: "Something went wrong" });
 });
+
 
 
 

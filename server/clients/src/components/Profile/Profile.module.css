@@ -1,0 +1,111 @@
+body {
+  background-color: #accbee;
+}
+.container {
+  height: 100vh;
+  font-size: 1rem;
+}
+.topCard {
+  background-color: #accbee;
+  height: 14.133em;
+  width: 100%;
+  border-radius: 10px;
+}
+.topCard img {
+  height: 14.133em;
+  width: 100%;
+  border-radius: 10px;
+}
+.profilePic {
+  background-color: #ccc;
+  height: 9.375em;
+  width: 9.375em;
+  border-radius: 700px;
+  left: 35px;
+  bottom: 40px;
+  position: relative;
+  border: 8px solid white;
+}
+.profilePic img {
+  height: 9.375em;
+  width: 9.375em;
+  border-radius: 700px;
+}
+.heading {
+  display: flex;
+}
+.naming {
+  margin-left: 4em;
+  margin-top: 2em;
+}
+.naming p {
+  margin-top: 0.5em;
+  font-size: 0.9rem;
+  opacity: 0.65;
+}
+em .naming h2 {
+  font-size: 1.8rem;
+}
+.bio {
+  width: 80%;
+  font-size: 1rem;
+  margin-bottom: 1em;
+}
+hr {
+  width: 40%;
+  margin: auto;
+  border-bottom: 0;
+  border-color: #accbee;
+  margin-bottom: 1em;
+  opacity: 0.22;
+}
+.profileRole {
+  display: flex;
+}
+.mainProfile {
+  display: flex;
+}
+.resume{
+  margin-right: 80px;
+  margin-top: 10px;
+}
+.heading{
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 620px) {
+  .naming {
+    padding-left: 5em;
+    margin: 0;
+  }
+  .heading {
+    flex-direction: column;
+    font-size: 0.65rem;
+  }
+  .heading p {
+    font-size: 0.55rem;
+  }
+  .naming {
+    margin: 0;
+    margin-bottom: 0.5em;
+  }
+  .bio {
+    font-size: 0.58rem;
+  }
+  hr {
+    margin-bottom: 0;
+  }
+  .topCard img {
+    height: 30vh;
+  }
+
+  .mainProfile {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  .resume{
+    margin-right: 0px;
+    margin-top: 2px;
+  }
+}
