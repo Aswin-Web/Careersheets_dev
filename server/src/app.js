@@ -48,7 +48,6 @@ app.use(cookieParser());
 app.use(morgan("tiny"));
 
 // app.set("view engine", "ejs");
-app.use(express.static(path.resolve(__dirname, "../../clients/build")));
 
 // app.get('*', (req, res) => {
 
@@ -72,6 +71,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use(express.static(path.join(__dirname, './build')));
 
 app.get("/newb", SkillMatch);
 ///COLLEGE LIST
@@ -110,18 +111,20 @@ app.get("/dev/es/install", async (req, res, next) => {
     return res.status(400).json({ msg: "Elastic search Not Initialized" });
   }
 });
-app.use("*", (req, res, next) => {
-  console.log("Could not match any Route");
-  return res.sendFile(path.resolve(__dirname, '../clients/build', 'index.html'));
-  res.status(500).json({ msg: "Something went wrong Routes" });
-});
-app.use((req, res) => {
-  // if (err){
 
-  //   console.log("Controller Error")
-  // }
-  res.status(500).json({ msg: "Something went wrong" });
+app.use(express.static('build'))
+app.get("*", (req, res) => {
+  console.log("Could not match any Route,WORKSSSSS");
+  return res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  // return res.status(500).json({ msg: "Something went wrong Routes" });
 });
+// app.use((req, res) => {
+//   // if (err){
+
+//   //   console.log("Controller Error")
+//   // }
+//   res.status(500).json({ msg: "Something went wrong" });
+// });
 
 
 
