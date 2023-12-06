@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index",
     "dev": "nodemon src/index",
-    "setup":" (npm i ) & (cd clients && npm i) & (cd clients && npm run build) "
+    "setup":" (npm i ) && (cd clients && npm run build) "
   },
   "author": "",
   "license": "ISC",
