@@ -17,6 +17,7 @@ import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
 import { skillActions } from "../../../../redux/reducers/Skill-data";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 // import { skillData } from "./skills";
 
 const Skillform = (props) => {
@@ -30,7 +31,7 @@ const Skillform = (props) => {
   //
   const getAllSkills = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/user/platformskills",
+      REACT_APP_SERVER_URL + "/user/platformskills",
 
       {
         headers: {
@@ -76,7 +77,7 @@ const Skillform = (props) => {
   const postRequest = async () => {
     const response = await axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/skill",
+        REACT_APP_SERVER_URL + "/user/profile/skill",
         {
           skill: inputs,
           level: level,

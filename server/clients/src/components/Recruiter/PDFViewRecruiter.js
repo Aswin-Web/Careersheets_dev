@@ -7,6 +7,7 @@ import axios from "axios";
 // import { dataAction } from "../../../redux/reducers/data";
 import Resume from "./Resume";
 import { useLocation } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const PDFViewRecruiter = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const PDFViewRecruiter = () => {
   const sendRequest = async () => {
     const response = await axios
       .get(
-        `${process.env.REACT_APP_SERVER_URL}/recruiter/user/${location.pathname
+        `${REACT_APP_SERVER_URL}/recruiter/user/${location.pathname
           .split("/")
           .pop()}`,
         {

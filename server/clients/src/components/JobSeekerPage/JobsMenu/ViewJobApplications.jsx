@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { AddSingleApplication } from "../../../redux/reducers/application.data";
 import { removeAJob } from "../../../redux/reducers/JobsUsers";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 const centerItems = {
   display: "flex",
@@ -34,7 +35,7 @@ const ViewJobApplications = () => {
   const saveApplyHistory = async () => {
     const data = await axios.get(
       `${
-        process.env.REACT_APP_SERVER_URL + `/user/history/${currentJob[0]._id}`
+        REACT_APP_SERVER_URL + `/user/history/${currentJob[0]._id}`
       }`,
       {
         headers: {
@@ -55,7 +56,7 @@ const ViewJobApplications = () => {
 
   const handleApply = async () => {
     const data = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + `/user/jobs/${currentJob[0]._id}`}`,
+      `${REACT_APP_SERVER_URL + `/user/jobs/${currentJob[0]._id}`}`,
       {
         headers: {
           "Content-type": "application/json",

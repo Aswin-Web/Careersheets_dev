@@ -42,7 +42,9 @@
   },
   "scripts": {
     "start": "react-dotenv && react-scripts start",
-    "build": "(npm i) && (react-dotenv && react-scripts build && rm -rf '../src/build' && mv  build  '../src' && cp 'env.js' '../src/build' )",
+    "build": "react-dotenv && react-scripts build",
+    "buildProduct": "(npm i) && (react-dotenv && react-scripts build && rm -rf '../src/build' && mv  build  '../src'  )",
+    "backendbuild": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

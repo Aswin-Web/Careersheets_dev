@@ -69,6 +69,7 @@ import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
 import SearchUser from "./components/Admin/SearchUser";
+import { REACT_APP_CLIENT_URL } from "./config";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -91,6 +92,16 @@ function App() {
 
     dispatch(ShowNotification({ visible: false, message: "" }));
   };
+  
+  // PRODUCTION ENVIRONMENT
+
+  // REACT_APP_SERVER_URL =
+  //   REACT_APP_SERVER_URL || "https://www.app.careersheets.in/api";
+  // REACT_APP_FORM_LINK =
+  //   REACT_APP_FORM_LINK || "https://forms.gle/WVbVQw2hqrvrJaVB8";
+
+  // REACT_APP_CLIENT_URL =
+  //   REACT_APP_CLIENT_URL || "https://www.app.careersheets.in/";
 
   return (
     <div className="App">
@@ -161,7 +172,6 @@ function App() {
           <Route path="profile/resume/*" element={<ResumeViewAdmin />} />
           {/* Search */}
           <Route path="search" element={<SearchUser />} />
-          
         </Route>
         {/* <Route path="/adminlogin" element={<LoginSection />} /> */}
         {/* Recruiter Login */}

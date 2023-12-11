@@ -20,6 +20,7 @@ import { applicationDetailAction } from "../../redux/reducers/applicationDetails
 import { detailsAction } from "../../redux/reducers/userDetails";
 ///css file///
 import classes from "./ApplicationDetails.module.css";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 function Row(props) {
   const { row } = props;
@@ -105,7 +106,7 @@ export default function ApplicationDetails() {
 
   const sendRequest = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/collegeadmin/" + id,
+      REACT_APP_SERVER_URL + "/collegeadmin/" + id,
       {
         headers: {
           "Content-type": "application/json",

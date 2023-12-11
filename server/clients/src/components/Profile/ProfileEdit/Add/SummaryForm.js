@@ -6,6 +6,7 @@ import { DialogActions, FormLabel } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { summaryAction } from "../../../../redux/reducers/summary-data";
 import axios from "axios";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 
 const AboutForm = (props) => {
   const summaryValue = useSelector((state) => state.summary.summary);
@@ -19,7 +20,7 @@ const AboutForm = (props) => {
   //USER FETCHING
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -44,7 +45,7 @@ const AboutForm = (props) => {
   const updateRequest = async () => {
     const response = await axios
       .put(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/summary/",
+        REACT_APP_SERVER_URL + "/user/profile/summary/",
         {
           summary,
         },

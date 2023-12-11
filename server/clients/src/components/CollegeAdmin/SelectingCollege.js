@@ -9,6 +9,7 @@ import axios from "axios";
 ///redux///
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 
 
@@ -26,7 +27,7 @@ const SelectingCollege = () => {
   ///// GETTING COLLEGE LIST/////
   const sendRequest = async () => {
     const response = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/collegelist`
+      `${REACT_APP_SERVER_URL}/collegelist`
     );
     const data = response.data;
 
@@ -85,7 +86,7 @@ const SelectingCollege = () => {
   const postRequest = async () => {
     const response = await axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/collegeadmin/selectcollege",
+        REACT_APP_SERVER_URL + "/collegeadmin/selectcollege",
         {
           college: collegeName,
           contact: contact,

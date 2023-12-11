@@ -7,6 +7,7 @@ import axios from "axios";
 // import { dataAction } from "../../../redux/reducers/data";
 import Resume from "./Resume";
 import { useLocation } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const PDFViewAdmin = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const PDFViewAdmin = () => {
 
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/admin/user/${location.pathname.split("/").pop()}`, {
+      .get(`${REACT_APP_SERVER_URL}/admin/user/${location.pathname.split("/").pop()}`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("admin")}`,

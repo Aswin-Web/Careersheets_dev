@@ -10,8 +10,9 @@ import Button from "@mui/material/Button";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box } from "@mui/material";
+import { REACT_APP_CLIENT_URL, REACT_APP_SERVER_URL } from "../../config";
 const ResumeViewAdmin = () => {
-  console.log(`${process.env.REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`)
+  console.log(`${REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`)
 
   const [data, SetData] = useState();
   console.log(data , "Please HElp")
@@ -19,7 +20,7 @@ const ResumeViewAdmin = () => {
   const location=useLocation()
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/admin/user/${location.pathname.split("/").pop()}`, {
+      .get(`${REACT_APP_SERVER_URL}/admin/user/${location.pathname.split("/").pop()}`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("admin")}`,
@@ -35,7 +36,7 @@ const ResumeViewAdmin = () => {
   
   const pageViewed=async ()=>{
     const response = await axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+      .post(`${REACT_APP_SERVER_URL}/admin/user/view`,
       {
         userId:location.pathname.split("/").pop(),
         jobId:location.pathname.split("/")[location.pathname.split("/").length -2]
@@ -50,7 +51,7 @@ const ResumeViewAdmin = () => {
   }
   const wishlisted=async ()=>{
     const response = await axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/admin/user/wishlist`,
+      .post(`${REACT_APP_SERVER_URL}/admin/user/wishlist`,
       {
         userId:location.pathname.split("/").pop(),
         jobId:location.pathname.split("/")[location.pathname.split("/").length -2],
@@ -79,7 +80,7 @@ const ResumeViewAdmin = () => {
     <div className="app">
       <Box sx={{display:'flex' ,padding:'1rem',gap:'1rem'}}>
         
-      {data !== undefined ?<a className="app" href={`${process.env.REACT_APP_CLIENT_URL}/admin/profile/resume/pdf/${data._id}`}rel='noreferrer' target="_blank" style={{color:'black',textDecoration:'none'}}>
+      {data !== undefined ?<a className="app" href={`${REACT_APP_CLIENT_URL}/admin/profile/resume/pdf/${data._id}`}rel='noreferrer' target="_blank" style={{color:'black',textDecoration:'none'}}>
       <DownloadButton
         onClick={() => {
           // navigate(`pdf/${data._id}`,'_blank');

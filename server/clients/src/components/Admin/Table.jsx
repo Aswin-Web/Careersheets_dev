@@ -12,6 +12,7 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { AddCollegeList } from "../../redux/reducers/collegeAdminlist";
 import { useDispatch, useSelector } from "react-redux";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 export default function BasicTable(props) {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function BasicTable(props) {
   const requestCollegeAdmin = async () => {
     if (collegeList.length === 0) {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL + "/admin"}`,
+        `${REACT_APP_SERVER_URL + "/admin"}`,
         {
           headers: {
             "Content-type": "application/json",

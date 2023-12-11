@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import UseAuth from "../../hooks/auth" 
 import {Helmet } from 'react-helmet-async'
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const Main = () => {
   const navigate=useNavigate()
@@ -17,7 +18,7 @@ const Main = () => {
    
 const handleClick = () => {
   return window.open(
-    `${process.env.REACT_APP_SERVER_URL}/auth/google`,
+    `${REACT_APP_SERVER_URL}/auth/google`,
     "_self"
   );
 };

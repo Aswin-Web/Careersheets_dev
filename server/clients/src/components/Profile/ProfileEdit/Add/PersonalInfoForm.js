@@ -14,6 +14,7 @@ import FilledInput from "@mui/material/FilledInput";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { personalActions } from "../../../../redux/reducers/personalInfo";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 // LANGUAGES ARRAY
 const topLanguages = [
   "Arabic",
@@ -51,7 +52,7 @@ const PersonalInfoForm = (props) => {
 
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -87,7 +88,7 @@ const PersonalInfoForm = (props) => {
   const updateRequest = async () => {
     const response = await axios
       .put(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/personal/",
+        REACT_APP_SERVER_URL + "/user/profile/personal/",
         {
           gender,
           hometown,

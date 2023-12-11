@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import { Box, Button, Typography } from "@mui/material";
+import { REACT_APP_SERVER_URL } from "../../config";
 const centerItems = {
   display: "flex",
   justifyContent: "flex-start",
@@ -22,8 +23,8 @@ const SearchUser = () => {
     // console.log(users, "ANALYZE");
     console.log(fromDate, ToDate); 
     const resp = await Axios.post(
-      // `${process.env.REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
-      `${process.env.REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
+      // `${REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
+      `${REACT_APP_SERVER_URL}/admin/getusers?key=${keyword}&page=${pages}`,
       
       
       {

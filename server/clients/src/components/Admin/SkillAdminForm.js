@@ -16,6 +16,7 @@ import FormControl from "@mui/material/FormControl";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
+import { REACT_APP_SERVER_URL } from "../../config";
 // import { skillActions } from "../../../../redux/reducers/Skill-data";
 // import { skillData } from "./skills";
 
@@ -33,7 +34,7 @@ const SkillAdminform = (props) => {
   //
   const getAllSkills = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/user/platformskills",
+      REACT_APP_SERVER_URL + "/user/platformskills",
 
       {
         headers: {

@@ -5,6 +5,7 @@ import { changeUserInfo } from "../../redux/reducers/auth.data";
 import React, { useEffect } from "react";
 import axios from "axios";
 import Cookies from "universal-cookie";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const UserSelect = () => {
   const [searchParams] = useSearchParams();
@@ -25,7 +26,7 @@ const UserSelect = () => {
   useEffect(() => {
     const dataFetch = async () => {
       const data = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/auth/google/test/${token}`,
+        `${REACT_APP_SERVER_URL}/auth/google/test/${token}`,
         {
           withCredentials: true,
         }

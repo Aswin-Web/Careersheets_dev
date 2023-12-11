@@ -15,6 +15,7 @@ import { roleActions } from "../../redux/reducers/role-data";
 import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
 import { dataAction } from "../../redux/reducers/data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const ProfileDetails = () => {
 
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,

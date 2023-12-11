@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MDBDataTable } from "mdbreact";
 import axios from "axios";
+import { REACT_APP_SERVER_URL } from "../../config";
 // import classes from "./Table.module.css";
 
 const LastSeen = () => {
@@ -55,7 +56,7 @@ const LastSeen = () => {
   };
 
   const sendRequest=async ()=>{
-    const data=await axios.get(`${process.env.REACT_APP_SERVER_URL}/admin/lastseen`,
+    const data=await axios.get(`${REACT_APP_SERVER_URL}/admin/lastseen`,
     
      {
       headers: {

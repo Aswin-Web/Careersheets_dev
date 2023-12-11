@@ -8,6 +8,7 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import Axios from "axios";
 import { AddJobs } from "../../redux/reducers/AllJobDetails";
 import { Link } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const RecruiterJobsSection = () => {
   const [errors, seterror] = useState({ isError: false, msg: "" });
@@ -23,7 +24,7 @@ const RecruiterJobsSection = () => {
   const NetworkRequest = async () => {
     try {
       const { data } = await Axios.get(
-        `${process.env.REACT_APP_SERVER_URL + "/recruiter/jobs"}`,
+        `${REACT_APP_SERVER_URL + "/recruiter/jobs"}`,
         {
           headers: {
             "Content-type": "application/json",

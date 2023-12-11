@@ -15,6 +15,7 @@ import { AddJobs, AddNewJob } from "../../redux/reducers/AllJobDetails";
 import { useDispatch } from "react-redux";
 import SkillAdminform from "./SkillAdminForm";
 import Switch from "@mui/material/Switch";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 // Schema
 // let userSchema = object().shape({
@@ -91,7 +92,7 @@ const CreateOppourtunity = () => {
   };
   const NetworkRequest = async (info) => {
     const data = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
+      `${REACT_APP_SERVER_URL + "/admin/jobs"}`,
       info,
 
       {

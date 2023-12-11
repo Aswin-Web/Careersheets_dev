@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { dataAction } from "../../../redux/reducers/data";
 import Resume from "./Resume";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 const PDF = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const PDF = () => {
 
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,

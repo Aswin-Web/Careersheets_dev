@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Careersheets from "../../images/Careersheets-logo.png";
 import { Helmet } from "react-helmet-async";
+import { REACT_APP_SERVER_URL } from "../../config";
 const UserSelectUI = () => {
   const navigate = useNavigate();
   const [selectUser, setSelectUser] = React.useState("");
@@ -169,7 +170,7 @@ const UserSelectUI = () => {
                 setloading(!loading);
                 axios
                   .put(
-                    `${process.env.REACT_APP_SERVER_URL}/auth/google/verify`,
+                    `${REACT_APP_SERVER_URL}/auth/google/verify`,
                     {
                       ...(selectUser === "recruiter"
                         ? { type: selectUser, recruiterVerification: false }

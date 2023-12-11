@@ -9,6 +9,7 @@ import axios from "axios";
 ///redux///
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 ////component function////
 
@@ -30,7 +31,7 @@ const Company_Info = () => {
 
   const GetRecruiterInfo = async () => {
     const response = await axios
-      .get(process.env.REACT_APP_SERVER_URL + "/recruiter/profile", {
+      .get(REACT_APP_SERVER_URL + "/recruiter/profile", {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
@@ -59,7 +60,7 @@ const Company_Info = () => {
   const postRequest = async () => {
     const response = await axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/recruiter/profile",
+        REACT_APP_SERVER_URL + "/recruiter/profile",
         {
           ...profile,
         },

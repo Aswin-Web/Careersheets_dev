@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { green } from "@mui/material/colors";
 import axios from "axios";
 import { updateJobs } from "../../redux/reducers/AllJobDetails";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const centerItems = {
   display: "flex",
@@ -47,7 +48,7 @@ const JobDetails = () => {
   const handleGetAllUsers = async () => {
     try {
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/getUsers`}`,
+        `${REACT_APP_SERVER_URL + `/admin/getUsers`}`,
         {
           skills: currentJob[0].SkillsRequired,
         },
@@ -71,7 +72,7 @@ const JobDetails = () => {
     try {
       setbtn(!btn);
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
+        `${REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
         {
           skill: currentJob[0].SkillsRequired,
           companyName: currentJob[0].companyName,
@@ -104,7 +105,7 @@ const JobDetails = () => {
     try {
       setbtn(!btn);
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
+        `${REACT_APP_SERVER_URL + `/admin/transmitmail`}`,
         {
           skill: currentJob[0].SkillsRequired,
           companyName: currentJob[0].companyName,
@@ -136,7 +137,7 @@ const JobDetails = () => {
   const SearchUser = async () => {
     const data = await axios.post(
       `${
-        process.env.REACT_APP_SERVER_URL +
+        REACT_APP_SERVER_URL +
         `/admin/finduser?find=${searchKeyword}`
       }`,
       { jobbID: currentJob[0]._id },
@@ -156,7 +157,7 @@ const JobDetails = () => {
     try {
       // setbtn(!btn);
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/addrecruiter`}`,
+        `${REACT_APP_SERVER_URL + `/admin/addrecruiter`}`,
         {
           recruiter: user_id,
           jobbID: currentJob[0]._id,
@@ -188,7 +189,7 @@ const JobDetails = () => {
     try {
       // setbtn(!btn);
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/removerecruiter`}`,
+        `${REACT_APP_SERVER_URL + `/admin/removerecruiter`}`,
         {
           recruiter: user_id,
           jobbID: currentJob[0]._id,
@@ -298,7 +299,7 @@ const JobDetails = () => {
                           const pageViewed = async () => {
                             const response = await axios
                               .post(
-                                `${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+                                `${REACT_APP_SERVER_URL}/admin/user/view`,
                                 {
                                   userId: item.userId._id,
                                   jobId: currentJob[0]._id,

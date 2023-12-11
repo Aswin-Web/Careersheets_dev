@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Box, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 export default function RecruiterTable(props) {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ export default function RecruiterTable(props) {
 
   const requestCollegeAdmin = async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + "/admin/recruiter"}`,
+      `${REACT_APP_SERVER_URL + "/admin/recruiter"}`,
       {
         headers: {
           "Content-type": "application/json",
@@ -36,7 +37,7 @@ export default function RecruiterTable(props) {
   }, []);
   const handleEnableDisable = async (id) => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + "/admin/recruiter/verify/" + id}`,
+      `${REACT_APP_SERVER_URL + "/admin/recruiter/verify/" + id}`,
       {
         headers: {
           "Content-type": "application/json",

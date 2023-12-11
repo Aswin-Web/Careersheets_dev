@@ -16,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { roleActions } from "../../redux/reducers/role-data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 // import { pipeline } from '@xenova/transformers';
 
@@ -33,7 +34,7 @@ const Profile = () => {
   const updateRequest = async () => {
     const response = await axios
       .put(
-        `${process.env.REACT_APP_SERVER_URL}/user/profile/profilerole`,
+        `${REACT_APP_SERVER_URL}/user/profile/profilerole`,
         {
           profileRole: role,
         },

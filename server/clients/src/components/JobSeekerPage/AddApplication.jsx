@@ -11,6 +11,7 @@ import config from "../../utils/headers";
 import { useSelector, useDispatch } from "react-redux";
 import { AddApplication } from "../../redux/reducers/application.data";
 import { ShowNotification } from "../../redux/reducers/notification.data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 export default function FormPropsTextFields(props) {
   const dispatch = useDispatch();
@@ -143,7 +144,7 @@ export default function FormPropsTextFields(props) {
         onClick={async (e) => {
           e.preventDefault();
           const response = await axios.post(
-            `${process.env.REACT_APP_SERVER_URL}/user/application`,
+            `${REACT_APP_SERVER_URL}/user/application`,
             {
               company,
               designation,
