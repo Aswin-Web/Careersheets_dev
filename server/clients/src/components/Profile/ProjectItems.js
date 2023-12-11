@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { projectActions } from "../../redux/reducers/project-data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const ProjectItems = (props) => {
   const token = useSelector((state) => state.auth.value);
@@ -17,7 +18,7 @@ const ProjectItems = (props) => {
 
   const deleteRequest = async () => {
     const response = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/user/profile/projects/" + id,
+      REACT_APP_SERVER_URL + "/user/profile/projects/" + id,
       {
         headers: {
           "Content-type": "application/json",

@@ -15,8 +15,9 @@ import Button from "@mui/material/Button";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Box } from "@mui/material";
+import { REACT_APP_CLIENT_URL, REACT_APP_SERVER_URL } from "../../config";
 const ResumeViewRecruiter = () => {
-  console.log(`${process.env.REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`);
+  console.log(`${REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`);
 
   const [data, SetData] = useState();
   console.log(data, "Please HElp  sss");
@@ -25,7 +26,7 @@ const ResumeViewRecruiter = () => {
   const sendRequest = async () => {
     const response = await axios
       .get(
-        `${process.env.REACT_APP_SERVER_URL}/recruiter/user/${location.pathname
+        `${REACT_APP_SERVER_URL}/recruiter/user/${location.pathname
           .split("/")
           .pop()}`,
         {
@@ -46,7 +47,7 @@ const ResumeViewRecruiter = () => {
   const pageViewed = async () => {
     const response = await axios
       .post(
-        `${process.env.REACT_APP_SERVER_URL}/admin/user/view`,
+        `${REACT_APP_SERVER_URL}/admin/user/view`,
         {
           userId: location.pathname.split("/").pop(),
           jobId:
@@ -66,7 +67,7 @@ const ResumeViewRecruiter = () => {
   const wishlisted = async () => {
     const response = await axios
       .post(
-        `${process.env.REACT_APP_SERVER_URL}/admin/user/wishlist`,
+        `${REACT_APP_SERVER_URL}/admin/user/wishlist`,
         {
           userId: location.pathname.split("/").pop(),
           jobId:
@@ -101,7 +102,7 @@ const ResumeViewRecruiter = () => {
         {data !== undefined ? (
           <a
             className="app"
-            href={`${process.env.REACT_APP_CLIENT_URL}/recruiter/profile/resume/pdf/${data._id}`}
+            href={`${REACT_APP_CLIENT_URL}/recruiter/profile/resume/pdf/${data._id}`}
             rel="noreferrer"
             target="_blank"
             style={{ color: "black", textDecoration: "none" }}

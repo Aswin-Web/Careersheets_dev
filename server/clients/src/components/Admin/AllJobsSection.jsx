@@ -132,6 +132,16 @@ const AllJobsSection = () => {
                 </Box> */}
               </Box>
               <Box>
+                
+                Views:
+                <Box sx={{display:"flex",gap:"8px"}}>
+                  <p style={{ color: "grey" }}>
+                  all:{item.allViews}
+                  </p>
+                  <p style={{ color: "grey" }}>
+                  unique:{item.uniqueViews}
+                  </p>
+                </Box>
                 <p style={{ color: "grey" }}>
                   {`${
                     item.appliedUsers.length !== 0

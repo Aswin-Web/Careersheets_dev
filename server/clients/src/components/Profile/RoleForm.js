@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const RoleForm = (props) => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const RoleForm = (props) => {
   const updateRequest = async () => {
     const response = await axios
       .put(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/profile-role/",
+        REACT_APP_SERVER_URL + "/user/profile/profile-role/",
         {
           profileRole: inputs,
         },

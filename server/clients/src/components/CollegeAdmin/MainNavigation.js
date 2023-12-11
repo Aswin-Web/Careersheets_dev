@@ -22,6 +22,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Logout from "../../utils/logout";
 import { Link } from "react-router-dom";
 import logo from "../../images/Careersheets-logo.png";
+import { REACT_APP_FORM_LINK } from "../../config";
 
 function MainNavigation() {
   const value = useSelector((state) => state.collegeAdmin.value);
@@ -96,7 +97,7 @@ function MainNavigation() {
                 <Box>
                   <Button sx={{ color: "#fff" }} onClick={() => {}}>
                     <a
-                      href={process.env.REACT_APP_FORM_LINK}
+                      href={REACT_APP_FORM_LINK}
                       rel="noreferrer"
                       target="_blank"
                     >

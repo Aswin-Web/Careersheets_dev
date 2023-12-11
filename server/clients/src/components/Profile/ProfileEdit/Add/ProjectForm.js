@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import classes from "./projectForm.module.css";
 import { projectActions } from "../../../../redux/reducers/project-data";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 
 const ProjectForm = (props) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const ProjectForm = (props) => {
 
   const getAllSkills = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/user/platformskills",
+      REACT_APP_SERVER_URL + "/user/platformskills",
 
       {
         headers: {
@@ -62,7 +63,7 @@ const ProjectForm = (props) => {
   const postRequest = async () => {
     const response = await axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/projects/",
+        REACT_APP_SERVER_URL + "/user/profile/projects/",
         {
           projectTitle: title,
           projectDomain: domain,

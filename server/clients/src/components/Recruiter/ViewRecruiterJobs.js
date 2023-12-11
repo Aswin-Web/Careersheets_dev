@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { green } from "@mui/material/colors";
 import axios from "axios";
 import { updateJobs } from "../../redux/reducers/AllJobDetails";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const centerItems = {
   display: "flex",
@@ -46,7 +47,7 @@ const ViewRecruiterJobs = () => {
   const GetJobInfo = async () => {
     try {
       const data = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL + `/recruiter/jobs/${jobbID}`}`,
+        `${REACT_APP_SERVER_URL + `/recruiter/jobs/${jobbID}`}`,
         {
           headers: {
             "Content-type": "application/json",
@@ -133,7 +134,7 @@ const ViewRecruiterJobs = () => {
                           const pageViewed = async () => {
                             const response = await axios
                               .post(
-                                `${process.env.REACT_APP_SERVER_URL}/recruiter/user/view`,
+                                `${REACT_APP_SERVER_URL}/recruiter/user/view`,
                                 {
                                   userId: item.userId._id,
                                   jobId: currentJob[0]._id,

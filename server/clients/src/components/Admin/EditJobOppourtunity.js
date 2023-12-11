@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { DisAbleJobs, updateJobs } from "../../redux/reducers/AllJobDetails";
 import Skillform from "../Profile/ProfileEdit/Add/Skillform";
 import SkillAdminform from "./SkillAdminForm";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const EditJobOppourtunity = () => {
   const dispatch = useDispatch();
@@ -82,7 +83,7 @@ const EditJobOppourtunity = () => {
 
   const getAllSkills = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/user/platformskills",
+      REACT_APP_SERVER_URL + "/user/platformskills",
 
       {
         headers: {
@@ -103,7 +104,7 @@ const EditJobOppourtunity = () => {
 
   const GetCurrentJob = async (info) => {
     const data = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + `/admin/jobs/${jobbID}`}`,
+      `${REACT_APP_SERVER_URL + `/admin/jobs/${jobbID}`}`,
       {
         headers: {
           "Content-type": "application/json",
@@ -134,7 +135,7 @@ const EditJobOppourtunity = () => {
 
   const NetworkRequest = async (info) => {
     const data = await axios.put(
-      `${process.env.REACT_APP_SERVER_URL + `/admin/jobs/${jobbID}`}`,
+      `${REACT_APP_SERVER_URL + `/admin/jobs/${jobbID}`}`,
       info,
       {
         headers: {
@@ -163,7 +164,7 @@ const EditJobOppourtunity = () => {
     try {
       const data = await axios.put(
         `${
-          process.env.REACT_APP_SERVER_URL +
+          REACT_APP_SERVER_URL +
           `/admin/jobs/disable/${currentJob._id}`
         }`,
         {
@@ -338,7 +339,7 @@ const EditJobOppourtunity = () => {
   const handleGetAllUsers = async () => {
     try {
       const data = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL + `/admin/getUsers`}`,
+        `${REACT_APP_SERVER_URL + `/admin/getUsers`}`,
         {
           skills: currentJob.SkillsRequired,
         },

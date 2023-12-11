@@ -21,6 +21,7 @@ import { Link, NavLink } from "react-router-dom";
 import UseAuth from '../../hooks/auth'
 import "./main.css"
 import icon from '../../images/Careersheets-logo.png'
+import { REACT_APP_FORM_LINK } from "../../config";
 
 const drawerWidth = 240;
 const navItems = [
@@ -136,7 +137,7 @@ export default function DrawerAppBar(props) {
 
             <Button sx={{ color: "#fff" }} onClick={() => {}}>
               <a
-                href={process.env.REACT_APP_FORM_LINK}
+                href={REACT_APP_FORM_LINK}
                 rel="noreferrer"
                 target="_blank"
               >

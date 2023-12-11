@@ -14,7 +14,7 @@ const connectElasticServer = async () => {
       await client.indices.delete({ index: "posts" });
       console.log("Index removed");
     };
-    // removeIndex()
+    // removeIndex() 
     await createIndex("users");
 
     const user = await User.find({})

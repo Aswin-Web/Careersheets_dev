@@ -13,6 +13,7 @@ import {useDispatch} from 'react-redux'
 import { DeleteStatus } from "../../../redux/reducers/application.data";
 import { Box } from "@mui/material";
 import { useState } from "react";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -25,7 +26,7 @@ export default function BasicTable(props) {
   const handleDelete = async (application_id, index) => {
     const  response  = await axios.post(
       // "http://localhost:5001/user/application/removestatus"
-      `${process.env.REACT_APP_SERVER_URL}/user/application/removestatus`,
+      `${REACT_APP_SERVER_URL}/user/application/removestatus`,
       { post_id: application_id, roundIndex: index },
       {
         headers: {

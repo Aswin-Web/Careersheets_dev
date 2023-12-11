@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { applicationDetailAction } from "../../redux/reducers/applicationDetails";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const StudentCard = (props) => {
   const { selected, pending, cleared, rejected } = props.status;
@@ -23,7 +24,7 @@ const StudentCard = (props) => {
 
   const sendRequest = async () => {
     const response = await axios.get(
-      process.env.REACT_APP_SERVER_URL + "/collegeadmin/" + id,
+      REACT_APP_SERVER_URL + "/collegeadmin/" + id,
       {
         headers: {
           "Content-type": "application/json",

@@ -18,10 +18,11 @@ import { projectActions } from "../../redux/reducers/project-data";
 import { skillActions } from "../../redux/reducers/Skill-data";
 import { statusActions } from "../../redux/reducers/status-data";
 import { roleActions } from "../../redux/reducers/role-data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const sendRequest = async () => {
   const response = await axios
-    .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+    .get(`${REACT_APP_SERVER_URL}/user/profile`, {
       headers: {
         "Content-type": "application/json",
         Authorization: `Bearer ${localStorage
@@ -45,7 +46,7 @@ const LeftSideBar = () => {
   const getApplication = async () => {
     if (data.length === 0) {
       const { data } = await axios.get(
-        `${process.env.REACT_APP_SERVER_URL}/user/application`,
+        `${REACT_APP_SERVER_URL}/user/application`,
         {
           headers: {
             "Content-type": "application/json",
@@ -62,7 +63,7 @@ const LeftSideBar = () => {
 
   const getJobs = async () => {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL + "/user/jobs"}`,
+      `${REACT_APP_SERVER_URL + "/user/jobs"}`,
       {
         headers: {
           "Content-type": "application/json",

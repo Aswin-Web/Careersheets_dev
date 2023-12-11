@@ -8,6 +8,7 @@ import { skillActions } from "../../redux/reducers/Skill-data";
 
 /////css////
 import classes from "./SkillItem.module.css";
+import { REACT_APP_SERVER_URL } from "../../config";
 const SkillItem = (props) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
@@ -16,7 +17,7 @@ const SkillItem = (props) => {
 
   const deleteRequest = async () => {
     const response = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/user/profile/skill/" + id,
+      REACT_APP_SERVER_URL + "/user/profile/skill/" + id,
       {
         headers: {
           "Content-type": "application/json",

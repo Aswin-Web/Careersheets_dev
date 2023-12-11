@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AddItemToStatus } from "../../../redux/reducers/application.data";
 import { ShowNotification } from "../../../redux/reducers/notification.data";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 // Form Submit Handler
 
@@ -70,7 +71,7 @@ const AddStatus = (props) => {
     event.preventDefault();
     // Backend Update Call
     const response = await axios.put(
-      `${process.env.REACT_APP_SERVER_URL}/user/application`,
+      `${REACT_APP_SERVER_URL}/user/application`,
       detail,
       {
         headers: {

@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet-async";
 import Axios from "axios";
 import { useDispatch } from "react-redux";
 import { AddJobs } from "../../redux/reducers/AllJobDetails";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Dashboard = () => {
   }, []);
   const NetworkRequest = async () => {
     const { data } = await Axios.get(
-      `${process.env.REACT_APP_SERVER_URL + "/admin/jobs"}`,
+      `${REACT_APP_SERVER_URL + "/admin/jobs"}`,
       {
         headers: {
           "Content-type": "application/json",

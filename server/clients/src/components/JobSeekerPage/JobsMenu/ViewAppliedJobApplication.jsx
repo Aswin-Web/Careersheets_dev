@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { AddSingleApplication } from "../../../redux/reducers/application.data";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 const centerItems = {
   display: "flex",
@@ -32,7 +33,7 @@ const ViewAppliedJobApplications = () => {
   const saveApplyHistory = async () => {
     const data = await axios.get(
       `${
-        process.env.REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`
+        REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`
       }`,
       {
         headers: {
@@ -45,7 +46,7 @@ const ViewAppliedJobApplications = () => {
     );
     const view = await axios.get(
       `${
-        process.env.REACT_APP_SERVER_URL + `/user/history/${jobbID}`
+        REACT_APP_SERVER_URL + `/user/history/${jobbID}`
       }`,
       {
         headers: {

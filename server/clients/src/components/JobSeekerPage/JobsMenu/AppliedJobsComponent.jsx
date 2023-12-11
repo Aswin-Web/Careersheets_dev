@@ -5,12 +5,13 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AddJobsUser } from "../../../redux/reducers/JobsUsers";
 import AppliedJobCard from "./AppliedJobCard";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 const AppliedJobsMenuComponent = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/appliedjobs`, {
+      .get(`${REACT_APP_SERVER_URL}/user/appliedjobs`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${localStorage

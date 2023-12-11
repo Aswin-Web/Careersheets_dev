@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { EditCollegeList } from "../../redux/reducers/collegeAdminlist";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 
 const SingleProfile = () => {
@@ -94,7 +95,7 @@ const SingleProfile = () => {
                 const sendRequest = async () => {
                   if (User[0].collegeVerification !== isVerify) {
                     const data = await axios.put(
-                      `${process.env.REACT_APP_SERVER_URL + "/admin/"}`,
+                      `${REACT_APP_SERVER_URL + "/admin/"}`,
                       {
                         user_id: User[0]._id,
                         userVerification: isVerify,

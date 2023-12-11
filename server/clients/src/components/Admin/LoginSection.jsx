@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const LoginSection = () => {
   const [username, setUsername] = useState("");
@@ -18,7 +19,7 @@ const LoginSection = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const sendRequest=async ()=>{
-      const data=await axios.post(`${process.env.REACT_APP_SERVER_URL + "/admin/login"}`, {
+      const data=await axios.post(`${REACT_APP_SERVER_URL + "/admin/login"}`, {
         adminName: username,
         adminPassword: password,
       });

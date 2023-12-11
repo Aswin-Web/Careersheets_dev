@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Autocomplete from "@mui/material/Autocomplete";
 import { educationActions } from "../../../../redux/reducers/education-Data";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 
   
 
@@ -85,7 +86,7 @@ const EducationForm = (props) => {
   const postRequest = async () => {
     const response = await axios
       .post(
-        process.env.REACT_APP_SERVER_URL + "/user/profile/education",
+        REACT_APP_SERVER_URL + "/user/profile/education",
         {
           college: collegeName.collegeName,
           degree: enteredDegree.degree,

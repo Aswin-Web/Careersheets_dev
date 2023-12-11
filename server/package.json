@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index",
-    "dev": "nodemon src/index"
+    "dev": "nodemon src/index",
+    "product": "(npm i) & (cd clients && npm run buildProduct)"
   },
   "author": "",
   "license": "ISC",

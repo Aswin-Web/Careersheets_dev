@@ -10,6 +10,7 @@ const { SkillMatch } = require("../utils/skillmatch.utils");
 const { generateHTML } = require("../utils/alerts.email.utils");
 const email = require("../utils/nodemailer.email");
 const { findUserFromElasticSearch } = require("./elastic.controller");
+const JobsHistory = require("../models/jobshistory.models");
 
 const GetAllCollegeAdmin = async (req, res, next) => {
   try {
@@ -293,7 +294,7 @@ const JobCreationRoute = async (req, res, next) => {
       employmentType,
       role_Category,
       pincode,
-      projectLevel: projectSwitch,  
+      projectLevel: projectSwitch,
     });
     const modify = await doc.save().then((x) => {
       // SkillMatch(companyName, roleName,SkillsRequired);
@@ -338,7 +339,30 @@ const GetAllJobs = async (req, res, next) => {
       },
     })
     .sort({ createdAt: -1 });
-  return res.status(200).json({ allJobs: jobs });
+
+  const newJobs = await Promise.all(
+    jobs.map(async (x) => {
+      const views = await JobsHistory.find({ job_id: x._id });
+      console.log(views.length,"VIEWS")
+      const userID = [];
+      let newarr = views.map((x) => {
+        if (!userID.includes(x.user_id.toString())) {
+          // console.log(x.user_id.toString())
+          userID.push(x.user_id.toString());
+        }
+      });
+      // console.log(userID.length, "UNIQUE")
+      // console.log(x)
+      return {
+        ...x._doc,
+        allViews: views.length,
+        uniqueViews: userID.length,
+      };
+      // return views;
+    })
+  );
+  // console.log(await newJobs);
+  return res.status(200).json({ allJobs: newJobs, });
 };
 
 const EditJobs = async (req, res, next) => {
@@ -367,7 +391,7 @@ const EditJobs = async (req, res, next) => {
       departmentType,
       employmentType,
       role_Category,
-      projectLevel
+      projectLevel,
     } = req.body;
     const { jobId } = req.params;
     let jobOppourtunity = await Jobs.findOne({ _id: jobId });
@@ -391,7 +415,7 @@ const EditJobs = async (req, res, next) => {
         departmentType,
         employmentType,
         role_Category,
-        projectLevel
+        projectLevel,
       };
       const modify = await Jobs.findOneAndUpdate(
         { _id: jobId },
@@ -490,12 +514,29 @@ const AddWishlistedToUser = async (req, res, next) => {
 
 const ViewLastLoginUsers = async (req, res, next) => {
   try {
-    const resultData = await LoginHistory.find()
+    // const resultDataDistinct = await LoginHistory.distinct("user_id");
+    // console.log(resultDataDistinct);
+    const resultData = await LoginHistory.find({})
       .populate({ path: "user_id", select: "name email displayPicture" })
       .select("createdAt ")
-      .sort({ createdAt: "-1" });
-    // console.log(resultData)
-    return res.status(200).json({ list: resultData });
+      .sort({ createdAt: "-1" })
+      .exec(function (err, user) {
+        console.log(user);
+        let uniqueEmail = [];
+        let uniqueCollection = [];
+        user.map((x) => {
+          console.log(x);
+          if (x.user_id !== null && !uniqueEmail.includes(x.user_id.email)) {
+            uniqueEmail.push(x.user_id.email);
+            uniqueCollection.push(x);
+          }
+        });
+
+        return res.status(200).json({ list: uniqueCollection });
+        return user;
+      });
+
+    console.log(resultData);
   } catch (error) {
     console.log(error);
     return next();
@@ -746,9 +787,11 @@ const GetSearchUsers = async (req, res, next) => {
       ToDate
     );
     // console.log(result.hits.hits[0]._source.education)
-    return res
-      .status(200)
-      .json({ msg: "Routes Working", users: result.hits.hits,total:result.hits.total.value   });
+    return res.status(200).json({
+      msg: "Routes Working",
+      users: result.hits.hits,
+      total: result.hits.total.value,
+    });
   } catch (error) {
     console.log(error);
     return next();

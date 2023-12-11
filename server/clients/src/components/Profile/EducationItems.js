@@ -7,6 +7,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const EducationItems = (props) => {
   const token = useSelector((state) => state.auth.value);
@@ -25,7 +26,7 @@ const EducationItems = (props) => {
   const dispatch = useDispatch();
   const deleteRequest = async () => {
     const response = await axios.delete(
-      process.env.REACT_APP_SERVER_URL + "/user/profile/education/" + id,
+      REACT_APP_SERVER_URL + "/user/profile/education/" + id,
       {
         headers: {
           "Content-type": "application/json",

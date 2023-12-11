@@ -8,6 +8,7 @@ import { useNavigate, useNavigation } from "react-router-dom";
 import PDFGenerator from "./GeneratePdf";
 import { useDispatch } from "react-redux";
 import { dataAction } from "../../../redux/reducers/data";
+import { REACT_APP_SERVER_URL } from "../../../config";
 
 const ResumeMain = () => {
   const dispatch=useDispatch()
@@ -16,7 +17,7 @@ const ResumeMain = () => {
   const navigate = useNavigate();
   const sendRequest = async () => {
     const response = await axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/user/profile`, {
+      .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,

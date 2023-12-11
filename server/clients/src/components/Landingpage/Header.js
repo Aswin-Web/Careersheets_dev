@@ -4,11 +4,12 @@ import { AppBar, Button, Toolbar } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from 'axios'
 import logo from "../../images/Careersheets-logo.png"
+import { REACT_APP_SERVER_URL } from "../../config";
 
  
 
 const handleClick=()=>{
-  return window.open(`${process.env.REACT_APP_SERVER_URL}/auth/google`,'_self')
+  return window.open(`${REACT_APP_SERVER_URL}/auth/google`,'_self')
   
 }
 

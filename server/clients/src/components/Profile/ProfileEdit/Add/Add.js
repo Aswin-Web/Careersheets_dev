@@ -14,6 +14,7 @@ import axios from "axios";
 // import { isAbsoluteUrl } from "next/dist/shared/lib/utils";
 import SummaryForm from "./SummaryForm";
 import PersonalInfoForm from "./PersonalInfoForm";
+import { REACT_APP_SERVER_URL } from "../../../../config";
 
 export default function Add(props) {
   const [open, setOpen] = React.useState(false);
@@ -28,7 +29,7 @@ export default function Add(props) {
   ///// GETTING COLLEGE LIST/////
   const sendRequest = async () => {
     const response = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/collegelist`
+      `${REACT_APP_SERVER_URL}/collegelist`
     );
     const data = response.data;
 

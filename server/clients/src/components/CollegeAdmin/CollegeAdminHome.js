@@ -11,6 +11,7 @@ import { collegeAdminAction } from "../../redux/reducers/collegeAdmin-data";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { REACT_APP_SERVER_URL } from "../../config";
 
 const CollegeAdminHome = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const CollegeAdminHome = () => {
 
   const sendRequest = async () => {
     const response = await axios
-      .get(process.env.REACT_APP_SERVER_URL + "/collegeadmin/", {
+      .get(REACT_APP_SERVER_URL + "/collegeadmin/", {
         headers: {
           "Content-type": "application/json",
           Authorization: `Bearer ${token}`,
