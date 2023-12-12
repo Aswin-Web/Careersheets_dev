@@ -18,24 +18,43 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ShareIcon from "@mui/icons-material/Share";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import { Link, NavLink } from "react-router-dom";
-import UseAuth from '../../hooks/auth'
-import "./main.css"
-import icon from '../../images/Careersheets-logo.png'
+import UseAuth from "../../hooks/auth";
+import "./main.css";
+import icon from "../../images/Careersheets-logo.png";
 import { REACT_APP_FORM_LINK } from "../../config";
+import { useSelector } from "react-redux";
+import jwt from "jwt-decode"
 
 const drawerWidth = 240;
-const navItems = [
-  {path:"/user/",name:"Application Status"},
-  {path:'schdule',name:"Interview Schedule"},
-  {path:'/user/devstage',name:"Wishlist"},
-  {path:'/user/devstage',name:"Feed"},
-  {path:'/user/training',name:'Training'}
-];
+
 
 export default function DrawerAppBar(props) {
   const { window } = props;
+  let navItems=[]
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  
+  if (useSelector(state=>jwt( state.auth.value).role)==="superuser"){
+    // navItems.push({ path: "/admin/verify", name: "Admin" })
+   navItems = [
+      { path: "/user/", name: "Application Status" },
+      { path: "schdule", name: "Interview Schedule" },
+      { path: "/user/devstage", name: "Wishlist" },
+      { path: "/user/devstage", name: "Feed" },
+      { path: "/user/training", name: "Training" },
+      { path: "/user/jobs", name: "Jobs" },
+      { path: "/user/applied", name: "Applied Jobs" },
+      { path: "/admin/verify", name: "Admin" }
+    ];
+  }else{
+    navItems = [
+      { path: "/user/", name: "Application Status" },
+      { path: "schdule", name: "Interview Schedule" },
+      { path: "/user/devstage", name: "Wishlist" },
+      { path: "/user/devstage", name: "Feed" },
+      { path: "/user/training", name: "Training" },
+      { path: "/user/jobs", name: "Jobs" },
+      { path: "/user/applied", name: "Applied Jobs" },
+    ];
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -47,7 +66,7 @@ export default function DrawerAppBar(props) {
       sx={{ textAlign: "center", bgColor: "#11144C" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
-       CareerSheets
+        CareerSheets
       </Typography>
       <Divider />
       <List>
@@ -56,7 +75,7 @@ export default function DrawerAppBar(props) {
             <ListItemButton sx={{ textAlign: "center" }}>
               <NavLink to={item.path}>
                 <ListItemText primary={item.name} />
-                </NavLink>
+              </NavLink>
             </ListItemButton>
           </ListItem>
         ))}
@@ -66,7 +85,7 @@ export default function DrawerAppBar(props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-          const { displayPicture } = UseAuth();
+  const { displayPicture } = UseAuth();
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar component="nav" sx={{ backgroundColor: "#11144C" }}>
@@ -87,12 +106,11 @@ export default function DrawerAppBar(props) {
               flexGrow: 2,
               width: "40%",
               display: { xs: "none", sm: "flex" },
-              alignItems:'center',
-              gap:'8px'
+              alignItems: "center",
+              gap: "8px",
             }}
           >
             <Avatar alt="Remy Sharp" src={icon} />
-       
             CareerSheets
           </Typography>
           <Box
@@ -105,6 +123,7 @@ export default function DrawerAppBar(props) {
               gap: "2%",
             }}
           >
+
             <Link to="/user/devstage" style={{ textDecoration: "none" }}>
               <Button sx={{ color: "#fff" }}>
                 <div
@@ -136,11 +155,7 @@ export default function DrawerAppBar(props) {
             </Link>
 
             <Button sx={{ color: "#fff" }} onClick={() => {}}>
-              <a
-                href={REACT_APP_FORM_LINK}
-                rel="noreferrer"
-                target="_blank"
-              >
+              <a href={REACT_APP_FORM_LINK} rel="noreferrer" target="_blank">
                 <Box className="logout_btn">
                   <HelpCenterIcon />
                   <Typography variant="subtitle1" className="logout_btn">

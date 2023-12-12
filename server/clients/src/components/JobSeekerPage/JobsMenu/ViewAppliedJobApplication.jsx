@@ -19,9 +19,8 @@ const centerItems = {
   margin: "0.5rem 0",
 };
 const ViewAppliedJobApplications = () => {
-  
   const [views, setviews] = useState(0);
-  const [currentJob,setCurrentJob]=useState([])
+  const [currentJob, setCurrentJob] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,9 +31,7 @@ const ViewAppliedJobApplications = () => {
 
   const saveApplyHistory = async () => {
     const data = await axios.get(
-      `${
-        REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`
-      }`,
+      `${REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`}`,
       {
         headers: {
           "Content-type": "application/json",
@@ -45,9 +42,7 @@ const ViewAppliedJobApplications = () => {
       }
     );
     const view = await axios.get(
-      `${
-        REACT_APP_SERVER_URL + `/user/history/${jobbID}`
-      }`,
+      `${REACT_APP_SERVER_URL + `/user/history/${jobbID}`}`,
       {
         headers: {
           "Content-type": "application/json",
@@ -57,16 +52,22 @@ const ViewAppliedJobApplications = () => {
         },
       }
     );
+    console.log(data,`${REACT_APP_SERVER_URL + `/user/history/${jobbID}`}`)
     setviews(view.data.views);
+    console.log(data.data.jobs);
     setCurrentJob([...data.data.jobs])
-   
   };
 
   useEffect(() => {
-    saveApplyHistory();
+    try {
+      
+      saveApplyHistory();
+    } catch (error) {
+      console.log(error)
+    }
   }, []);
 
- 
+// return (<div>THis Route</div>)
 
   return (
     <Box
@@ -236,7 +237,7 @@ const ViewAppliedJobApplications = () => {
                 color: "black",
                 border: "1px solid black",
                 backgroundColor: "#27E1C1",
-                
+
               }}
               disabled
             >
