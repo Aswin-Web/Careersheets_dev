@@ -488,7 +488,7 @@ const SearchAppliedJobs = async (req, res, next) => {
       .select(
         "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
       );
-    const projectUser = await User.findOne({ _id: u });
+    const projectUser = await User.findOne({ _id: user });
     console.log(jobs);
     return res.json({ jobs });
   } catch (error) {
