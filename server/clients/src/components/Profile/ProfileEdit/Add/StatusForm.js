@@ -64,7 +64,7 @@ const StatusForm = (props) => {
               label="Eg.Working"
               fullWidth
               variant="standard"
-              sx={{ width: "35.5em" }}
+              // sx={{ width: "35.5em" }}
               onChange={inputChangeHandler}
             />
           </DialogContentText>

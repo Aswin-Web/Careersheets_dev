@@ -42,92 +42,72 @@ const Dashboard = () => {
           sx={{
             margin: "1rem",
             gap: "1rem",
-            paddingTop:"1rem"
+            paddingTop: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
           <Button
             variant="contained"
             color="success"
             onClick={() => navigate(-1)}
+            sx={{ marginBottom: "0.5rem" }}
           >
             Go Back
           </Button>
-          <Button
-            variant="outlined"
+          <Box
             sx={{
-              margin: "0 1rem",
-              color: "white",
-              backgroundColor: "#11144C",
+              display: "flex",
+              flexWrap: "wrap", // Wrap buttons to the next line
+              justifyContent: "center", // Center items horizontally
+              gap: "0.5rem", // Add space between buttons
+              marginBottom: "1rem", // Add margin bottom
             }}
-            onClick={() => navigate("/user")}
           >
-            Goto User Dashboard
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ margin: "0 1rem" }}
-            onClick={() => navigate("/admin/verify")}
-          >
-            Verify CollegeAdmin
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={() => navigate("/admin/verify/recruiter")}
-          >
-            Verify Recruiter
-          </Button>
-          <Button
-            sx={{ margin: "0 1rem" }}
-            variant="outlined"
-            color="error"
-            onClick={() => navigate("/admin/new")}
-          >
-            New Job
-          </Button>
-          <Button
-            sx={{ margin: "0 1rem" }}
-            variant="outlined"
-            color="error"
-            onClick={() => navigate("/admin/jobs")}
-          >
-            View Jobs
-          </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                // margin: "0 1rem",
+                color: "white",backgroundColor: "#11144C",}} onClick={() => navigate("/user")}> 
+                Goto User Dashboard
+            </Button>
+            <Button
+              variant="outlined"
+              color="error" sx={{ margin: "0 0.5rem" }} onClick={() => navigate("/admin/verify")}>
+              Verify CollegeAdmin
+            </Button>
+            <Button
+              variant="outlined" color="error" onClick={() => navigate("/admin/verify/recruiter")}>
+              Verify Recruiter
+            </Button>
+            <Button
+              sx={{ margin: "0 0.5rem" }}
+              variant="outlined" color="error" onClick={() => navigate("/admin/new")}>
+              New Job
+            </Button>
+            <Button
+              sx={{ margin: "0 0.5rem" }}
+              variant="outlined" color="error" onClick={() => navigate("/admin/jobs")}>
+              View Jobs
+            </Button>
 
-          <Button
-            sx={{ margin: "0 1rem" }}
-            variant="outlined"
-            color="error"
-            onClick={() => navigate("/admin/lastseen")}
-          >
-            View Last Seen
-          </Button>
+            <Button
+              sx={{ margin: "0 0.5rem" }}
+              variant="outlined" color="error" onClick={() => navigate("/admin/lastseen")}>
+              View Last Seen
+            </Button>
 
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ margin: "0 1rem" }}
-            onClick={() => {
-              localStorage.clear();
-              navigate("/");
-            }}
-          >
-            Logout
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            sx={{ margin: "1rem" }}
-            onClick={() => {
-             
-              navigate("/admin/search");
-            }}
-          >
-            Search
-          </Button>
+            <Button variant="outlined" color="error"
+              sx={{ margin: "0 0.5rem" }}
+              onClick={() => {localStorage.clear(); navigate("/");}}>
+              Logout
+            </Button>
+            <Button variant="outlined" color="error" sx={{ margin: "1rem" }} onClick={() => {navigate("/admin/search"); }}>
+              Search
+            </Button>
+          </Box>
         </Box>
-        
         <Box
           sx={{
             minHeight: "80vh",

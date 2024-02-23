@@ -1,4 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
+import './LeftSidebar.css';
 import React, { useEffect, useState } from "react";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ScheduleIcon from "@mui/icons-material/Schedule";

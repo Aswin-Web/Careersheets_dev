@@ -131,7 +131,7 @@ const ProjectForm = (props) => {
             label="Title"
             fullWidth
             variant="standard"
-            sx={{ width: "35.5em" }}
+            // sx={{ width: "35.5em" }}
             onChange={titleChangeHandler}
           />
           <TextField
@@ -143,7 +143,7 @@ const ProjectForm = (props) => {
             placeholder="Eg. Cloud / IOT  "
             fullWidth
             variant="standard"
-            sx={{ width: "35.5em" }}
+            // sx={{ width: "35.5em" }}
             onChange={domainChangeHandler}
           />{" "}
           <Autocomplete

@@ -76,12 +76,12 @@ const AboutForm = (props) => {
       <Box
         component="form"
         sx={{
-          "& .MuiTextField-root": { m: 3, width: "50ch", height: "10ch" },
+          "& .MuiTextField-root": { m: 3, width: "30ch", height: "10ch" },
         }}
         noValidate
         autoComplete="off"
       >
-      <FormLabel sx={{textAlign:"center",marginTop:"50px", color:"#000"}}><p>Profile Summary</p></FormLabel>
+      <FormLabel sx={{textAlign:"center", color:"#000"}}><h6 className="m-4">Profile Summary</h6></FormLabel>
         <TextField
           name="summary"
           variant="standard"

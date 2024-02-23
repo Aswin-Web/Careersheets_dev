@@ -145,7 +145,7 @@ const Skillform = (props) => {
               disableClearable
               options={skills.map((option) => option.skill)}
               onChange={inputChangeHandler}
-              sx={{ width: "500px" }}
+              // sx={{ width: "500px" }}
               renderInput={(params) => (
                 <TextField
                   {...params}
