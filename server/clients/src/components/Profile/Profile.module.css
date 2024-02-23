@@ -22,18 +22,19 @@ body {
   width: 9.375em;
   border-radius: 700px;
   left: 35px;
+  margin-top: -10px;
   bottom: 40px;
   position: relative;
-  border: 8px solid white;
+  /* border: 8px solid white; */
 }
 .profilePic img {
   height: 9.375em;
   width: 9.375em;
   border-radius: 700px;
 }
-.heading {
+/* .heading {
   display: flex;
-}
+} */
 .naming {
   margin-left: 4em;
   margin-top: 2em;
@@ -52,7 +53,7 @@ em .naming h2 {
   margin-bottom: 1em;
 }
 hr {
-  width: 40%;
+  width: 100%;
   margin: auto;
   border-bottom: 0;
   border-color: #accbee;
@@ -74,21 +75,18 @@ hr {
   justify-content: space-between;
 }
 
-@media (max-width: 620px) {
+@media (max-width: 450px) {
   .naming {
     padding-left: 5em;
     margin: 0;
+    margin-bottom: 0.5em;
   }
   .heading {
     flex-direction: column;
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
   .heading p {
-    font-size: 0.55rem;
-  }
-  .naming {
-    margin: 0;
-    margin-bottom: 0.5em;
+    font-size: 0.75rem;
   }
   .bio {
     font-size: 0.58rem;

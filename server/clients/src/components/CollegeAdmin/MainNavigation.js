@@ -39,12 +39,12 @@ function MainNavigation() {
       <div className={classes.navbar}>
         <AppBar
           position="static"
-          sx={{ background: "#12a4d9", maxWidth: "100%" }}
+          sx={{ background: "#12a4d9" }}
           className={classes.bar}
         >
           <Container maxWidth="xl">
             <Toolbar disableGutters sx={{ maxWidth: "100%" }}>
-              <img className={classes.logo_cs} src={logo} />
+              <img className={classes.logo_cs} src={logo} alt="Logo" />
               <Typography
                 variant="h4"
                 noWrap
@@ -52,7 +52,7 @@ function MainNavigation() {
                 href="/"
                 sx={{
                   mr: 2,
-                  display: { xs: "none", md: "flex" },
+                  // display: { xs: "none", md: "flex" },
                   fontFamily: "monospace",
                   fontWeight: 500,
                   fontSize: "1rem",
@@ -67,7 +67,7 @@ function MainNavigation() {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "flex", md: "none", width: "100%" },
+                  display: { xs: "flex", md: "none" },
                 }}
               >
                 <IconButton
@@ -85,7 +85,7 @@ function MainNavigation() {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "flex", md: "flex", justifyContent: "end" },
+                  display: { xs: "none", md: "flex", justifyContent: "flex-end" },
                 }}
               >
                 {/* <Box sx={{ fontSize: "1rem" }}>

@@ -5,6 +5,10 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Link } from "react-router-dom";
+import './JobCard.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 const centerItems = {
   display: "flex",
   justifyContent: "flex-start",
@@ -45,17 +49,18 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
 
   return (
     <div>
-      <Box
-        key={Math.random() * 0.9999}
-        sx={{
-          backgroundColor: "white",
-          padding: "1rem",
-          border: "1px solid black",
-          display: "inline-block",
-          margin: "1rem",
-          borderRadius: "10px",
-          width: "20vw",
-        }}
+      <div className="container mt-4">
+      <div className="row">
+        <div className="col">
+          <Box
+            key={Math.random() * 0.9999}
+            sx={{
+              backgroundColor: "white",
+              padding: "1rem",
+              border: "1px solid black",
+              borderRadius: "10px",
+              width: "100%",
+            }}
       >
         {/* Heading */}
         <Box sx={{}}>
@@ -134,6 +139,9 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
           </Link>
         </Box>
       </Box>
+    </div>
+    </div>
+    </div>
     </div>
   );
 };

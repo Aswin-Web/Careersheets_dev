@@ -191,6 +191,7 @@ const EducationForm = (props) => {
                   label="College"
                   variant="standard"
                   name="collegeName"
+                  fullWidth
                 />
               )}
             />
@@ -209,6 +210,7 @@ const EducationForm = (props) => {
                   label="Degree"
                   variant="standard"
                   name="degree"
+                  fullWidth
                 />
               )}
             />
@@ -221,7 +223,7 @@ const EducationForm = (props) => {
               type="text"
               fullWidth
               variant="standard"
-              sx={{ width: "35.5em" }}
+              // sx={{ width: "35.5em" }}
               onChange={streamChange}
             />
             <FormControl>
@@ -229,7 +231,7 @@ const EducationForm = (props) => {
                 Graduated
               </FormLabel>
               <RadioGroup
-                aria-labelledby="demo-radio-buttons-group-label"
+                aria-labelledby="graduated"
                 name="graduated"
                 onChange={graduatedChange}
               >
@@ -246,7 +248,7 @@ const EducationForm = (props) => {
               inputProps={{ maxLength: 4 }}
               fullWidth
               variant="standard"
-              sx={{ width: "35.5em" }}
+              // sx={{ width: "35.5em" }}
               onChange={graduationYearChange}
             />
             {error && <p className={classes.error}>Enter a valid Year</p>}
@@ -259,7 +261,7 @@ const EducationForm = (props) => {
               inputProps={{ maxLength: 15 }}
               fullWidth
               variant="standard"
-              sx={{ width: "35.5em" }}
+              // sx={{ width: "35.5em" }}
               onChange={registerChangeHandler}
             />
           </DialogContentText>

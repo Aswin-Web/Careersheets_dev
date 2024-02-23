@@ -12,7 +12,7 @@
     width: 60px;
     border-radius: 50px;
 }
-@media (max-width:620px){
+@media (max-width:570px){
     .iconName{
         font-size: 0.55rem;
         margin: 0;

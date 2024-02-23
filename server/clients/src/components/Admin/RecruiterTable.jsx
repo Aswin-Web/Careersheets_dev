@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./RecruiterTable.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,9 +10,10 @@ import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { REACT_APP_SERVER_URL } from "../../config";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function RecruiterTable(props) {
   const dispatch = useDispatch();
@@ -58,72 +60,60 @@ export default function RecruiterTable(props) {
           ...x,
         };
       });
-      setUsers(modifyUser)
+      setUsers(modifyUser);
     }
     console.log(data);
   };
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Sl No</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Button</TableCell>
+    
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Sl No</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+                <TableCell>Button</TableCell>
 
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map((user, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {user.name}
-              </TableCell>
+                <TableCell>Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    {index + 1}
+                  </TableCell>
+                  <TableCell >
+                    {user.name}
+                  </TableCell>
 
-              <TableCell component="th" scope="row">
-                {user.email}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                <Button onClick={() => handleEnableDisable(user._id)}>
-                  Enable/Disable
-                </Button>
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {user.verification ? (
-                  <Box
-                    sx={{
-                      color: "white",
-                      padding: "1rem",
-                      backgroundColor: "green",
-                    }}
-                  >
-                    Access granted
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      color: "white",
-                      padding: "1rem",
-                      backgroundColor: "red",
-                    }}
-                  >
-                    Access Denied
-                  </Box>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                  <TableCell >
+                    {user.email}
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => handleEnableDisable(user._id)}>
+                      Enable/Disable
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    {user.verification ? (
+                      <Box className="access-granted">Access granted</Box>
+                    ) : (
+                      <Box className="access-denied">Access Denied</Box>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </Grid>
   );
 }

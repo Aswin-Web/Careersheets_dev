@@ -155,7 +155,7 @@ function App() {
             <PlatFormAdminController>
               <Dashboard />
             </PlatFormAdminController>
-          }
+          } 
         >
           {/* College Admin Verification */}
           <Route path="verify" element={<AdminTable />} />

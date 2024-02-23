@@ -108,7 +108,7 @@ const MyDocument = (props) => {
                 ) : (
                   <Text>{""}</Text>
                 )}
-                ) : (<Text>{""}</Text>)
+                 : (<Text>{""}</Text>)
               </View>
               {/* Summary section */}
               {data.summary && (

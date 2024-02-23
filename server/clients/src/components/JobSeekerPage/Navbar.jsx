@@ -23,18 +23,17 @@ import "./main.css";
 import icon from "../../images/Careersheets-logo.png";
 import { REACT_APP_FORM_LINK } from "../../config";
 import { useSelector } from "react-redux";
-import jwt from "jwt-decode"
+import jwt from "jwt-decode";
 
 const drawerWidth = 240;
 
-
 export default function DrawerAppBar(props) {
   const { window } = props;
-  let navItems=[]
+  let navItems = [];
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  if (useSelector(state=>jwt( state.auth.value).role)==="superuser"){
+  if (useSelector((state) => jwt(state.auth.value).role) === "superuser") {
     // navItems.push({ path: "/admin/verify", name: "Admin" })
-   navItems = [
+    navItems = [
       { path: "/user/", name: "Application Status" },
       { path: "schdule", name: "Interview Schedule" },
       { path: "/user/devstage", name: "Wishlist" },
@@ -42,9 +41,9 @@ export default function DrawerAppBar(props) {
       { path: "/user/training", name: "Training" },
       { path: "/user/jobs", name: "Jobs" },
       { path: "/user/applied", name: "Applied Jobs" },
-      { path: "/admin/verify", name: "Admin" }
+      { path: "/admin/verify", name: "Admin" },
     ];
-  }else{
+  } else {
     navItems = [
       { path: "/user/", name: "Application Status" },
       { path: "schdule", name: "Interview Schedule" },
@@ -63,7 +62,7 @@ export default function DrawerAppBar(props) {
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
-      sx={{ textAlign: "center", bgColor: "#11144C" }}
+      sx={{ textAlign: "center", backgroundColor: "aqua",height:"100%" }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
         CareerSheets
@@ -72,8 +71,16 @@ export default function DrawerAppBar(props) {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.name} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <NavLink to={item.path}>
+            <ListItemButton
+              sx={{
+                textAlign: "center",
+                "&:hover": {
+                  backgroundColor: "green",
+                },
+              }}
+            >
+              
+              <NavLink to={item.path} style={{ textDecoration: "none" }}>
                 <ListItemText primary={item.name} />
               </NavLink>
             </ListItemButton>
@@ -95,7 +102,10 @@ export default function DrawerAppBar(props) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { xs: "block", md: "none" } }}
+            sx={{
+              mr: 2,
+              display: { xs: "block", textDecoration: "none", md: "none" },
+            }}
           >
             <MenuIcon />
           </IconButton>
@@ -123,7 +133,6 @@ export default function DrawerAppBar(props) {
               gap: "2%",
             }}
           >
-
             <Link to="/user/devstage" style={{ textDecoration: "none" }}>
               <Button sx={{ color: "#fff" }}>
                 <div

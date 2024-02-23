@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { AddCollegeList } from "../../redux/reducers/collegeAdminlist";
 import { useDispatch, useSelector } from "react-redux";
 import { REACT_APP_SERVER_URL } from "../../config";
@@ -38,68 +38,67 @@ export default function BasicTable(props) {
   React.useEffect(() => {
     requestCollegeAdmin();
   }, []);
+
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Sl No</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>College</TableCell>
-            <TableCell>View</TableCell>
-
-            <TableCell>Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {collegeList.map((user, index) => (
-            <TableRow
-              key={index}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {index + 1}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {user.name}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {user.collegeName}
-              </TableCell>
-
-              <TableCell component="th" scope="row">
-                <Link to={`${user._id}`}>
-                  <VisibilityIcon />
-                </Link>
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {user.collegeVerification ? (
-                  <Box
-                    sx={{
-                      color: "white",
-                      padding: "1rem",
-                      backgroundColor: "green",
-                    }}
-                  >
-                    Verified
-                  </Box>
-                ) : (
-                  <Box
-                    sx={{
-                      display: "inline-block",
-                      color: "white",
-                      padding: "1rem",
-                      backgroundColor: "red",
-                    }}
-                  >
-                    Not Verified
-                  </Box>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Sl No</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>College</TableCell>
+                <TableCell>View</TableCell>
+                <TableCell>Status</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {collegeList.map((user, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.collegeName}</TableCell>
+                  <TableCell>
+                    <Link to={`${user._id}`}>
+                      <VisibilityIcon />
+                    </Link>
+                  </TableCell>
+                  <TableCell>
+                    {user.collegeVerification ? (
+                      <Box
+                        sx={{
+                          color: "white",
+                          padding: "0.5rem",
+                          backgroundColor: "green",
+                        }}
+                      >
+                        Verified
+                      </Box>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "inline-block",
+                          color: "white",
+                          padding: "0.5rem",
+                          backgroundColor: "red",
+                        }}
+                      >
+                        Not Verified
+                      </Box>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </Grid>
   );
 }
