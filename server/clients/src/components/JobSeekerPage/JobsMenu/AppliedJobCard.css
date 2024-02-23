@@ -1,0 +1,14 @@
+.applied-job-card {
+    @media (max-width: 600px) {
+      width: 100%; 
+    }
+  
+    .center-items {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 10px;
+      margin: 0.5rem 0;
+    }
+  }
+  

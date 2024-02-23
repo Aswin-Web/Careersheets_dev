@@ -85,13 +85,13 @@ const ProfileDetails = () => {
     <div className={classes.details}>
       <div>
         <ProfileCard CardName="Summary">
-          <h3>Summary</h3>
+          <h3 className="m-3">Summary</h3>
           <p style={{ fontSize: 14 }}>{summaryState.summary}</p>
         </ProfileCard>
       </div>
       <ProfileCard CardName="education">
         <div>
-          <h3>Education :</h3>
+          <h3 className="m-3">Education :</h3>
           {eduErrState && <p className={classes.skillError}>{eduErrMsg}</p>}
           <ul className={classes.educationList}>
             {eduItems.map((edu, index) => (
@@ -112,11 +112,11 @@ const ProfileDetails = () => {
         </div>
       </ProfileCard>
       <ProfileCard CardName="status">
-        <h3>Status : </h3>
+        <h3 className="m-3">Status : </h3>
         <p> {status}</p>
       </ProfileCard>
       <ProfileCard CardName="skills">
-        <h3>Skills : </h3>
+        <h3 className="m-3">Skills : </h3>
 
         {skillError && <p className={classes.skillError}>{skillErrMsg}</p>}
         <div className={classes.skillItem}>
@@ -133,7 +133,7 @@ const ProfileDetails = () => {
         </div>
       </ProfileCard>
       <ProfileCard CardName="project">
-        <h3>Project</h3>
+        <h3 className="m-3">Project</h3>
         <ul className={classes.educationList}>
           {projectItems.map((item) => (
             <li className={classes.cardItems}>
@@ -150,8 +150,8 @@ const ProfileDetails = () => {
         </ul>
       </ProfileCard>
       <ProfileCard CardName="info">
-        <h3>Personal Information</h3>
-        <div>
+        <h3 className="m-3">Personal Information</h3>
+        <div className="m-5">
           <h4 style={{ marginBottom: "5px" }}>
             <span style={{ color: "#2C3333" }}>Full Name</span> :{" "}
             <span>{personalState.fullName}</span>

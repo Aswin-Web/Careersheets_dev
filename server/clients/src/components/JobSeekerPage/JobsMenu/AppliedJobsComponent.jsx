@@ -55,7 +55,9 @@ const AppliedJobsMenuComponent = () => {
         ) : (
           <p></p>
         )}
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <Box sx={{  display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+            gap: "1rem", }}>
           {appliedJobs.map((item) => (
             <AppliedJobCard item={item} skillofUser={skills} key={item._id} />
           ))}

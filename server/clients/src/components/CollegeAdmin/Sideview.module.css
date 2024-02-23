@@ -1,4 +1,17 @@
 .items{
     display: flex;
-    margin-bottom: 1em;
+    /* margin-bottom: 1em; */
 }
+
+.sideview {
+    background: red;
+  }
+
+  
+  @media (max-width: 550px) {
+    .sideview {
+      width: 70%;
+      text-decoration: none;
+    }
+  }
+  

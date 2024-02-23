@@ -169,18 +169,11 @@ const PersonalInfoForm = (props) => {
             <FormLabel sx={{ color: "#000000" }}>Add Details</FormLabel>
           </div>
           <div style={{ marginLeft: "20px" }}>
-            <InputLabel
-              htmlFor="filled-adornment-amount"
-              sx={{ color: "#1976d2" }}
-            >
-              Full Name
-            </InputLabel>
+            <FormLabel htmlFor="fullName" sx={{ color: "#1976d2" }}>Full Name: </FormLabel>
             <FilledInput
               required
-              sx={{ width: "550px" }}
-              id="filled-adornment-amount"
-              placeholder="Full Name"
-              name="Full name"
+              id="fullName"
+              placeholder="           Full Name"
               value={fullName}
               onChange={(e) => {
                 setFullName(e.target.value);
@@ -188,19 +181,12 @@ const PersonalInfoForm = (props) => {
             />
           </div>
           <div style={{ marginLeft: "20px", marginTop: "10px" }}>
-            <InputLabel
-              htmlFor="filled-adornment-amount"
-              sx={{ color: "#1976d2" }}
-            >
-              Phone
-            </InputLabel>
+            <FormLabel htmlFor="phone" sx={{ color: "#1976d2" }}>Phone No:</FormLabel>
             <FilledInput
               required
               type="Number"
-              sx={{ width: "550px" }}
-              id="filled-adornment-amount"
-              placeholder="Phone"
-              name="Phone"
+              id="phone"
+              placeholder="          Phone"
               value={phone}
               pattern="^\d{3}-\d{3}-\d{4}$"
               onChange={(e) => {
@@ -209,12 +195,7 @@ const PersonalInfoForm = (props) => {
             />
           </div>
           <div style={{ marginLeft: "20px", marginTop: "20px" }}>
-            <FormLabel
-              sx={{ color: "#1976d2" }}
-              id="demo-radio-buttons-group-label"
-            >
-              Gender
-            </FormLabel>
+            <FormLabel sx={{ color: "#1976d2" }} id="demo-radio-buttons-group-label">Gender</FormLabel>
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               name="Gender"
@@ -238,17 +219,10 @@ const PersonalInfoForm = (props) => {
             </RadioGroup>
           </div>
           {/* HEADING */}
-
-          <div style={{ display: "flex" }}>
+          <div>
             <div>
-              <FormLabel
-                sx={{ color: "#1976d2", marginLeft: "20px" }}
-                id="demo-radio-buttons-group-label"
-              >
-                Hometown
-              </FormLabel>
+              <FormLabel sx={{ color: "#1976d2", marginLeft: "20px" }} id="demo-radio-buttons-group-label">Hometown</FormLabel>
               <TextField
-                sx={{ width: "200px" }}
                 value={hometown}
                 type="text"
                 placeholder="Hometown"
@@ -259,14 +233,8 @@ const PersonalInfoForm = (props) => {
               />
             </div>
             <div>
-              <FormLabel
-                sx={{ color: "#1976d2", marginLeft: "20px" }}
-                id="demo-radio-buttons-group-label"
-              >
-                Date of Birth
-              </FormLabel>
+              <FormLabel sx={{ color: "#1976d2", marginLeft: "20px" }} id="demo-radio-buttons-group-label">Date of Birth</FormLabel>
               <TextField
-                sx={{ width: "20px" }}
                 value={birth}
                 type="date"
                 variant="filled"
@@ -279,13 +247,8 @@ const PersonalInfoForm = (props) => {
         </Box>
         <div style={{ marginLeft: "20px" }}>
           {/* LANGUAGES FORM SELECTION */}
-          <FormLabel
-            sx={{ color: "#1976d2" }}
-            id="demo-radio-buttons-group-label"
-          >
-            Languages Known
-          </FormLabel>
-          <Stack spacing={3} sx={{ width: 500 }}>
+          <FormLabel sx={{ color: "#1976d2" }} id="demo-radio-buttons-group-label">Languages Known</FormLabel>
+          <Stack spacing={3}>
             <Autocomplete
               multiple
               id="tags-standard"
@@ -306,9 +269,7 @@ const PersonalInfoForm = (props) => {
           </Stack>
         </div>
         <DialogActions>
-          <Button type="submit" onClick={props.onClose}>
-            Save
-          </Button>
+          <Button type="submit" onClick={props.onClose}>Save</Button>
         </DialogActions>
       </form>
     </div>

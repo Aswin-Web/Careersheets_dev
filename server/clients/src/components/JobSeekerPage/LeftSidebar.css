@@ -1,0 +1,26 @@
+
+.LinkAnchorTag {
+    text-decoration: none;
+}
+
+
+@media (max-width: 768px) {
+    .LeftSide {
+        background-color: #f31212;
+        font-size: 15px;
+    }
+
+    .LeftSide:hover {
+        background-color: aqua;
+    }
+}
+
+@media (max-width: 550px) {
+    .LeftSide {
+        background-color: #2711a4;
+        font-size: 12px;
+    }
+    .LeftSide:hover {
+        background-color: rgb(22, 190, 190);
+    }
+}
