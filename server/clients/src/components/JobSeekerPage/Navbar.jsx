@@ -62,7 +62,12 @@ export default function DrawerAppBar(props) {
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
-      sx={{ textAlign: "center", backgroundColor: "aqua",height:"100%" }}
+      sx={{
+        textAlign: "center",
+        backgroundColor: "#11144C",
+        color: "white",
+        height: "100%",
+      }}
     >
       <Typography variant="h6" sx={{ my: 2 }}>
         CareerSheets
@@ -75,13 +80,17 @@ export default function DrawerAppBar(props) {
               sx={{
                 textAlign: "center",
                 "&:hover": {
-                  backgroundColor: "green",
+                  textDecoration: "underline",
+                },
+                "@media (max-width: 600px)": {
+                  "&:hover": {
+                    textDecoration: "underline",
+                  },
                 },
               }}
             >
-              
               <NavLink to={item.path} style={{ textDecoration: "none" }}>
-                <ListItemText primary={item.name} />
+                <ListItemText sx={{ color: "white" }} primary={item.name} />
               </NavLink>
             </ListItemButton>
           </ListItem>
@@ -89,6 +98,7 @@ export default function DrawerAppBar(props) {
       </List>
     </Box>
   );
+  // new
 
   const container =
     window !== undefined ? () => window().document.body : undefined;

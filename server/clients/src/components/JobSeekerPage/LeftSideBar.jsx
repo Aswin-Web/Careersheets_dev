@@ -114,6 +114,7 @@ const LeftSideBar = () => {
           padding: "5%",
           textAlign: "center",
           margin: "10px",
+          color:'white'
         }}
       >
         Dashboard
