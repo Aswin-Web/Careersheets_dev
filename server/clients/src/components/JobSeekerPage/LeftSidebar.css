@@ -6,7 +6,7 @@
 
 @media (max-width: 768px) {
     .LeftSide {
-        background-color: #f31212;
+        color: white;
         font-size: 15px;
     }
 
@@ -17,7 +17,8 @@
 
 @media (max-width: 550px) {
     .LeftSide {
-        background-color: #2711a4;
+        background-color: #11144C;
+        color: white;
         font-size: 12px;
     }
     .LeftSide:hover {
