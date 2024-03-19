@@ -343,7 +343,7 @@ const GetAllJobs = async (req, res, next) => {
   const newJobs = await Promise.all(
     jobs.map(async (x) => {
       const views = await JobsHistory.find({ job_id: x._id });
-      console.log(views.length,"VIEWS")
+      console.log(views.length, "VIEWS");
       const userID = [];
       let newarr = views.map((x) => {
         if (!userID.includes(x.user_id.toString())) {
@@ -362,7 +362,7 @@ const GetAllJobs = async (req, res, next) => {
     })
   );
   // console.log(await newJobs);
-  return res.status(200).json({ allJobs: newJobs, });
+  return res.status(200).json({ allJobs: newJobs });
 };
 
 const EditJobs = async (req, res, next) => {
@@ -560,16 +560,20 @@ const showUsersWithTheRequiredSkillSets = async (req, res, next) => {
     return next();
   }
 };
-
+// email("ashvinachu097@gmail.com", "Job Alert For You", "<h1>Hello</h1>").catch(
+//   (e) => console.log(e)
+// );
 const sendEmailToAllShownUsers = async (req, res, next) => {
   try {
     const { skill, companyName, role, selectedUsers } = req.body;
     console.log(selectedUsers, "dd");
     if (selectedUsers.length !== 0) {
-      selectedUsers.map((x) => {
+      selectedUsers.map(async (x) => {
         //  Transmit Email
         let html = generateHTML(x.name, companyName, role);
-        email(x.email, "Job Alert For You", html);
+        await email(x.email, "Job Alert For You", html).catch((e) =>
+          console.log(e)
+        );
       });
 
       return res.status(200).json({
@@ -580,11 +584,15 @@ const sendEmailToAllShownUsers = async (req, res, next) => {
       if (skill !== "") {
         const users = await SkillMatch(skill);
         if (users.length !== 0) {
-          users.map((x) => {
-            //  Transmit Email
-            let html = generateHTML(x.name, companyName, role);
-            email(x.email, "Job Alert For You", html);
-          });
+          await Promise.all(
+            users.map((x) => {
+              //  Transmit Email
+              let html = generateHTML(x.name, companyName, role);
+              email(x.email, "Job Alert For You", html).catch((e) =>
+                console.log(e)
+              );
+            })
+          );
 
           return res.status(200).json({
             msg: "Mail Transmitted Successfully",

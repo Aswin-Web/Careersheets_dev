@@ -54,7 +54,7 @@ router.post("/transmitmail", sendEmailToAllShownUsers); //This will send email t
 router.get("/user/:id", GetUserInfoAdmin);
 // To Update as the user has viewed
 router.post("/user/view", AddViewedToUser);
-// To update the user as wishlisted
+// To update the user as wishlisted 
 router.post("/user/wishlist", AddWishlistedToUser);
 
 //  To find the Keyword with the text
