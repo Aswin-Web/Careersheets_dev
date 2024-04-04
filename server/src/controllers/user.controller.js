@@ -1,6 +1,8 @@
 const Application = require("../models/application.models");
 const ejs = require("ejs");
 const sendEmail = require("../utils/nodemailer.email");
+const { ObjectId } = require('mongodb');
+
 const postApplication = async (req, res, next) => {
   try {
     const {
@@ -54,6 +56,8 @@ const getAllApplications = async (req, res, next) => {
 };
 
 const AddStatusToApplication = async (req, res, next) => {
+  console.log("Request",req.body);
+  console.log("data from addstatustoapplicaation", req.body.interviewMode);
   try {
     const {
       round,
@@ -67,6 +71,7 @@ const AddStatusToApplication = async (req, res, next) => {
       interviewMode,
       interviewerContact,
     } = req.body;
+    
     if (
       (round &&
         interviewType &&
@@ -99,8 +104,6 @@ const AddStatusToApplication = async (req, res, next) => {
             new: true,
           }
         );
-
-
         if (status === "Selected") {
           const message = `<div>
     <div>
@@ -154,6 +157,82 @@ const AddStatusToApplication = async (req, res, next) => {
   }
 };
 
+const EditStatusOfApplication = async (req, res, next) => {
+  try {
+    const {
+      round,
+      interviewType,
+      status,
+      date,
+      notes,
+      interviewerName,
+      interviewMode,
+      interviewerContact,
+      applicationId,
+      _id
+    } = req.body;
+
+    console.log("Response from user controller", req.body);
+    
+    if (
+      (round &&
+        interviewType &&
+        status &&
+        date &&
+        applicationId &&
+        _id &&
+        interviewerName &&
+        interviewMode &&
+        interviewerContact) !== ""
+    ) 
+    /* {
+      const updatedApplication = await Application.findOneAndUpdate(
+        { _id: applicationId, 'status._id': _id }, // Find application by ID and status ID
+        {
+          $set: {
+            'status.$.round': round,
+            'status.$.interviewType': interviewType,
+            'status.$.status': status,
+            'status.$.date': date,
+            'status.$.notes': notes,
+            'status.$.interviewerName': interviewerName,
+            'status.$.interviewMode': interviewMode,
+            'status.$.interviewerContact': interviewerContact
+          },
+        }, */{
+        const updatedApplication = await Application.findOneAndUpdate(
+          { _id: applicationId },
+          {
+            $set: {
+              status: {
+                _id: _id,
+                round,
+                interviewType,
+                status,
+                date,
+                notes,
+                interviewerName,
+                interviewMode,
+                interviewerContact,
+              },
+            },
+          },
+          {
+            new: true,
+          }
+        );
+        console.log("Updaated Row", updatedApplication);
+        if (!updatedApplication) {
+          return res.status(401).json({ msg: "Failed" });
+        }
+        return res.status(201).json({ msg: "Application status updated successfully", updatedApplication });
+      }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
 const RemoveStatusFromApplication = async (req, res, next) => {
   try {
     const { post_id, roundIndex } = req.body;
@@ -188,5 +267,6 @@ module.exports = {
   postApplication,
   getAllApplications,
   AddStatusToApplication,
+  EditStatusOfApplication,
   RemoveStatusFromApplication,
 };

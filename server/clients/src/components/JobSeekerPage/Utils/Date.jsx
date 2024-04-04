@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function BasicDatePicker(props) {
+  console.log("Props from Date", props)
   const [value, setvalue] = React.useState("");
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} focused>

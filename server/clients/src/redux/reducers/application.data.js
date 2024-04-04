@@ -11,7 +11,6 @@ export const applicationSlice = createSlice({
     },
     AddItemToStatus(state, action) {
       const arr = state.value;
-      
       const update = arr.map((item) => {
         if (item._id === action.payload.postID) {
            (item.status = [...item.status,action.payload]);

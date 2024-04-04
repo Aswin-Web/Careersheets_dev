@@ -8,18 +8,18 @@ import ReactGA from "react-ga";
 import { useEffect } from "react";
 const ApplicationStatusComponent = () => {
   const data = useSelector((state) => state.application.value);
+  console.log("Data", data);
   useEffect(() => {
     ReactGA.pageview(window.location.pathname);
   }, []);
 
   return (
     <div>
-     
       <Box>
         <RightSideNavbar />
       </Box>
-
-      {data.length === 0 ? (
+      {data.length === 0 ? 
+      (
         <DefaultText />
       ) : (
         data.map((item, index) => (

@@ -7,7 +7,6 @@
     "start": "node src/index",
     "dev": "nodemon src/index",
     "product": "(npm i) & (cd clients && npm run buildProduct)"
-
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +22,7 @@
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",

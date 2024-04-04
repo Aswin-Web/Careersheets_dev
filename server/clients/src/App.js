@@ -6,7 +6,10 @@ import JobseekerPage from "./components/JobSeekerPage/main";
 // import "./Pages/JobSeeker_Page/main.css";
 import "./components/JobSeekerPage/main.css";
 import ApplicationStatusComponent from "./components/JobSeekerPage/ApplicationStatusComponent";
+import AddStatusComponent from "./components/JobSeekerPage/Utils/AddStatus";
+
 import UserSchduleComponent from "./components/JobSeekerPage/UserSchduleComponent";
+
 // App
 
 import "./App.css";
@@ -103,6 +106,8 @@ function App() {
   // REACT_APP_CLIENT_URL =
   //   REACT_APP_CLIENT_URL || "https://www.app.careersheets.in/";
 
+  
+
   return (
     <div className="App">
       {/* Landing Page Routes */}
@@ -134,6 +139,7 @@ function App() {
           }
         >
           <Route index element={<ApplicationStatusComponent />} />
+          <Route path="/user/:id" element={<AddStatusComponent />} />
           <Route path="schdule" element={<UserSchduleComponent />} />
           <Route path="profile" element={<Profile />} />
           <Route path="training" element={<Training />} />
