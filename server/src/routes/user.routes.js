@@ -27,6 +27,7 @@ const {
   postApplication,
   getAllApplications,
   AddStatusToApplication,
+  EditStatusOfApplication,
   RemoveStatusFromApplication,
 } = require("../controllers/user.controller");
 
@@ -78,6 +79,7 @@ router.put("/profile/personal/",addPersonalInfo );
 router.delete("/profile/projects/:id", deleteProject);
 
 router.post("/application/removestatus", RemoveStatusFromApplication);
+router.put("/application/editstatus", EditStatusOfApplication);
 
 // Jobs Routes
 // To Get all jobs which are not applied

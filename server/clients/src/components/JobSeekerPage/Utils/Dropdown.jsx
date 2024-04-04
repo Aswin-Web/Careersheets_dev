@@ -6,13 +6,16 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
 export default function BasicSelect(props) {
-  const { title, options, variant, setdata } = props;
+  const { title, options, value,  variant, setdata } = props;
+  console.log("Props from dropdown", props)
 
   const [status, setStatus] = React.useState(options[0]);
 
   const handleChange = (event) => {
+    console.log("Event", event)
     setStatus(event.target.value);
     setdata(event.target.value);
+    props.ongetOnChange(event.target.value,title)
   };
 
   return (
@@ -21,9 +24,7 @@ export default function BasicSelect(props) {
         <InputLabel
           id="demo-simple-select-label"
           sx={{
-            width:'100%',
-           
-           
+            width:'100%',           
           }}
         >
           {title}
@@ -31,11 +32,11 @@ export default function BasicSelect(props) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          label="Status"
-          value={status}
+          value={value}
           onChange={handleChange}
         >
-          {options.map((data) => {
+          {
+          options.map((data) => {
             return (
               <MenuItem value={data} key={data}>
                 {data}

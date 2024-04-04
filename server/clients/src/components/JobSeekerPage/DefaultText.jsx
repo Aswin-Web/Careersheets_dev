@@ -12,10 +12,7 @@ const DefaultText = () => {
         <Typography variant='h6'>
            Welcome to CareerSheets. You can add your application by clicking the plus button
         </Typography>
-
     </Box>
-
-
    </div>
   )
 }

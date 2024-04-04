@@ -78,7 +78,7 @@ export default function CustomizedDialogs(props) {
           </BootstrapDialogTitle>
          
             <div>
-              <AddApplication submitClose={handleClose} />
+              <AddApplication submitClose={handleClose}/>
 
             </div>
           
