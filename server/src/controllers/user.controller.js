@@ -185,9 +185,9 @@ const EditStatusOfApplication = async (req, res, next) => {
         interviewMode &&
         interviewerContact) !== ""
     ) 
-    /* {
+    {
       const updatedApplication = await Application.findOneAndUpdate(
-        { _id: applicationId, 'status._id': _id }, // Find application by ID and status ID
+        { _id: applicationId, 'status._id': _id }, 
         {
           $set: {
             'status.$.round': round,
@@ -199,7 +199,7 @@ const EditStatusOfApplication = async (req, res, next) => {
             'status.$.interviewMode': interviewMode,
             'status.$.interviewerContact': interviewerContact
           },
-        }, */{
+        }, /* {
         const updatedApplication = await Application.findOneAndUpdate(
           { _id: applicationId },
           {
@@ -216,7 +216,7 @@ const EditStatusOfApplication = async (req, res, next) => {
                 interviewerContact,
               },
             },
-          },
+          }, */
           {
             new: true,
           }

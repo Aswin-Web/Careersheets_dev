@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 
 
 const ProfileCard = (props) => {
+  //console.log("props from profile card", props);
   return (
     <div className={classes.profileCard}>
       <Helmet>
@@ -20,7 +21,6 @@ const ProfileCard = (props) => {
       <Box display="flex" sx={{ padding: "0.5em" }}>
         <Box sx={{ marginLeft: "auto", display: "flex" }}>
           {/* <Edit Card={props.CardName} /> */}
-       
           <Add Card={props.CardName} />
         </Box>
       </Box>

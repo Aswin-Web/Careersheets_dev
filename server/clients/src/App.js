@@ -48,6 +48,7 @@ import Admin from "./components/Admin/main";
 import Dashboard from "./components/Admin/Dashboard";
 import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
+import WorkingStatusTable from "./components/Admin/WorkingStatusTable"
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
 import ResumeMain from "./components/Profile/Resume/ResumeMain";
@@ -72,6 +73,7 @@ import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
 import SearchUser from "./components/Admin/SearchUser";
+import Tips from "./components/JobSeekerPage/Tips";
 import { REACT_APP_CLIENT_URL } from "./config";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -153,7 +155,14 @@ function App() {
           {/* Applied Jobs */}
           <Route path="applied" element={<AppliedJobsMenuComponent />} />
           <Route path="applied/*" element={<ViewAppliedJobApplications />} />
+          
         </Route>
+
+
+{/* Tips */}
+
+<Route path="/user/tips" element={<Tips />} />
+
         {/* Admin Routes */}
         <Route
           path="admin"
@@ -161,7 +170,7 @@ function App() {
             <PlatFormAdminController>
               <Dashboard />
             </PlatFormAdminController>
-          } 
+          }
         >
           {/* College Admin Verification */}
           <Route path="verify" element={<AdminTable />} />
@@ -176,6 +185,10 @@ function App() {
           <Route path="lastseen" element={<LastSeen />} />
           <Route path="profile/resume/pdf/*" element={<PDFViewAdmin />} />
           <Route path="profile/resume/*" element={<ResumeViewAdmin />} />
+
+          {/* Working Status Question */}
+          <Route path="verify/workingStatusAnswer" element={<WorkingStatusTable />} />
+
           {/* Search */}
           <Route path="search" element={<SearchUser />} />
         </Route>

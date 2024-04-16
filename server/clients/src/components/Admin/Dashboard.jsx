@@ -82,6 +82,10 @@ const Dashboard = () => {
               Verify Recruiter
             </Button>
             <Button
+              variant="outlined" color="error" onClick={() => navigate("/admin/verify/workingStatusAnswer")}>
+              Verify Working Status
+            </Button>
+            <Button
               sx={{ margin: "0 0.5rem" }}
               variant="outlined" color="error" onClick={() => navigate("/admin/new")}>
               New Job
@@ -99,11 +103,12 @@ const Dashboard = () => {
             </Button>
 
             <Button variant="outlined" color="error"
-              sx={{ margin: "0 0.5rem" }}
+              sx={{ padding:"0.5rem", margin:"1rem"}}
               onClick={() => {localStorage.clear(); navigate("/");}}>
               Logout
             </Button>
-            <Button variant="outlined" color="error" sx={{ margin: "1rem" }} onClick={() => {navigate("/admin/search"); }}>
+            
+            <Button variant="outlined" color="error" sx={{ padding:"0.5rem", margin:"1rem" }} onClick={() => {navigate("/admin/search"); }}>
               Search
             </Button>
           </Box>

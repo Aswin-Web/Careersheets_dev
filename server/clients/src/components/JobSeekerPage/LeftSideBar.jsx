@@ -9,6 +9,7 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -222,6 +223,17 @@ const LeftSideBar = () => {
         ) : (
           <></>
         )}
+        <Link to="/user/tips" className="LinkAnchorTag">
+          <Button variant="outlined" sx={ButtonStyles}>
+              <LightbulbIcon />
+              <Typography
+                  component="h6"
+                  sx={{ fontWeight: "bold", marginLeft: "7px" }}
+              >
+                  Tips
+              </Typography>
+          </Button>
+      </Link>
       </Box>
     </div>
   );

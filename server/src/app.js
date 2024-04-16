@@ -20,6 +20,8 @@ const connectDB = require("./utils/connectDB");
 
 // Routes Import
 const userRoutes = require("./routes/user.routes");
+
+
 const authRoutes = require("./routes/auth.routes");
 const googleAuthRoutes = require("./routes/googleauth.routes");
 const CSVroutes = require("./routes/csv.routes");
@@ -27,6 +29,7 @@ const collegeAdminRouter = require("./routes/college.routes");
 const collegeListRouter = require("./routes/collegeList.routes");
 const platformAdminRoutes = require("./routes/platformAdmin.routes");
 const resumeRoutes = require("./routes/resume.routes");
+const userStatusRoutes = require("./routes/userStatus.routes");
 const recruiterRoutes = require("./routes/recruiter.routes");
 
 const cors = require("cors");
@@ -99,6 +102,10 @@ app.use("/api/collegeadmin", collegeAdminRouter);
 
 // User Routes
 app.use("/api/user", userRoutes);
+
+//User Status
+app.use("/api/user/status", userStatusRoutes);
+
 // Resume generation Routes
 app.use("/api/user/profile/generateresume", resumeRoutes);
 
