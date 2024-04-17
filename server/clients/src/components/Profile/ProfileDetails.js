@@ -1,7 +1,15 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./ProfileDetails.module.css";
-import ProfileCard from "./UI/ProfileCard";
+import ProfileCard from "./UI/ProfileCard"; 
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Card from 'react-bootstrap/Card';
+
 
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
@@ -16,6 +24,8 @@ import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
 import { dataAction } from "../../redux/reducers/data";
 import { REACT_APP_SERVER_URL } from "../../config";
+
+
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -32,7 +42,6 @@ const ProfileDetails = () => {
   const token = useSelector((state) => state.auth.value);
   const data = useSelector((state) => state.data.value);
   const Languages = personalState.languages.map((item) => item);
-  
 
   const sendRequest = async () => {
     const response = await axios
@@ -44,10 +53,144 @@ const ProfileDetails = () => {
       })
       .catch((err) => console.log(err));
     const data = await response.data;
-    // console.log(data);
-
+    console.log("Response from whole profile",data);
     return data;
   };
+
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
+
+  const [formData, setFormData] = useState({
+    skills: "",
+    tips: "",
+    collegeName: personalState.collegeName || ""
+  });
+
+  const [formEditData, setFormEditData] = useState({
+    skills: "",
+    tips: "",
+    id: ""
+  });
+
+  const [statusData, setStatusData] = useState(null);
+  
+
+  const handleData = (e) => {
+    const { name, value } = e.target;
+    setFormData(previousData => ({
+      ...previousData,
+      [name]: value
+    }));
+  };
+
+  const handleEditData = (e) => {
+    const { name, value } = e.target;
+    setFormEditData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
+  const handleStatusSubmit = async (event) => {
+    event.preventDefault();
+    
+    const collegeName = data.education[0]?.collegeName; 
+    const studentName = personalState.fullName;
+    
+    const requestData = {
+        ...formData,
+        collegeName: collegeName || "Unknown College", 
+        studentName: studentName || "Unknown User"
+    };
+
+    //console.log("request data  from status submit", requestData)
+    
+    try {
+      const response = await axios.post(`${REACT_APP_SERVER_URL}/user/status/postStatus`, requestData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(response.status === 200){
+        toast("Status Submitted For Review");
+        setStatusData({
+          skills: response.data.skills,
+          tips: response.data.tips,
+          approval: response.data.approval,
+        });
+      }
+      console.log("response got in frontend", response);
+      //console.log("response status", response.status);
+
+    } catch (error) {
+      console.error("Error Editting status:", error);
+    }
+  };
+  
+  const handleEditStatusSubmit = async (event) => {
+    event.preventDefault();
+    //console.log("formdata from Edittttttttttttttt status submit", formEditData.id)
+    const id = formEditData.id;
+    try {
+      const response = await axios.put(`${REACT_APP_SERVER_URL}/user/status/updateWorkingQuestion/${id}`, formEditData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(response.status === 200){
+        toast("Status Editted Successfully");
+        setStatusData({
+          skills: response.data.skills,
+          tips: response.data.tips,
+          approval: response.data.approval
+        });
+        setIsEditFormVisible(false);
+      }
+      console.log("response got in Editttttttttttttt frontend", response);
+      //console.log("response status", response.status);
+
+    } catch (error) {
+      console.error("Error Editting status:", error);
+    }
+  };
+
+  const handleGetStatus = async (event) => {
+    //event.preventDefault();
+    try {
+      const response = await axios.get(`${REACT_APP_SERVER_URL}/user/status/getStatus`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if(response.status === 200){
+        //toast("Status Data Retrived Successfully");
+        setStatusData({
+          skills: response.data[0].skills,
+          tips: response.data[0].tips,
+          approval: response.data[0].approval,
+      });
+      setFormEditData({
+        skills: response.data[0].skills,
+        tips: response.data[0].tips,
+        id:response.data[0]._id
+      });
+      console.log("Form Edit Datavvvvvvvv", formEditData);
+
+      }
+      console.log("response got in frontend Status Get function", response.data[0]);
+      //console.log("response status", response.status);
+    } catch (error) {
+      console.error("Error submitting status:", error);
+    }
+  }
+ 
+  useEffect(()=>{
+    handleGetStatus();
+  },[]);
+
 
   useEffect(() => {
     sendRequest().then((data) => {
@@ -112,12 +255,116 @@ const ProfileDetails = () => {
         </div>
       </ProfileCard>
       <ProfileCard CardName="status">
-        <h3 className="m-3">Status : </h3>
-        <p> {status}</p>
+        <h3 className="m-3">Status:</h3>
+        {status === "Working" && !statusData ? (
+          <div style={{ marginLeft: "3rem" }}>
+            <>
+              <br/><h4>{status}</h4>
+              <div style={{backgroundColor:"#f2f2f2", maxWidth:"80rem"}}>
+              <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
+                <br />
+                <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>Help Your Friends Just By Answering The Below Questions</h2>
+                <Form.Group className="mb-3" controlId="formBasicSkills">
+                  <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Skills"
+                    name="skills"
+                    value={formData.skills}
+                    onChange={handleData}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicTips">
+                  <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Tips"
+                    name="tips"
+                    value={formData.tips}
+                    onChange={handleData}
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" style={{marginTop:"1rem",marginBottom:"2rem"}}>
+                  Submit
+                </Button>
+              </Form>
+              </div>
+            </>
+          </div>
+        ) : status === "Working" && statusData ? (
+          <div style={{ marginLeft: "3rem" }}>
+            <br/><h4>{status}</h4><br/>
+            <Card style={{ maxWidth: "80rem" }}>
+              <Card.Header>
+                <b>Approval Status:</b> <span style={{color:"#ff9142"}}><b>{statusData.approval}</b></span>
+                <br />
+                <span style={{ fontSize: "0.6rem" }}>
+                  You Can Only Edit Your Answers Until It Is Approved by Admin
+                </span>
+              </Card.Header>
+              <Card.Body style={{ lineHeight: "2rem" }}>
+                <Card.Text><b>1. What Helped You Secure A Job?</b></Card.Text>
+                <Card.Text style={{ marginLeft: "2rem" }}>
+                  {statusData.skills}
+                </Card.Text>
+                <Card.Text><b>2. What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Card.Text>
+                <Card.Text style={{ marginLeft: "2rem" }}>
+                  {statusData.tips}
+                </Card.Text>
+                <Button
+                  variant="primary"
+                  onClick={() => setIsEditFormVisible(true)} 
+                  disabled={statusData.approval === "Approved"} 
+                >
+                  Update
+                </Button>
+                {isEditFormVisible && (
+                  <div style={{backgroundColor:"#f2f2f2"}}>
+                  <Form
+                    style={{ margin: "2rem" }}
+                    onSubmit={handleEditStatusSubmit}
+                  >
+                    <br />
+                    <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
+                      Update Your Answers Here
+                    </h2>
+                    <Form.Group className="mb-3" controlId="formEditBasicSkills">
+                      <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        placeholder="Skills"
+                        name="skills"
+                        value={formEditData.skills}
+                        onChange={handleEditData}
+                      />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="formEditBasicTips">
+                      <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        placeholder="Tips"
+                        name="tips"
+                        value={formEditData.tips}
+                        onChange={handleEditData}
+                      />
+                    </Form.Group>
+                    <Button variant="primary" type="submit" style={{marginTop:"2rem", marginBottom:"2rem"}}>
+                      Update
+                    </Button>
+                  </Form>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          </div>
+        ) : (
+          <div style={{ marginLeft: "1rem" }}>
+            <p>{status}</p>
+          </div>
+        )}
       </ProfileCard>
       <ProfileCard CardName="skills">
         <h3 className="m-3">Skills : </h3>
-
         {skillError && <p className={classes.skillError}>{skillErrMsg}</p>}
         <div className={classes.skillItem}>
           {skillItems.map((skill,index) => (
@@ -196,6 +443,7 @@ const ProfileDetails = () => {
           </ul>
         </div>
       </ProfileCard>
+      <ToastContainer />
     </div>
   );
 };

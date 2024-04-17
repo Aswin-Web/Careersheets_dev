@@ -5,19 +5,22 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function BasicDatePicker(props) {
-  console.log("Props from Date", props)
-  const [value, setvalue] = React.useState("");
+  console.log("Props from Date", props);
+  const { value, onChange } = props;
+
+  const handleDateChange = (date) => {
+    if (onChange) {
+      onChange(date ? date.format("YYYY-MM-DD") : null);
+    }
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} focused>
       <DemoContainer components={["DatePicker"]}>
         <DatePicker
           label={props.label}
           value={value}
-          onChange={(value) => {
-            setvalue(value);
-           
-            props.onchange(value["$d"]);
-          }}
+          onChange={handleDateChange}
         />
       </DemoContainer>
     </LocalizationProvider>

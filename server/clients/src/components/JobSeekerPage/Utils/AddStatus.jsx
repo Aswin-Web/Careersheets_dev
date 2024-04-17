@@ -49,18 +49,13 @@ const AddStatus = (props) => {
   const [interviewType, setinterviewType] = useState("Written Test");
   const [interviewStatus, setinterviewStatus] = useState("Pending");
   const [interviewMode, setinterviewMode] = useState("");
-  const [interviewDate, setinterviewDate] = useState("");
+  const [interviewDate, setinterviewDate] = useState(null);
   const [interviewerContact, setcontact] = useState("");
   const [notes, setnotes] = useState("");
   const [data, setdata] = useState({});
   const [interviewerName, setInterviewerName] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
   const [open, setOpen] = React.useState(false);
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    // Perform any additional actions with the selected date
-  };
 
   const buttonController = () => {
     if (
@@ -148,18 +143,15 @@ const AddStatus = (props) => {
     });
   };
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${month}/${day}/${year}`;
-  }
-
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    const formattedDate = formatDate(interviewDate);
+    let formattedDate = null;
+  if (interviewDate instanceof Date) {
+    formattedDate = `${interviewDate.getFullYear()}-${(
+      interviewDate.getMonth() + 1
+    ).toString().padStart(2, '0')}-${interviewDate.getDate().toString().padStart(2, '0')}`;
+  }
 
     const detail = {
       round,
@@ -174,6 +166,7 @@ const AddStatus = (props) => {
     
     if (isEdit) {
       detail.applicationId = applicationId;
+      detail._id = formData._id;
     } else {
       detail.postID = props.info._id; 
       detail.author = props.info.author;
@@ -406,11 +399,11 @@ const AddStatus = (props) => {
   label="Enter the date"
   focused
   value={interviewDate}
-  onChange={handleDateChange} 
+  onChange={setinterviewDate}
 />
 
         </Box>
-
+You
         <Button
           onClick={submitHandler}
           disabled={buttonController() ? false : true}

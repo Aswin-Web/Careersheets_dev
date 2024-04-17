@@ -8,8 +8,11 @@ const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
 const Application = require("../models/application.models");
 const JobsHistory = require("../models/jobshistory.models");
+const {UserStatus} = require("../models/userStatus.model");
 
 const getUserInfo = async (req, res) => {
+
+  //console.log("Request body from getUserInfo", req.user);
   const id = req.user._id.toString();
 
   let userEducation;
@@ -28,6 +31,7 @@ const getUserInfo = async (req, res) => {
 
   return res.status(200).json(userDetails);
 };
+
 const postEducation = async (req, res) => {
   const { college, degree, graduated, graduationYear, registerNumber, stream } =
     req.body;
@@ -113,7 +117,7 @@ const postSkill = async (req, res) => {
   if (!existingUser) {
     return res.status(400).json({ message: "could not find the user" });
   }
-
+  
   const findSkill = existingUser.skill.find((el) => el.skill === skill);
 
   if (findSkill) {
@@ -159,7 +163,8 @@ const updateStatus = async (req, res) => {
 
   if (status === "") {
     return res.status(422).json({ message: "Invalid Inputs" });
-  }
+  } 
+
   let existingUser;
   try {
     await JobSeeker.updateOne({ _id: user }, { $set: { status: status } });
@@ -169,6 +174,8 @@ const updateStatus = async (req, res) => {
 
   return res.status(200).json({ message: "status updated", status });
 };
+
+
 ////////POSTING PROJECT/////
 const postProject = async (req, res) => {
   const { projectTitle, projectDescription, projectDomain, skill } = req.body;
