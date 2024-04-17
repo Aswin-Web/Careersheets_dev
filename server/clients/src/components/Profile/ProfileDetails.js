@@ -254,18 +254,20 @@ const ProfileDetails = () => {
           </ul>
         </div>
       </ProfileCard>
-    <ProfileCard CardName="status">
+      <ProfileCard CardName="status">
         <h3 className="m-3">Status:</h3>
         {status === "Working" && !statusData ? (
-          <div style={{ marginLeft: "1rem" }}>
+          <div style={{ marginLeft: "3rem" }}>
             <>
-              <p>{status}</p>
+              <br/><h4>{status}</h4>
+              <div style={{backgroundColor:"#f2f2f2", maxWidth:"80rem"}}>
               <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
-                <h2 style={{ fontSize: "1rem", marginBottom: "2rem" }}>Help Your Friends Just By Answering The Below Questions</h2>
+                <br />
+                <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>Help Your Friends Just By Answering The Below Questions</h2>
                 <Form.Group className="mb-3" controlId="formBasicSkills">
-                  <Form.Label>What Helped You Secure A Job?</Form.Label>
+                  <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
                   <Form.Control
-                    type="textarea"
+                    as="textarea"
                     placeholder="Skills"
                     name="skills"
                     value={formData.skills}
@@ -273,38 +275,39 @@ const ProfileDetails = () => {
                   />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicTips">
-                  <Form.Label>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</Form.Label>
+                  <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
                   <Form.Control
-                    type="textarea"
+                    as="textarea"
                     placeholder="Tips"
                     name="tips"
                     value={formData.tips}
                     onChange={handleData}
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit">
+                <Button variant="primary" type="submit" style={{marginTop:"1rem",marginBottom:"2rem"}}>
                   Submit
                 </Button>
               </Form>
+              </div>
             </>
           </div>
         ) : status === "Working" && statusData ? (
-          <div style={{ marginLeft: "1rem" }}>
-            <p>{status}</p>
-            <Card style={{ maxWidth: "60rem" }}>
+          <div style={{ marginLeft: "3rem" }}>
+            <br/><h4>{status}</h4><br/>
+            <Card style={{ maxWidth: "80rem" }}>
               <Card.Header>
-                Approval Status: {statusData.approval}
+                <b>Approval Status:</b> <span style={{color:"#ff9142"}}><b>{statusData.approval}</b></span>
                 <br />
                 <span style={{ fontSize: "0.6rem" }}>
                   You Can Only Edit Your Answers Until It Is Approved by Admin
                 </span>
               </Card.Header>
               <Card.Body style={{ lineHeight: "2rem" }}>
-                <Card.Text>1. What Helped You Secure A Job?</Card.Text>
+                <Card.Text><b>1. What Helped You Secure A Job?</b></Card.Text>
                 <Card.Text style={{ marginLeft: "2rem" }}>
                   {statusData.skills}
                 </Card.Text>
-                <Card.Text>2. What Tips Do You Have For Students From Your College To Prepare For Job Interview?</Card.Text>
+                <Card.Text><b>2. What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Card.Text>
                 <Card.Text style={{ marginLeft: "2rem" }}>
                   {statusData.tips}
                 </Card.Text>
@@ -316,17 +319,19 @@ const ProfileDetails = () => {
                   Update
                 </Button>
                 {isEditFormVisible && (
+                  <div style={{backgroundColor:"#f2f2f2"}}>
                   <Form
                     style={{ margin: "2rem" }}
                     onSubmit={handleEditStatusSubmit}
                   >
-                    <h2 style={{ fontSize: "1rem", marginBottom: "2rem" }}>
-                      Help Your Friends Just By Answering The Below Questions
+                    <br />
+                    <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
+                      Update Your Answers Here
                     </h2>
                     <Form.Group className="mb-3" controlId="formEditBasicSkills">
-                      <Form.Label>What Helped You Secure A Job?</Form.Label>
+                      <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
                       <Form.Control
-                        type="textarea"
+                        as="textarea"
                         placeholder="Skills"
                         name="skills"
                         value={formEditData.skills}
@@ -334,19 +339,20 @@ const ProfileDetails = () => {
                       />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formEditBasicTips">
-                      <Form.Label>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</Form.Label>
+                      <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
                       <Form.Control
-                        type="textarea"
+                        as="textarea"
                         placeholder="Tips"
                         name="tips"
                         value={formEditData.tips}
                         onChange={handleEditData}
                       />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" style={{marginTop:"2rem", marginBottom:"2rem"}}>
                       Update
                     </Button>
                   </Form>
+                  </div>
                 )}
               </Card.Body>
             </Card>

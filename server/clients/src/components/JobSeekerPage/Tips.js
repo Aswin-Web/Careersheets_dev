@@ -101,18 +101,32 @@ const Tips = () => {
         />
       </Helmet>
       <Navbar className="Navbar" />
-      <div style={{marginTop:"10rem", marginLeft:"50rem", marginRight:"20rem"}}>
+      <div style={{marginTop:"10rem", marginLeft:"50rem", marginRight:"20rem", fontFamily:"Arial"}}>
             <ul style={{listStyle:"none"}}>
                 {data.map((item) => (
                     <li key={item._id}>
                         <Card>
-                            <Card.Header as="h5">Tips</Card.Header>
+                            <Card.Header as="h3" style={{margin:"1rem"}}><b>Tips</b></Card.Header>
                             <Card.Body>
-                                <Card.Title>Skills: {item.skills}</Card.Title>
-                                <Card.Title>Tips: {item.tips}</Card.Title>
-                                <Card.Title>College: {item.college}</Card.Title>
-                                <Card.Title>Name of the student: {item.studentName}</Card.Title>
-                                <Card.Title>Views: {item.views}</Card.Title>
+                                <Card.Title style={{margin:"2rem"}}>
+                                    <span><b>Skills</b></span> 
+                                    <br /><br /> 
+                                    <span style={{fontSize:"1rem"}}>{item.skills}</span>
+                                </Card.Title>
+                                <Card.Title style={{margin:"2rem"}}>
+                                    <span><b>Tips</b></span> 
+                                    <br /><br /> 
+                                    <span style={{fontSize:"1rem"}}>{item.tips}</span>
+                                </Card.Title>
+                                <Card.Title style={{margin:"2rem"}}>
+                                    <span><b>College : </b>{item.college}</span> 
+                                </Card.Title>
+                                <Card.Title style={{margin:"2rem"}}>
+                                    <span><b>Name of the student : </b>{item.studentName}</span>
+                                </Card.Title>
+                                <Card.Title style={{margin:"2rem"}}>
+                                    <span><b>Views : </b>{item.views}</span> 
+                                </Card.Title>
                             </Card.Body>
                         </Card>
                         <br/><br/>

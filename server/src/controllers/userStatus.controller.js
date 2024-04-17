@@ -54,7 +54,7 @@ let getUserWorkingQuestions = async (req, res) => {
 
 let getTips = async (req, res) => {
   console.log("Fetch Tips Function");
-  console.log("Query Parameters:", req.body);
+  console.log("Query Parameters:", req.query);
 
   const collegeName = req.query.collegeName;
   console.log("gsgsggs", collegeName);
@@ -63,8 +63,10 @@ let getTips = async (req, res) => {
       return res.status(400).json({ message: "College name is required" });
   }
 
+  const approval = "Approved";
+
   try {
-      const data = await UserStatus.find({ college: collegeName });
+      const data = await UserStatus.find({ college: collegeName, approval:approval });
       if (!data) {
           return res.status(404).json({ message: "Data Not Found" });
       }
