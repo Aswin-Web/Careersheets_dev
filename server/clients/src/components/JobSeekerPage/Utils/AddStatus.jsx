@@ -3,6 +3,9 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import DropDown from "./Dropdown";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import Cards from "../Cards"
 import { Button, Typography } from "@mui/material";
 import ReusableDate from "./Date";
@@ -23,7 +26,7 @@ const AddStatus = (props) => {
   const locations = useLocation();
   let { rowData, applicationId } = locations.state || {};
   
-  console.log("Row Data from Addstatus", rowData,applicationId);
+  //console.log("Row Data from Addstatus", rowData,applicationId);
 
   const isEdit = !!rowData;
   
@@ -34,7 +37,7 @@ const AddStatus = (props) => {
   // ID is the Application ID
   // author returns User_id
   const { _id, author, finalStatus } = props.info;
-  console.log("props from add status", props.info._id)
+  //console.log("props from add status", props.info._id)
   /* const { rowData } = props.info;
   const { _id, author, finalStatus } = rowData ?? {}; */
 
@@ -43,9 +46,16 @@ const AddStatus = (props) => {
   
   // finalStatus the user Entered
   // Input forms
-  const [round, setround] = useState(
+  /* const [round, setround] = useState(
     finalStatus !== undefined ? Number(finalStatus.round) + 1 : 1
-  );
+  ); */
+  const [round, setround] = useState(() => {
+    if (finalStatus === undefined || finalStatus.round === null) {
+        return 1;
+    } else {
+        return finalStatus.round + 1;
+    }
+});
   const [interviewType, setinterviewType] = useState("Written Test");
   const [interviewStatus, setinterviewStatus] = useState("Pending");
   const [interviewMode, setinterviewMode] = useState("");
@@ -98,7 +108,7 @@ const AddStatus = (props) => {
     _id: rowData?._id || ""
   });
 
-  console.log("form data add status", formData)
+  //console.log("form data add status", formData)
   
   const prefillForm = () => {
     if (rowData) {
@@ -119,7 +129,7 @@ const AddStatus = (props) => {
 
   //console.log("Details from frontend add status",detail);
 
-  const resetFormFields = () => {
+  /* const resetFormFields = () => {
     setround(finalStatus !== undefined ? Number(finalStatus.round) + 1 : 1);
     setinterviewType("Written Test");
     setinterviewStatus("Pending");
@@ -141,7 +151,7 @@ const AddStatus = (props) => {
       interviewMode: "",
       _id: ""
     });
-  };
+  }; */
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -374,36 +384,22 @@ const AddStatus = (props) => {
             margin: "1rem 0",
           }}
         >
-         {/*  <ReusableDate
-  label="Enter the date"
-  focused
-            value={interviewDate}
-            onChange={(e) => {
-              setFormData({ ...formData, date: e.target.value });
-              setinterviewDate(e.target.value);
-            }}
-            setdata={setinterviewDate}
-/> */}
-{/* <ReusableDate
-  label="Enter the date"
-  focused
-  value={interviewDate}
-  onChange={(date) => {
-    // Format the date received before setting it
-    const formattedDate = formatDate(date);
-    setFormData({ ...formData, date: formattedDate });
-    setinterviewDate(formattedDate);
-  }}
-/> */}
-<ReusableDate
-  label="Enter the date"
-  focused
-  value={interviewDate}
-  onChange={setinterviewDate}
-/>
 
         </Box>
-You
+
+        <Box>
+        <label style={{marginRight:"1rem",fontSize:"1rem"}}>Interview Date</label>
+        <DatePicker
+            selected={interviewDate}
+            onChange={(date) => {
+                setinterviewDate(date);
+                // Handle form data state change
+                setFormData({ ...formData, date });
+            }}
+            dateFormat="yyyy-MM-dd"
+        />
+      </Box>
+
         <Button
           onClick={submitHandler}
           disabled={buttonController() ? false : true}

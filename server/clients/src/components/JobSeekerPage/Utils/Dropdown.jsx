@@ -7,12 +7,11 @@ import Select from "@mui/material/Select";
 
 export default function BasicSelect(props) {
   const { title, options, value,  variant, setdata } = props;
-  console.log("Props from dropdown", props)
-
+  
   const [status, setStatus] = React.useState(options[0]);
 
   const handleChange = (event) => {
-    console.log("Event", event)
+    //console.log("Event", event)
     setStatus(event.target.value);
     setdata(event.target.value);
     props.ongetOnChange(event.target.value,title)

@@ -164,7 +164,7 @@ const LeftSideBar = () => {
             </Typography>
           </Button>
         </Link>
-        <Link to="/user/devstage" style={{ textDecoration: "none" }}>
+        <Link to="/user/tips" style={{ textDecoration: "none" }}>
           <Button variant="outlined" sx={ButtonStyles}>
             <GradingIcon />
             <Typography
@@ -223,17 +223,6 @@ const LeftSideBar = () => {
         ) : (
           <></>
         )}
-        <Link to="/user/tips" className="LinkAnchorTag">
-          <Button variant="outlined" sx={ButtonStyles}>
-              <LightbulbIcon />
-              <Typography
-                  component="h6"
-                  sx={{ fontWeight: "bold", marginLeft: "7px" }}
-              >
-                  Tips
-              </Typography>
-          </Button>
-      </Link>
       </Box>
     </div>
   );
