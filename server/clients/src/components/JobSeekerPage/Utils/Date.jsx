@@ -10,7 +10,7 @@ export default function BasicDatePicker(props) {
 
   const handleDateChange = (date) => {
     if (onChange) {
-      onChange(date ? date.format("YYYY-MM-DD") : null);
+      onChange(date);
     }
   };
 

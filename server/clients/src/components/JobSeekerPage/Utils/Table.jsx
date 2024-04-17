@@ -146,21 +146,10 @@ export default function BasicTable(props) {
         />
         {index === round ? (
           <Box sx={{}}>
-            <p>Do you want to edit it</p>
             <button
               style={{ textTransform: "capitalize" }}
               onClick={() => handleEdit(row)}
-            >
-              Edit
-            </button>{" "}
-            <button
-              style={{ textTransform: "capitalize" }}
-              onClick={() => {
-                setround(-1);
-              }}
-            >
-              Cancel
-            </button>
+            ></button>{" "}
           </Box>
         ) : null}
       </>
