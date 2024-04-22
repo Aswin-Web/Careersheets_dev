@@ -199,24 +199,7 @@ const EditStatusOfApplication = async (req, res, next) => {
             'status.$.interviewMode': interviewMode,
             'status.$.interviewerContact': interviewerContact
           },
-        }, /* {
-        const updatedApplication = await Application.findOneAndUpdate(
-          { _id: applicationId },
-          {
-            $set: {
-              status: {
-                _id: _id,
-                round,
-                interviewType,
-                status,
-                date,
-                notes,
-                interviewerName,
-                interviewMode,
-                interviewerContact,
-              },
-            },
-          }, */
+        }, 
           {
             new: true,
           }

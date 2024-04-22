@@ -17,6 +17,8 @@ import { REACT_APP_SERVER_URL } from "../../config";
 export default function WorkingStatusTable() {
     
   const [statusData, setStatusData] = useState([]);
+
+  console.log("gsgsgsggsggsgsss frommmmmmmmm admin", statusData)
   
   useEffect(() => {
     fetchStatusData();
@@ -25,7 +27,7 @@ export default function WorkingStatusTable() {
   const fetchStatusData = async (req, res) => {
     try {
         const { data } = await axios.get(
-            `${REACT_APP_SERVER_URL + `/user/status/getStatus`}`,
+            `${REACT_APP_SERVER_URL + `/user/status/getStatusAdmin`}`,
             {
               headers: {
                 "Content-type": "application/json",

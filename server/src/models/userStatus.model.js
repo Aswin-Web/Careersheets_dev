@@ -7,7 +7,9 @@ const userStatus = new mongoose.Schema({
     user: {type: mongoose.Types.ObjectId,required: true},
     college: {type:String, required:true},
     studentName:{type:String, required:true},
-    views:{type:Number, require:true}
+    views:{type:Number, require:true},
+    likes:{type:Array, require:true},
+    displayPicture:{type:String}
 });
 
 const UserStatus = mongoose.model("UserStatus",userStatus);
