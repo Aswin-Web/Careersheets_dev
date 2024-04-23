@@ -1,12 +1,11 @@
 const {UserStatus} = require("../models/userStatus.model");
 const JobSeeker = require("../models/user.models");
 
-
 let userStatusPost = async (req, res) => {
     console.log("Status Post Function");
     console.log("Request body from cruddddd Controller",req.body);
 
-    const {skills, tips, collegeName, studentName} = req.body;
+    const {skills, tips, collegeName, studentName, displayPicture} = req.body;
 
     const user = req.user._id.toString();
     
@@ -27,7 +26,9 @@ let userStatusPost = async (req, res) => {
             user: user,
             college: collegeName,
             studentName: studentName,
-            views:"1"
+            views:"1",
+            likes:[],
+            displayPicture: displayPicture
         });
 
         await data.save();
@@ -43,6 +44,20 @@ let getUserWorkingQuestions = async (req, res) => {
   const fetchid = req.user._id.toString();
   try{
   const data = await UserStatus.find({user: fetchid});
+    if(!data){
+        res.send("Data Not Found");
+    } 
+    res.send(data);
+  }catch(err){
+    res.send(err);
+  }
+};
+
+let getUserWorkingQuestionsAdmin = async (req, res) => {
+  console.log("Fetch Status Data Function");
+  const fetchid = req.user._id.toString();
+  try{
+  const data = await UserStatus.find();
     if(!data){
         res.send("Data Not Found");
     } 
@@ -151,4 +166,38 @@ let tipViews = async (req, res) => {
   }
 };
 
-module.exports = { userStatusPost, getUserWorkingQuestions, updateApproval, updateWorkingQuestion, getTips, tipViews };
+const likesCount = async (req, res) => {
+  console.log("Toggling like status");
+  const userId = req.user._id.toString();
+  const { tipId } = req.body;
+
+  if (!tipId) {
+      return res.status(400).json({ error: "Tip ID is required" });
+  }
+
+  try {
+      const tip = await UserStatus.findOne({ _id: tipId });
+      if (!tip) {
+          return res.status(404).json({ error: "Tip not found" });
+      }
+
+      const userIndex = tip.likes.indexOf(userId);
+      if (userIndex > -1) {
+          tip.likes.splice(userIndex, 1);
+      } else {
+          tip.likes.push(userId);
+      }
+
+      await tip.save();
+
+      res.status(200).json({
+          likes: tip.likes,
+          message: userIndex > -1 ? "Like removed" : "Liked"
+      });
+  } catch (error) {
+      console.error("Error toggling like status:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+module.exports = { userStatusPost, getUserWorkingQuestions, updateApproval, updateWorkingQuestion, getTips, tipViews, likesCount, getUserWorkingQuestionsAdmin };

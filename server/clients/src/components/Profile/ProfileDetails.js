@@ -10,7 +10,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Card from 'react-bootstrap/Card';
 
-
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
 import EducationItems from "./EducationItems";
@@ -24,8 +23,6 @@ import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
 import { dataAction } from "../../redux/reducers/data";
 import { REACT_APP_SERVER_URL } from "../../config";
-
-
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -54,7 +51,17 @@ const ProfileDetails = () => {
       .catch((err) => console.log(err));
     const data = await response.data;
     console.log("Response from whole profile",data);
-    return data;
+
+    let highestEducation = null;
+    if (data.education && data.education.length > 0) {
+      highestEducation = data.education.reduce((prev, current) =>
+        prev.graduationYear > current.graduationYear ? prev : current
+      );
+    }
+
+
+    const { displayPicture,name } = data;
+    return { ...data, profilePicture: displayPicture,name, highestEducation  };
   };
 
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
@@ -93,14 +100,16 @@ const ProfileDetails = () => {
 
   const handleStatusSubmit = async (event) => {
     event.preventDefault();
+
+    const { profilePicture, name, highestEducation  } = await sendRequest();
     
-    const collegeName = data.education[0]?.collegeName; 
-    const studentName = personalState.fullName;
+    const collegeName = highestEducation ? highestEducation.collegeName : "Unknown College";
     
     const requestData = {
         ...formData,
         collegeName: collegeName || "Unknown College", 
-        studentName: studentName || "Unknown User"
+        studentName: name || "Unknown User",
+        displayPicture: profilePicture 
     };
 
     //console.log("request data  from status submit", requestData)

@@ -61,8 +61,12 @@ export default function BasicTable(props) {
   };
 
   const handleEdit = async (row) => {
-    navigate(`/user`, { state: { rowData: row, applicationId: application_id } }); 
-    setRowData(row);
+    if (row) {
+      setRowData(row);
+      navigate(`/user`, { state: { rowData: row, applicationId: application_id } }); 
+    } else {
+      console.error("Row is undefined.");
+    }
   };
 
   return (
