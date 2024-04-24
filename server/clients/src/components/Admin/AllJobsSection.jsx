@@ -178,13 +178,28 @@ import Axios from "axios";
 import { AddJobs } from "../../redux/reducers/AllJobDetails";
 import { Link } from "react-router-dom";
 
+import { WhatsappShareButton } from 'react-share';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { toast, ToastContainer } from 'react-toastify';
+
+
 const AllJobsSection = () => {
   const allJobs = useSelector((state) => state.allJobs.value);
+  console.log("all jobs", allJobs);
   const dispatch = useDispatch();
 
   useEffect(() => {
     // NetworkRequest();
   }, []);
+
+  const generateJobUrl = (jobId) => {
+    const baseUrl = 'https://www.app.careersheets.in/user/jobs/';
+    return baseUrl + jobId;
+  }
+
+  const handleCopy =() =>{
+    toast("Copied to Clipboard");
+  }
 
   return (
     <>
@@ -248,6 +263,22 @@ const AllJobsSection = () => {
                     ? item.appliedUsers.length + " Applications received"
                     : "None applied"}
                 </p>
+                 { item.isClosed !== true && ( 
+                 <div className="d-flex gap-2">
+                  <WhatsappShareButton url={generateJobUrl(item._id)}>
+                    <Button variant="contained" color="primary">
+                      Share on Whatsapp
+                    </Button>
+                  </WhatsappShareButton>
+                  <CopyToClipboard text={generateJobUrl(item._id)}>
+                    <Button variant="contained" color="primary" onClick={handleCopy}>
+                      Copy Link
+                    </Button>
+                  </CopyToClipboard>
+                </div>
+              )}
+
+                <br />
                 <Link to={`/admin/jobs/${item._id}`}>
                   <Button variant="contained" color="primary">
                     View
@@ -260,6 +291,7 @@ const AllJobsSection = () => {
           <Typography variant="body1">No jobs available.</Typography>
         )}
       </div>
+      <ToastContainer />
     </>
   );
 };

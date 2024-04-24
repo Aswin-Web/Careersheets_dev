@@ -104,14 +104,17 @@ const ProfileDetails = () => {
     const { profilePicture, name, highestEducation  } = await sendRequest();
     
     const collegeName = highestEducation ? highestEducation.collegeName : "Unknown College";
+
+    const date = new Date();
     
     const requestData = {
         ...formData,
         collegeName: collegeName || "Unknown College", 
         studentName: name || "Unknown User",
-        displayPicture: profilePicture 
+        displayPicture: profilePicture,
+        date: date
     };
-
+////////////////
     //console.log("request data  from status submit", requestData)
     
     try {
