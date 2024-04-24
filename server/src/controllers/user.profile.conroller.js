@@ -289,6 +289,10 @@ const GetAllJobs = async (req, res, next) => {
         "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
       );
 
+      const skillsRequired = skillJobs.map(job => job.SkillsRequired);
+
+      console.log("Skills Required:", skillsRequired);
+
     console.log(
       userInfo.skill.map((x) => {
         try {
@@ -349,12 +353,11 @@ const GetAllJobs = async (req, res, next) => {
       })
     );
 
-
     const jobs = skillJobs.concat(projectJobs);
     // console.log(skillJobs)
     // console.log(jobs)
-    
-    return res.json({ jobs });
+  
+    return res.json({ jobs, skillsRequired });
   } catch (error) {
     console.log(error);
     return next();

@@ -3,9 +3,10 @@ const JobSeeker = require("../models/user.models");
 
 let userStatusPost = async (req, res) => {
     console.log("Status Post Function");
-    console.log("Request body from cruddddd Controller",req.body);
+    console.log("Request body from cruddddd Controller jjjjjjjjjjjjjjjjjjj",req.body);
 
-    const {skills, tips, collegeName, studentName, displayPicture} = req.body;
+    const {skills, tips, collegeName, studentName, displayPicture, date} = req.body;
+
 
     const user = req.user._id.toString();
     
@@ -26,9 +27,10 @@ let userStatusPost = async (req, res) => {
             user: user,
             college: collegeName,
             studentName: studentName,
-            views:"1",
+            views:"0",
             likes:[],
-            displayPicture: displayPicture
+            displayPicture: displayPicture,
+            date:date
         });
 
         await data.save();

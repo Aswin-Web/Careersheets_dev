@@ -94,7 +94,6 @@ const CreateOppourtunity = () => {
     const data = await axios.post(
       `${REACT_APP_SERVER_URL + "/admin/jobs"}`,
       info,
-
       {
         headers: {
           "Content-type": "application/json",
@@ -102,7 +101,6 @@ const CreateOppourtunity = () => {
         },
       }
     );
-
     if (data.status === 200) {
       dispatch(AddNewJob(data.data.job));
       navigate("/admin/jobs");
@@ -183,7 +181,7 @@ const CreateOppourtunity = () => {
           fullWidth
           id="companyName"
           name="companyName"
-          label="Company Name"
+          label="Company Naaaaaaaaaaaame"
           value={formik.values.companyName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

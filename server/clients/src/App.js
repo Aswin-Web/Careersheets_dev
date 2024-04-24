@@ -155,13 +155,11 @@ function App() {
           {/* Applied Jobs */}
           <Route path="applied" element={<AppliedJobsMenuComponent />} />
           <Route path="applied/*" element={<ViewAppliedJobApplications />} />
-          
+          <Route path="tips" element={<Tips />}/>
         </Route>
 
 
 {/* Tips */}
-
-<Route path="/user/tips" element={<Tips />} />
 
         {/* Admin Routes */}
         <Route

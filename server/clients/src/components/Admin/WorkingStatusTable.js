@@ -18,7 +18,7 @@ export default function WorkingStatusTable() {
     
   const [statusData, setStatusData] = useState([]);
 
-  console.log("gsgsgsggsggsgsss frommmmmmmmm admin", statusData)
+  console.log("Status from admin date", statusData);
   
   useEffect(() => {
     fetchStatusData();
@@ -62,6 +62,11 @@ export default function WorkingStatusTable() {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-GB');
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -70,7 +75,10 @@ export default function WorkingStatusTable() {
             <TableHead>
               <TableRow>
                 <TableCell>Sl No</TableCell>
-                {/* <TableCell>Name</TableCell> */}
+                <TableCell>Name</TableCell>
+                <TableCell>College</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Views</TableCell>
                 <TableCell>Tips</TableCell>
                 <TableCell>Approval Option</TableCell>
                 <TableCell>Status</TableCell>
@@ -85,7 +93,10 @@ export default function WorkingStatusTable() {
                   <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
-                  {/* <TableCell></TableCell> */}
+                  <TableCell>{user.studentName}</TableCell>
+                  <TableCell>{user.college}</TableCell>
+                  <TableCell>{formatDate(user.date)}</TableCell>
+                  <TableCell>{user.views}</TableCell>
                   <TableCell>{user.skills}, {user.tips}</TableCell>
                   <TableCell>
                             <FormControl fullWidth style={{marginTop:"1rem"}}>

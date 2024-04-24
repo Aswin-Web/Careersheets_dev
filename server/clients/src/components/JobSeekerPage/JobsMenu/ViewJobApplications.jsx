@@ -30,6 +30,8 @@ const ViewJobApplications = () => {
   const currentJob = allJobs.filter((x) => x._id === jobbID);
   const newState = useSelector((state) => state);
 
+  console.log("current job", currentJob)
+
   console.log(useSelector((state) => state));
 
   const saveApplyHistory = async () => {
@@ -51,8 +53,10 @@ const ViewJobApplications = () => {
   };
 
   useEffect(() => {
-    saveApplyHistory();
-  }, []);
+    if (currentJob.length !== 0) {
+      saveApplyHistory();
+    }
+  }, [currentJob]);
 
   const handleApply = async () => {
     const data = await axios.get(
@@ -275,7 +279,13 @@ const ViewJobApplications = () => {
           </Box>
         </Box>
       ) : (
-        <></>
+        <div
+        style={{
+          backgroundColor:"white",
+          minWidth:"40rem",
+          minHeight:"5rem",
+          padding:"2rem"
+      }}> <b> Your Skills Doesn't Match For The Particular Job </b></div>
       )}
     </Box>
   );
