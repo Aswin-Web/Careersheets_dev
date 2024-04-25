@@ -182,7 +182,7 @@ import { WhatsappShareButton } from 'react-share';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast, ToastContainer } from 'react-toastify';
 
-
+  
 const AllJobsSection = () => {
   const allJobs = useSelector((state) => state.allJobs.value);
   console.log("all jobs", allJobs);

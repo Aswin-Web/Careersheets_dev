@@ -1,7 +1,7 @@
 import React from "react";
 import ReactGA from "react-ga";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import { Outlet, Route, Routes, useNavigate, useLocation  } from "react-router-dom";
 import JobseekerPage from "./components/JobSeekerPage/main";
 // import "./Pages/JobSeeker_Page/main.css";
 import "./components/JobSeekerPage/main.css";
@@ -83,6 +83,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 // ReactGA.initialize("UA-265597792-1");
 
 function App() {
+  const location = useLocation();
   const notification = useSelector((state) => state.notification.value);
   const dispatch = useDispatch();
   const token = JSON.parse(localStorage.getItem("user"));
@@ -135,7 +136,7 @@ function App() {
         <Route
           path="/user"
           element={
-            <UserController>
+            <UserController currentPath={location.pathname}>
               <JobseekerPage />
             </UserController>
           }

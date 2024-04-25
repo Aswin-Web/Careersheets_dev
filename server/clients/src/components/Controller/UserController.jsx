@@ -5,8 +5,15 @@ import { REACT_APP_CLIENT_URL } from "./../../config";
 
 const UserController = (props) => {
     const {role,verification,name} = UseAuth();
+    const { currentPath } = props;
     //const navigate = useNavigate();
     console.log("role", role);
+
+    useEffect(() => {
+        if ((role !== 'user' && role !== 'superuser') || verification !== true) {
+            localStorage.setItem('unauthorizedPath',currentPath);
+        }
+    }, [role, verification]);
 
     if ((role=== 'user' || role==='superuser') && verification=== true ){
       return props.children
@@ -14,5 +21,4 @@ const UserController = (props) => {
     
     return <Navigate to="/" /> 
 }
-
 export default UserController;

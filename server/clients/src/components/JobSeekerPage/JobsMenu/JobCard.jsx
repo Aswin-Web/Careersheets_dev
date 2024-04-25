@@ -7,6 +7,7 @@ import DateRangeIcon from "@mui/icons-material/DateRange";
 import { Link } from "react-router-dom";
 import './JobCard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ViewJobApplications from "./ViewJobApplications";
 
 
 const centerItems = {
@@ -46,6 +47,14 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
   console.log(score);
   console.log(projectScore);
   console.log(item.projectLevel);
+
+  // Calculate the percentage of skill match
+  const skillMatchPercentage = Math.round((score / JobSkillset.length) * 100);
+
+  // Disable apply button if skill match percentage is less than 25%
+  const disableApplyButton = skillMatchPercentage < 25;
+
+  //console.log("disable apply button", disableApplyButton);
 
   return (
     <div>
@@ -133,10 +142,15 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
                 : "None applied"
             } `}
           </p>
-
-          <Link to={`/user/jobs/${item._id}`}>
+                    
+          {/* <Link to={`/user/jobs/${item._id}`}>
             <p>View</p>
-          </Link>
+          </Link> */}
+
+<Link to={`/user/jobs/${item._id}?disableApplyButton=${disableApplyButton}`}>
+  <p>View</p>
+</Link>
+          
         </Box>
       </Box>
     </div>
