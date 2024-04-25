@@ -43,32 +43,56 @@ const UserSelect = () => {
 
       localStorage.setItem("user", JSON.stringify(userInfo.token));
       dispatch(changeUserInfo(userInfo.token));
-      if (
-        (await userInfo.role) === "user" &&
-        (await userInfo.verification) === true
-      ) {
-        navigate("/user");
-      }
-      if (
-        (await userInfo.role) === "superuser" &&
-        (await userInfo.verification) === true
-      ) {
-        localStorage.setItem("admin", userInfo.token);
-        navigate("/user");
-      }
-      if (userInfo.role === "collegeadmin" && userInfo.verification === true) {
-        <Navigate to="/" />;
-        navigate("/collegeadmin");
-      }
-      if (userInfo.role === "recruiter") {
-        localStorage.setItem("recruiter", userInfo.token);
-        navigate("/recruiter");
-      }
-      if (userInfo.role !== "recruiter" && userInfo.verification === false) {
-        navigate("/selectuser");
-      }
-    };
+      const unauthorizedPath = localStorage.getItem("unauthorizedPath");
+      console.log("Unauthorized", unauthorizedPath)
 
+      if((await userInfo.verification) === true && (unauthorizedPath)){
+          navigate(unauthorizedPath);
+          console.log("In unauthorized url Block");
+          console.log("role from unauthorized url block",userInfo.role);
+
+          if (
+            (await userInfo.role) === "superuser"
+          ) {
+            localStorage.setItem("admin", userInfo.token);
+          }
+
+          if (userInfo.role === "recruiter") {
+            localStorage.setItem("recruiter", userInfo.token);
+          }
+
+      localStorage.removeItem("unauthorizedPath");
+
+      } else {  
+            if (
+              (await userInfo.role) === "user" &&
+              (await userInfo.verification) === true
+            ) {
+              navigate("/user");
+            }
+
+            if (
+              (await userInfo.role) === "superuser" &&
+              (await userInfo.verification) === true
+            ) {
+              console.log("In Super User Block")
+              localStorage.setItem("admin", userInfo.token);
+              navigate("/user");
+            }
+
+            if (userInfo.role === "collegeadmin" && userInfo.verification === true) {
+              <Navigate to="/" />;
+              navigate("/collegeadmin");
+            }
+            if (userInfo.role === "recruiter") {
+              localStorage.setItem("recruiter", userInfo.token);
+              navigate("/recruiter");
+            }
+            if (userInfo.role !== "recruiter" && userInfo.verification === false) {
+              navigate("/selectuser");
+            }
+          };
+        }
     dataFetch();
     return;
   }, []);

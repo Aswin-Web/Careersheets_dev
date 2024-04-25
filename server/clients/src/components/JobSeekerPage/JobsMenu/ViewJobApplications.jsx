@@ -19,7 +19,9 @@ const centerItems = {
   gap: "10px",
   margin: "0.5rem 0",
 };
+
 const ViewJobApplications = () => {
+
   const [views, setviews] = useState(0);
   const dispatch = useDispatch();
   const [alert, setAlert] = useState(false);
@@ -30,7 +32,10 @@ const ViewJobApplications = () => {
   const currentJob = allJobs.filter((x) => x._id === jobbID);
   const newState = useSelector((state) => state);
 
-  console.log("current job", currentJob)
+  const searchParams = new URLSearchParams(location.search);
+  const disableApplyButton = searchParams.get("disableApplyButton");
+
+  console.log("shshhshshhshhsh from viewwww", disableApplyButton)
 
   console.log(useSelector((state) => state));
 
@@ -56,7 +61,7 @@ const ViewJobApplications = () => {
     if (currentJob.length !== 0) {
       saveApplyHistory();
     }
-  }, [currentJob]);
+  }, []);
 
   const handleApply = async () => {
     const data = await axios.get(
@@ -70,6 +75,7 @@ const ViewJobApplications = () => {
         },
       }
     );
+    
     if (data.status === 200) {
       console.log(data.data.newApplication, newState);
       dispatch(AddSingleApplication(data.data.newApplication));
@@ -235,23 +241,28 @@ const ViewJobApplications = () => {
               <Typography variant="p"> {currentJob[0].education}</Typography>
             </Box>
           </Box>
-          <Box
+          {disableApplyButton ==="true" ?(
+          <><p style={{marginLeft:"24rem",
+        padding:"1rem",
+      backgroundColor:"#27E1C1"}}>Your Skills Doesn't Match this Job Description</p></>
+        ):(
+            <Box
             sx={{
               display: "flex",
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              sx={{
-                color: "black",
-                border: "1px solid black",
-                backgroundColor: "#27E1C1",
-                display: `${alert ? "none" : "block"}`,
-              }}
-              onClick={() => setAlert(!alert)}
-            >
-              Apply for this Job
-            </Button>
+          <Button
+            sx={{
+              color: "black",
+              border: "1px solid black",
+              backgroundColor: "#27E1C1",
+              display: `${alert ? "none" : "block"}`,
+            }}
+            onClick={() => setAlert(!alert)}
+          >
+            Apply for this Job
+          </Button>
             <Box sx={{ display: `${alert ? "block" : "none"}` }}>
               <p>Are you sure you want to apply?</p>
               <Button
@@ -277,18 +288,13 @@ const ViewJobApplications = () => {
               </Button>
             </Box>
           </Box>
+          ) } 
         </Box>
       ) : (
-        <div
-        style={{
-          backgroundColor:"white",
-          minWidth:"40rem",
-          minHeight:"5rem",
-          padding:"2rem"
-      }}> <b> Your Skills Doesn't Match For The Particular Job </b></div>
+        <></>
       )}
     </Box>
   );
 };
-
+  
 export default ViewJobApplications;

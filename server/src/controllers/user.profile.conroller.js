@@ -265,99 +265,20 @@ const GetAllJobs = async (req, res, next) => {
     const user = req.user._id.toString();
     const userInfo = await User.findOne({ _id: user }).populate("skill");
 
-    const skillJobs = await Jobs.find({
+    //console.log("user infooooooooooooo", userInfo.skill);
+
+    const acceptJobs = await Jobs.find({
       _id: { $nin: userInfo.appliedPlatformJobs },
-      isClosed: false,
-      projectLevel: false,
-      SkillsRequired: {
-        $in: userInfo.skill.map((x) => {
-          try {
-            if (x.skill.length !== 1) {
-              return new RegExp(`.*${x.skill}.*`, "i");
-            } else {
-              return new RegExp(x.skill, "i");
-            }
-          } catch (error) {
-            return x.skill;
-          }
-        }),
-      },
-      //  [/.*c.*/i ,/.*Java.*/i ]
+      isClosed: false
     })
       .sort([["createdAt", -1]])
       .select(
         "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
       );
 
-      const skillsRequired = skillJobs.map(job => job.SkillsRequired);
-
-      console.log("Skills Required:", skillsRequired);
-
-    console.log(
-      userInfo.skill.map((x) => {
-        try {
-          if (x.skill.length !== 1) {
-            console.log(x.skill.length, x.skill);
-            return new RegExp(`.*${x.skill}.*`, "i");
-          } else {
-            return new RegExp(x.skill, "i");
-          }
-        } catch (error) {
-          return x.skill;
-        }
-      })
-    );
-
-    const projectUser = await User.findOne({ _id: user })
-      .populate("project")
-      .populate("skill");
-
-    // project level job matching
-
-    const projectJobs = await Jobs.find({
-      _id: { $nin: projectUser.appliedPlatformJobs },
-      isClosed: false,
-      projectLevel: true,
-      SkillsRequired: {
-        $in: projectUser.project.map((x) => {
-          try {
-            if (x.projectSkills.length !== 1) {
-              return new RegExp(`.*${x.projectSkills}.*`, "i");
-            } else {
-              return new RegExp(x.projectSkills, "i");
-            }
-          } catch (error) {
-            return x.projectSkills;
-          }
-        }),
-      },
-      //  [/.*c.*/i ,/.*Java.*/i ]
-    })
-      .sort([["createdAt", -1]])
-      .select(
-        "-appliedUsers.isWishlisted -appliedUsers.userId -appliedUsers.isViewed"
-      );
-
-    console.log(
-      projectUser.project.map((x) => {
-        try {
-          if (x.projectSkills.length !== 1) {
-            console.log(x.projectSkills.length, x.projectSkills);
-            return new RegExp(`.*${x.projectSkills}.*`, "i");
-          } else {
-            return new RegExp(x.projectSkills, "i");
-          }
-        } catch (error) { 
-          return x.projectSkills;
-        }
-      })
-    );
-
-    const jobs = skillJobs.concat(projectJobs);
-    // console.log(skillJobs)
-    // console.log(jobs)
+    const jobs = acceptJobs;
   
-    return res.json({ jobs, skillsRequired });
+    return res.json({ jobs });
   } catch (error) {
     console.log(error);
     return next();
