@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { REACT_APP_SERVER_URL } from "../../config";
-
 import { useSelector } from "react-redux";
-
-import Navbar from "./Navbar";
-import LeftSideBar from "./LeftSideBar";
-import RightSideBar from "./RightSideBar";
-import { Box, Typography } from "@mui/material";
-import { Helmet } from "react-helmet-async";
-import { BsHandThumbsUp, BsHandThumbsUpFill } from 'react-icons/bs';
+import {Box, Typography, Rating } from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
 import Card from 'react-bootstrap/Card';
+import { ToastContainer, toast } from "react-toastify";
 
 const Tips = () => {
     const [data, setData] = useState([]);
+    const [rating, setRating] = useState({});
+    const [value, setValue] = React.useState(2);
+    const [hover, setHover] = React.useState(-1);
+
+    const labels = {
+        0.5: 'Useless',
+        1: 'Useless+',
+        1.5: 'Poor',
+        2: 'Poor+',
+        2.5: 'Ok',
+        3: 'Ok+',
+        3.5: 'Good',
+        4: 'Good+',
+        4.5: 'Excellent',
+        5: 'Excellent+',
+      };
+      
+    function getLabelText(value) {
+    return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
+    }
+
+    console.log("yuyuyuyu",labels[value]);
+
     console.log("data from tips",data);
 
     const token = useSelector((state) => state.auth.value);
@@ -66,33 +84,24 @@ const Tips = () => {
     }
     };
 
-    const handleLike = async (tipId) => {
+    const handleSubmitRating = async (tipId, value) => {
         try {
-            const response = await axios.post(`${REACT_APP_SERVER_URL}/user/status/toggleLike`, {
+            const response = await axios.post(`${REACT_APP_SERVER_URL}/user/status/rating`, {
                 tipId: tipId,
+                rating: value
             }, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
             });
-    
-            console.log("response form tips", response.data.message)
+
+            console.log("response from submitRating", response.data.message);
             if (response.status === 200) {
-                const updatedData = data.map(item => {
-                    if (item._id === tipId) {
-                        return {
-                            ...item,
-                            likes: response.data.likes,
-                            msg: response.data.message
-                        };
-                    }
-                    return item;
-                });
-                setData(updatedData);
+                toast("Ratings Submitted Successfully");
             }
         } catch (error) {
-            console.error("Error toggling like status:", error);
+            console.error("Error submitting rating:", error);
         }
     };
 
@@ -144,24 +153,25 @@ const Tips = () => {
                                     <span style={{fontSize:"1rem"}}>{item.tips}</span>
                                 </Card.Title>
                             </Card.Body>
-                            <div style={{marginRight:"3rem",marginBottom:"2rem",marginLeft:"3rem", display:"flex", justifyContent:"space-between"}}>
-                                <span style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
-                                    <span>
-                                        <button style={{border:"none", backgroundColor:"white"}} onClick={() => handleLike(item._id)}>
-                                            {item.msg === "Liked" ? (
-                                                <BsHandThumbsUpFill size={30} color="blue" />
-                                            ) : (
-                                                <BsHandThumbsUp size={30} color="gray" />
-                                            )}
-                                        </button>
-                                    </span>
-                                    <span>
-                                    { item.likes.length <= 1 ? ( 
-                                        <Typography style={{fontSize:"0.8rem", marginTop:"0.5rem"}}><b>{item.likes.length}</b> Like</Typography>
-                                    ) : (
-                                        <Typography style={{fontSize:"0.8rem", marginTop:"0.5rem"}}><b>{item.likes.length}</b> Likes</Typography>
-                                    )}
-                                    </span>
+                            <div style={{ marginRight: "3rem", marginBottom: "2rem", marginLeft: "3rem", display: "flex", justifyContent: "space-between" }}>
+                                <span style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                                <Rating
+                                    name="hover-feedback"
+                                    value={value}
+                                    precision={0.5}
+                                    getLabelText={getLabelText}
+                                    onChange={(event, newValue) => {
+                                    setValue(newValue)
+                                    handleSubmitRating(item._id,newValue)
+                                    }}
+                                    onChangeActive={(event, newHover) => {
+                                    setHover(newHover);
+                                    }}
+                                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                />
+                                {value !== null && (
+                                    <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+                                )}
                                 </span>
                                 <Typography>Views:&ensp;<b>{item.views}</b></Typography>
                             </div>
@@ -170,6 +180,7 @@ const Tips = () => {
                     </li>
                 ))}
             </ul>
+            <ToastContainer />
         </div>
     );
 };
