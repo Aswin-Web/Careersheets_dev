@@ -104,7 +104,7 @@ let updateApproval = async (req, res) => {
 
   try {
       const data = await UserStatus.findOneAndUpdate(
-          { _id: Id, userId: user },
+          { _id: Id, user: user },
           { $set: { approval: approval } },
           { new: true }
       ); 
@@ -168,38 +168,35 @@ let tipViews = async (req, res) => {
   }
 };
 
-const likesCount = async (req, res) => {
-  console.log("Toggling like status");
+const ratings = async (req, res) => {
+  const { tipId, rating } = req.body; 
   const userId = req.user._id.toString();
-  const { tipId } = req.body;
 
-  if (!tipId) {
-      return res.status(400).json({ error: "Tip ID is required" });
-  }
-
+  console.log(" from ratings", req.body);
   try {
-      const tip = await UserStatus.findOne({ _id: tipId });
-      if (!tip) {
-          return res.status(404).json({ error: "Tip not found" });
+      const userStatus = await UserStatus.findById(tipId);
+      console.log("from rating controller",userStatus)
+
+      if (!userStatus) {
+          return res.status(404).json({ message: 'User status not found' });
       }
 
-      const userIndex = tip.likes.indexOf(userId);
-      if (userIndex > -1) {
-          tip.likes.splice(userIndex, 1);
+      const existingRatingIndex = userStatus.rating.findIndex(item => item.userId === userId);
+      console.log("rating controller", existingRatingIndex);
+
+      if (existingRatingIndex !== -1) {
+          userStatus.rating[existingRatingIndex].rating = rating;
       } else {
-          tip.likes.push(userId);
+          userStatus.rating.push({ userId, rating });
       }
 
-      await tip.save();
-
-      res.status(200).json({
-          likes: tip.likes,
-          message: userIndex > -1 ? "Like removed" : "Liked"
-      });
+      await userStatus.save();
+      res.status(200).json({ message: 'Rating submitted successfully' });
   } catch (error) {
-      console.error("Error toggling like status:", error);
-      res.status(500).json({ error: "Internal server error" });
+      console.error('Error submitting rating:', error);
+      res.status(500).json({ message: 'Internal server error' });
   }
 };
 
-module.exports = { userStatusPost, getUserWorkingQuestions, updateApproval, updateWorkingQuestion, getTips, tipViews, likesCount, getUserWorkingQuestionsAdmin };
+
+module.exports = { userStatusPost, getUserWorkingQuestions, updateApproval, updateWorkingQuestion, getTips, tipViews, ratings, getUserWorkingQuestionsAdmin };

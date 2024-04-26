@@ -8,7 +8,12 @@ const userStatus = new mongoose.Schema({
     college: {type:String, required:true},
     studentName:{type:String, required:true},
     views:{type:Number, require:true},
-    likes:{type:Array, require:true},
+    rating: [
+        {
+          userId: { type: String, required: true },
+          rating: { type: Number, default: 0 }
+        },
+    ],
     displayPicture:{type:String},
     date:{type:Date, require:true}
 });
