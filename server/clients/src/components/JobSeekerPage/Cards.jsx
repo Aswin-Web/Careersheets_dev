@@ -11,7 +11,7 @@ import BasicTable from "./Utils/Table";
 const Cards = (props) => {
   const [isOpenTable, setIsOpenTable] = useState(false);
   const { _id, author, status, company, location, designation, whereApply, joblink, updatedAt } = props.data;
-  console.log("Props from Cards", props.data.designation);
+  console.log("Props from Cards", props.data);
   
   const finalStatus = status.length ? status[status.length - 1] : null;
   

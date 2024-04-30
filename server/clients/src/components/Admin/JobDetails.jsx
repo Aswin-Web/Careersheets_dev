@@ -22,7 +22,7 @@ const centerItems = {
   gap: "10px",
   margin: "0.5rem 0",
 };
-
+ 
 const JobDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

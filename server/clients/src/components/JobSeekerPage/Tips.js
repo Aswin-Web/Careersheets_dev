@@ -9,7 +9,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Tips = () => {
     const [data, setData] = useState([]);
-    const [rating, setRating] = useState({});
     const [value, setValue] = React.useState(2);
     const [hover, setHover] = React.useState(-1);
 
@@ -30,15 +29,9 @@ const Tips = () => {
     return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
-    console.log("yuyuyuyu",labels[value]);
-
-    console.log("data from tips",data);
-
     const token = useSelector((state) => state.auth.value);
 
     const eduItems = useSelector((state) => state.edu.items);
-    console.log("Edu Items",eduItems);
-    
     
     const incrementViews = async (tipId) => {
         try {
@@ -76,6 +69,7 @@ const Tips = () => {
             });
     
             if (response.status === 200) {
+                console.log("response data from get ", response.data)
                 setData(response.data);
             }
         } catch (error) {
@@ -99,6 +93,16 @@ const Tips = () => {
             console.log("response from submitRating", response.data.message);
             if (response.status === 200) {
                 toast("Ratings Submitted Successfully");
+                const updatedData = data.map(item => {
+                    if (item._id === tipId) {
+                        return {
+                            ...item,
+                            rating: [{ rating: value }]
+                        };
+                    }
+                    return item;
+                });
+                setData(updatedData);
             }
         } catch (error) {
             console.error("Error submitting rating:", error);
@@ -155,23 +159,37 @@ const Tips = () => {
                             </Card.Body>
                             <div style={{ marginRight: "3rem", marginBottom: "2rem", marginLeft: "3rem", display: "flex", justifyContent: "space-between" }}>
                                 <span style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                <Rating
-                                    name="hover-feedback"
-                                    value={value}
-                                    precision={0.5}
-                                    getLabelText={getLabelText}
-                                    onChange={(event, newValue) => {
-                                    setValue(newValue)
-                                    handleSubmitRating(item._id,newValue)
-                                    }}
-                                    onChangeActive={(event, newHover) => {
-                                    setHover(newHover);
-                                    }}
-                                    emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                />
-                                {value !== null && (
-                                    <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-                                )}
+                                    {item.rating.length > 0 ? (
+                                            <Rating
+                                                name="hover-feedback"
+                                                getLabelText={getLabelText}
+                                                value={item.rating[0].rating}
+                                                precision={0.5}
+                                                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                                onChange={(event, newValue) => {
+                                                    setValue(newValue)
+                                                    handleSubmitRating(item._id, newValue)
+                                                }}
+                                                onChangeActive={(event, newHover) => {
+                                                    setHover(newHover);
+                                                }}
+                                            />
+                                    ) : (
+                                            <Rating
+                                                name="hover-feedback"
+                                                value={value}
+                                                precision={0.5}
+                                                getLabelText={getLabelText}
+                                                onChange={(event, newValue) => {
+                                                    setValue(newValue)
+                                                    handleSubmitRating(item._id, newValue)
+                                                }}
+                                                onChangeActive={(event, newHover) => {
+                                                    setHover(newHover);
+                                                }}
+                                                emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                            />
+                                    )}
                                 </span>
                                 <Typography>Views:&ensp;<b>{item.views}</b></Typography>
                             </div>

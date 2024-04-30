@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
 const Application = require("../models/application.models");
 const JobsHistory = require("../models/jobshistory.models");
-const {UserStatus} = require("../models/userStatus.model");
+const { generateHTML } = require("../utils/jobApplication.email.utils");
+const email = require("../utils/nodemailer.email");
 
 const getUserInfo = async (req, res) => {
 
@@ -360,6 +361,33 @@ const ApplyForPlatformJobs = async (req, res, next) => {
   }
 };
 
+const sendEmailToAdminOnSubmitJobApplication = async (req, res, next) => {
+  try {
+    const userId = req.user._id.toString();
+    let user = await User.findOne({ _id: userId });
+    const {job} = req.body;
+    console.log("From Email Block On Job Application to Admin");
+    console.log("Applied Job",job);
+    console.log("Applied user",user);
+
+    if (job) {
+      const htmlContent = generateHTML(user,job);
+
+      await email("swetha.s0317@gmail.com", "Job Application Received", htmlContent);
+
+      return res.status(200).json({
+        msg: "Mail Sent Successfully"
+      });
+    } else {
+      console.log("Error in Mail Sender to Admin on Job Application Received");
+    }
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+
 const AddUserToJobHistory = async (req, res, next) => {
   try {
     const jobId = req.params.id;
@@ -454,4 +482,5 @@ module.exports = {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
+  sendEmailToAdminOnSubmitJobApplication
 };

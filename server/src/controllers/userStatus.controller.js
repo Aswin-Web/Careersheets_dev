@@ -57,7 +57,6 @@ let getUserWorkingQuestions = async (req, res) => {
 
 let getUserWorkingQuestionsAdmin = async (req, res) => {
   console.log("Fetch Status Data Function");
-  const fetchid = req.user._id.toString();
   try{
   const data = await UserStatus.find();
     if(!data){
@@ -72,6 +71,7 @@ let getUserWorkingQuestionsAdmin = async (req, res) => {
 let getTips = async (req, res) => {
   console.log("Fetch Tips Function");
   console.log("Query Parameters:", req.query);
+  const user = req.user._id.toString();
 
   const collegeName = req.query.collegeName;
   console.log("gsgsggs", collegeName);
@@ -83,10 +83,15 @@ let getTips = async (req, res) => {
   const approval = "Approved";
 
   try {
-      const data = await UserStatus.find({ college: collegeName, approval:approval });
+      const data = await UserStatus.find({ college: collegeName, approval: approval });
       if (!data) {
           return res.status(404).json({ message: "Data Not Found" });
       }
+
+      data.forEach(item => {
+          item.rating = item.rating.filter(rating => rating.userId === user);
+      });
+
       res.json(data);
   } catch (err) {
       console.error(err);
@@ -94,20 +99,21 @@ let getTips = async (req, res) => {
   }
 };
 
+
 let updateApproval = async (req, res) => {
   console.log("Update Status Function");
-  const user = req.user._id.toString();
-
+  
   const {approval} = req.body;
 
+  console.log(req.body,"sjjsjsjs")
   const Id = req.params.id;
 
   try {
       const data = await UserStatus.findOneAndUpdate(
-          { _id: Id, user: user },
+          { _id: Id },
           { $set: { approval: approval } },
           { new: true }
-      ); 
+      );
       if (!data) {
           return res.status(404).send("Not found");
       }

@@ -246,10 +246,12 @@ const RemoveStatusFromApplication = async (req, res, next) => {
   } catch (error) {}
 };
 
+
+
 module.exports = {
   postApplication,
   getAllApplications,
   AddStatusToApplication,
   EditStatusOfApplication,
-  RemoveStatusFromApplication,
+  RemoveStatusFromApplication
 };
