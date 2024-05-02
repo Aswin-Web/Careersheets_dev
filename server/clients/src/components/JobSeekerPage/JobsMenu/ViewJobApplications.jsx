@@ -81,6 +81,28 @@ const ViewJobApplications = () => {
       dispatch(AddSingleApplication(data.data.newApplication));
       dispatch(removeAJob(currentJob[0]._id));
       navigate("/user");
+  
+      /* // Call the mailOnAppliedJob endpoint
+      try {
+        await axios.post(
+          `${REACT_APP_SERVER_URL}/user/jobs/mailOnAppliedJob`,
+          {
+            job: currentJob[0]
+          },
+          {
+            headers: {
+              "Content-type": "application/json",
+              Authorization: `Bearer ${localStorage
+                .getItem("user")
+                .slice(1, localStorage.getItem("user").length - 1)}`,
+            },
+          }
+        );
+        console.log("Mail sent successfully");
+      }
+      catch (error) {
+        console.error("Error sending mail:", error);
+      } */
     }
   };
 
@@ -242,9 +264,15 @@ const ViewJobApplications = () => {
             </Box>
           </Box>
           {disableApplyButton ==="true" ?(
-          <><p style={{marginLeft:"24rem",
-        padding:"1rem",
-      backgroundColor:"#27E1C1"}}>Your Skills Doesn't Match this Job Description</p></>
+          <div style={{ textAlign: "right" }}><Typography 
+          sx={{
+              display: "inline-block",
+              padding: "1rem",
+              backgroundColor: "#27E1C1"
+          }}
+      >
+          Your Skills Doesn't Match this Job Description
+      </Typography> </div>
         ):(
             <Box
             sx={{

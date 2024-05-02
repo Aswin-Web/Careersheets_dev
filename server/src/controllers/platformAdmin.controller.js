@@ -309,7 +309,7 @@ const JobCreationRoute = async (req, res, next) => {
     return next();
   }
 };
-
+ 
 const GetAllJobs = async (req, res, next) => {
   const jobs = await Jobs.find({})
     .populate({
@@ -560,9 +560,13 @@ const showUsersWithTheRequiredSkillSets = async (req, res, next) => {
     return next();
   }
 };
+
+
 // email("ashvinachu097@gmail.com", "Job Alert For You", "<h1>Hello</h1>").catch(
 //   (e) => console.log(e)
 // );
+
+
 const sendEmailToAllShownUsers = async (req, res, next) => {
   try {
     const { skill, companyName, role, selectedUsers } = req.body;
@@ -612,6 +616,8 @@ const sendEmailToAllShownUsers = async (req, res, next) => {
     return next();
   }
 };
+
+
 const GetAParticularJob = async (req, res, next) => {
   try {
     const job_id = req.params.jobId;

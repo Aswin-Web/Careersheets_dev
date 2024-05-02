@@ -20,7 +20,8 @@ const {
   AddUserToJobHistory,
   AppliedJobs,
   SearchAppliedJobs,
-  GetAllPlatFormSkills
+  GetAllPlatFormSkills,
+  sendEmailToAdminOnSubmitJobApplication
 } = require("../controllers/user.profile.conroller");
 
 const {
@@ -84,8 +85,12 @@ router.put("/application/editstatus", EditStatusOfApplication);
 // Jobs Routes
 // To Get all jobs which are not applied
 router.get("/jobs", GetAllJobs);
+
 // To apply for a jobs by job seeker
 router.get("/jobs/:jobId", ApplyForPlatformJobs);
+
+//Mail to Admin if Job is Applied
+router.post("/jobs/mailOnAppliedJob", sendEmailToAdminOnSubmitJobApplication);
 
 // To View the applied Jobs
 router.get("/appliedjobs", AppliedJobs);
@@ -97,5 +102,8 @@ router.get("/appliedjobs/:id", SearchAppliedJobs);
 router.get("/history/:id", AddUserToJobHistory);
 
 // To Get all the Skills
-router.get("/platformskills",GetAllPlatFormSkills)
+router.get("/platformskills",GetAllPlatFormSkills);
+
+
+
 module.exports = router;
