@@ -82,7 +82,7 @@ const ViewJobApplications = () => {
       dispatch(removeAJob(currentJob[0]._id));
       navigate("/user");
   
-      /* // Call the mailOnAppliedJob endpoint
+      // Call the mailOnAppliedJob endpoint
       try {
         await axios.post(
           `${REACT_APP_SERVER_URL}/user/jobs/mailOnAppliedJob`,
@@ -102,7 +102,7 @@ const ViewJobApplications = () => {
       }
       catch (error) {
         console.error("Error sending mail:", error);
-      } */
+      }
     }
   };
 
