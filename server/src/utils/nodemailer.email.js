@@ -1,6 +1,13 @@
 const nodemailer = require("nodemailer");
 
 const email = (to, subject, html) => {
+
+  console.log("gsg", to);
+  console.log("gsg", subject);
+  console.log("gsg", html);
+
+  console.log("email", process.env.NODEMAILER_USERNAME);
+  console.log("pass", process.env.NODEMAILER_PASSWORD);
   return new Promise(async (res, rej) => {
     var transporter = nodemailer.createTransport({
       service: "gmail",
@@ -8,7 +15,6 @@ const email = (to, subject, html) => {
         user: process.env.NODEMAILER_USERNAME,
         pass: process.env.NODEMAILER_PASSWORD,
       },
-        
     });
     const mailOption = {
       from: `CareerSheets ${process.env.NODEMAILER_USERNAME}`, 

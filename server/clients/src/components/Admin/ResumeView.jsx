@@ -12,7 +12,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Box } from "@mui/material";
 import { REACT_APP_CLIENT_URL, REACT_APP_SERVER_URL } from "../../config";
 const ResumeViewAdmin = () => {
-  console.log(`${REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`)
+  console.log(REACT_APP_SERVER_URL,"shshshhshshs")
 
   const [data, SetData] = useState();
   console.log(data , "Please HElp")
@@ -80,7 +80,7 @@ const ResumeViewAdmin = () => {
     <div className="app">
       <Box sx={{display:'flex' ,padding:'1rem',gap:'1rem'}}>
         
-      {data !== undefined ?<a className="app" href={`${REACT_APP_CLIENT_URL}/admin/profile/resume/pdf/${data._id}`}rel='noreferrer' target="_blank" style={{color:'black',textDecoration:'none'}}>
+      {data !== undefined ?<a className="app" href={`${REACT_APP_CLIENT_URL}admin/profile/resume/pdf/${data._id}`}rel='noreferrer' target="_blank" style={{color:'black',textDecoration:'none'}}>
       <DownloadButton
         onClick={() => {
           // navigate(`pdf/${data._id}`,'_blank');
