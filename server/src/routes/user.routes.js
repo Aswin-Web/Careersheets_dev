@@ -21,7 +21,7 @@ const {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
-  sendEmailToAdminOnSubmitJobApplication
+  sendEmailOnJobApplication
 } = require("../controllers/user.profile.conroller");
 
 const {
@@ -89,8 +89,6 @@ router.get("/jobs", GetAllJobs);
 // To apply for a jobs by job seeker
 router.get("/jobs/:jobId", ApplyForPlatformJobs);
 
-//Mail to Admin if Job is Applied
-router.post("/jobs/mailOnAppliedJob", sendEmailToAdminOnSubmitJobApplication);
 
 // To View the applied Jobs
 router.get("/appliedjobs", AppliedJobs);
@@ -105,5 +103,7 @@ router.get("/history/:id", AddUserToJobHistory);
 router.get("/platformskills",GetAllPlatFormSkills);
 
 
+//Trigger Email On Job Application
+router.post("/sendEmailOnJobApplication",sendEmailOnJobApplication);
 
 module.exports = router;
