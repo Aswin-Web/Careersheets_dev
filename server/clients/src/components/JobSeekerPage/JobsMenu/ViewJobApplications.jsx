@@ -85,7 +85,7 @@ const ViewJobApplications = () => {
       // Call the mailOnAppliedJob endpoint
       try {
         await axios.post(
-          `${REACT_APP_SERVER_URL}/user/jobs/mailOnAppliedJob`,
+          `${REACT_APP_SERVER_URL}/user/sendEmailOnJobApplication`,
           {
             job: currentJob[0]
           },

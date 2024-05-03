@@ -8,8 +8,8 @@ const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
 const Application = require("../models/application.models");
 const JobsHistory = require("../models/jobshistory.models");
-const { generateHTML } = require("../utils/jobApplication.email.utils");
-const email = require("../utils/nodemailer.email");
+const nodemailer = require('nodemailer');
+const Mailgen = require('mailgen');
 
 const getUserInfo = async (req, res) => {
 
@@ -361,32 +361,6 @@ const ApplyForPlatformJobs = async (req, res, next) => {
   }
 };
 
-const sendEmailToAdminOnSubmitJobApplication = async (req, res, next) => {
-  try {
-    const userId = req.user._id.toString();
-    let user = await User.findOne({ _id: userId });
-    const {job} = req.body;
-    console.log("From Email Block On Job Application to Admin");
-    console.log("Applied Job",job);
-    console.log("Applied user",user);
-
-    if (job) {
-      const htmlContent = generateHTML(user,job);
-
-      await email("swetha.s0317@gmail.com", "Job Application Received", htmlContent);
-
-      return res.status(200).json({
-        msg: "Mail Sent Successfully"
-      });
-    } else {
-      console.log("Error in Mail Sender to Admin on Job Application Received");
-    }
-  } catch (error) {
-    console.log(error);
-    return next();
-  }
-};
-
 
 const AddUserToJobHistory = async (req, res, next) => {
   try {
@@ -466,6 +440,67 @@ const GetAllPlatFormSkills = async (req, res, next) => {
   }
 };
 
+const sendEmailOnJobApplication = async (req, res) => {
+  const user_info = req.user;
+  const { job } = req.body;
+
+  const user = req.user._id.toString();
+  const userInfo = await User.findOne({ _id: user }).populate("skill");
+
+  const userSkills = userInfo.skill.map(skill => `${skill.skill} - ${skill.level}`).join(", ");
+
+  let config = {
+      service: 'gmail',
+      auth: {
+          user: process.env.APPLICATION_EMAIL,
+          pass: process.env.APPLICATION_PASSWORD
+      }
+  };
+  let transporter = nodemailer.createTransport(config);
+
+  let mailGenerator = new Mailgen({
+      theme: "default",
+      product: {
+          name: "Careersheets",
+          link: 'https://app.careersheets.in/'
+      }
+  });
+
+  let response = {
+      body: {
+          table: {
+              data: [{
+                  Applicant_Name: user_info.name,
+                  Applicant_Email: user_info.email,
+                  Applicant_Skill: userSkills, 
+                  Comapny_Name: job.companyName,
+                  Skills_Required_For_Job: job.SkillsRequired,
+                  Role: job.roleName,
+                  Location: job.location
+              }]
+          }
+      }
+  };
+
+  let mail = mailGenerator.generate(response);
+  let message = {
+      from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
+      to: "dhanesh@ibacustechlabs.in",
+      subject: "Job Application Received",
+      html: mail
+  };
+
+  try {
+      // Send email
+      await transporter.sendMail(message);
+      return res.status(201).json({ msg: "Mail sent successfully!" });
+  } catch (error) {
+      console.error("Error sending mail:", error);
+      return res.status(500).json({ error: "Error sending mail." });
+  }
+}
+
+
 module.exports = {
   getUserInfo,
   postEducation,
@@ -482,5 +517,5 @@ module.exports = {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
-  sendEmailToAdminOnSubmitJobApplication
+  sendEmailOnJobApplication
 };
