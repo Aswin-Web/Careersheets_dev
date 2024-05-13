@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import UseAuth from '../../hooks/auth'
 import { Navigate } from 'react-router-dom';
 import { REACT_APP_CLIENT_URL } from "./../../config";
-
+ 
 const UserController = (props) => {
     const {role,verification,name} = UseAuth();
     const { currentPath } = props;

@@ -16,7 +16,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import { roleActions } from "../../redux/reducers/role-data";
+import { personalActions } from "../../redux/reducers/personalInfo";
 import { REACT_APP_SERVER_URL } from "../../config";
+import { event } from "react-ga";
 
 // import { pipeline } from '@xenova/transformers';
 
@@ -25,9 +27,12 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const profileRole = useSelector((state) => state.role.role);
-  const { name, displayPicture } = UseAuth();
-  const [open, setOpen] = React.useState(false);
+  const { displayPicture } = UseAuth();
+  const [openRoleDialog, setOpenRoleDialog] = React.useState(false);
+  const [openNameDialog, setOpenNameDialog] = React.useState(false);
   const [role, setRole] = React.useState();
+  const [editName, setEditName] = React.useState();
+  const name = editName || UseAuth().name;
   const token = useSelector((state) => state.auth.value);
   // const userData = useSelector((state) => state.data.value);
 
@@ -52,21 +57,51 @@ const Profile = () => {
     return response;
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const updateNameRequest = async() => {
+    const response =  await axios
+      .put(
+        `${REACT_APP_SERVER_URL}/user/profile/profilename`,
+        { name: editName },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .catch((error) => console.log(error, "@status error"));
+
+    console.log(response, "response");
+
+    return response;
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleEditRole = () => {
+    setOpenRoleDialog(true);
   };
-  const roleChaneHandler = (event) => {
+
+  const handleEditName = () => {
+    setOpenNameDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenRoleDialog(false);
+    setOpenNameDialog(false);
+  };
+
+  const roleChangeHandler = (event) => {
     console.log(event.target.value);
     setRole(event.target.value);
   };
 
+  const nameChangeHandler = (event) =>{
+    console.log(event.target.value);
+    setEditName(event.target.value);
+  };
+
   const profileSubmitHandler = (event) => {
     event.preventDefault();
-    handleClose();
+    handleCloseDialog();
     console.log("submitted");
     updateRequest()
       .then((data) => {
@@ -75,8 +110,18 @@ const Profile = () => {
       })
       .catch((err) => console.log(err));
   };
-
- 
+  
+  const updateNameHandler = (event) => {
+    event.preventDefault();
+    handleCloseDialog();
+    console.log("Name editted sucessfully");
+    updateNameRequest()
+    .then((data) =>{
+      let userName = data.data.name;
+      setEditName(userName);
+    })
+    .catch((err) => console.log(err));
+  }
 
   const generateResumeHandler = async() => {
    
@@ -100,7 +145,20 @@ const Profile = () => {
               <img src={displayPicture} alt="profile" />
             </div>
             <div className={classes.naming}>
-              <h2>{name}</h2>
+              <div>
+              {name ? (
+                  <span style={{fontSize:"2rem", fontWeight:"bold"}}>{name}</span>
+                ) : (
+                  <p>None</p>
+                )}
+                <Button
+                  sx={{ marginBottom: "2em" }}
+                  variant="standard"
+                  onClick={handleEditName}
+                >
+                  <ModeEditIcon />
+                </Button>
+              </div>
               <div className={classes.profileRole}>
                 {profileRole ? (
                   <p placeholder="profile-role">{profileRole}</p>
@@ -110,34 +168,10 @@ const Profile = () => {
                 <Button
                   sx={{ marginBottom: "2em" }}
                   variant="standard"
-                  onClick={handleClickOpen}
+                  onClick={handleEditRole}
                 >
                   <ModeEditIcon />
                 </Button>
-                <Dialog open={open} onClose={handleClose}></Dialog>
-              </div>
-              <div>
-                <Dialog open={open} onClose={handleClose}>
-                  <DialogContent>
-                    <DialogContentText>Add profile role</DialogContentText>
-                    <TextField
-                      name="profileRole"
-                      autoFocus
-                      margin="dense"
-                      id="name"
-                      label="Eg.Developer"
-                      fullWidth
-                      variant="standard"
-                      sx={{ width: "17.5em" }}
-                      onChange={roleChaneHandler}
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={profileSubmitHandler} type="submit">
-                      Add
-                    </Button>
-                  </DialogActions>
-                </Dialog>
               </div>
             </div>
           </div>
@@ -151,17 +185,31 @@ const Profile = () => {
             </Button>
           </div>
         </div>
-        {/* <div className={classes.bio}>
-          <h3>Bio:</h3>
-          <p>
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout. The point
-            of using Lorem Ipsum is that it has a more-or-less normal
-            distribution of letters, as opposed to using 'Content here, content
-            here', making it look like readable English.{" "}
-          </p>
-        </div> */}
       </div>
+
+      <Dialog open={openRoleDialog || openNameDialog} onClose={handleCloseDialog}>
+        <DialogContent>
+          <DialogContentText>
+            {openRoleDialog ? "Add profile role" : "Edit Name"}
+          </DialogContentText>
+          <TextField
+            name={openRoleDialog ? "profileRole" : "name"}
+            autoFocus
+            margin="dense"
+            id="name"
+            label={openRoleDialog ? "Eg. Developer" : "New Name"}
+            fullWidth
+            variant="standard"
+            sx={{ width: "17.5em" }}
+            onChange={openRoleDialog ? roleChangeHandler : nameChangeHandler}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={openRoleDialog ? profileSubmitHandler : updateNameHandler} type="submit">
+            {openRoleDialog ? "Add" : "Save"}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <hr />
 
@@ -171,5 +219,7 @@ const Profile = () => {
     </div>
   );
 };
+
+
 
 export default Profile;

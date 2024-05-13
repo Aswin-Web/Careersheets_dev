@@ -13,6 +13,7 @@ const {
   deleteSkill,
   updateStatus,
   updateProfileRole,
+  updateProfileName,
   postProject,
   deleteProject,
   GetAllJobs,
@@ -66,6 +67,7 @@ router.put("/profile/status/", updateStatus);
 
 //--------
 router.put("/profile/profilerole/", updateProfileRole);
+router.put("/profile/profilename", updateProfileName);
 //------------
 router.post("/profile/projects/", postProject);
 

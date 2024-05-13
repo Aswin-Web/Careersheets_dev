@@ -166,7 +166,7 @@ function App() {
         <Route
           path="admin"
           element={
-            <PlatFormAdminController>
+            <PlatFormAdminController currentPath={location.pathname}>
               <Dashboard />
             </PlatFormAdminController>
           }
