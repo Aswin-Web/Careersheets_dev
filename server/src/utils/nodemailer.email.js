@@ -1,7 +1,6 @@
 const nodemailer = require("nodemailer");
 
 const email = (to, subject, html) => {
-
   console.log("gsg", to);
   console.log("gsg", subject);
   console.log("gsg", html);
@@ -33,4 +32,5 @@ const email = (to, subject, html) => {
     });
   });
 };
+
 module.exports = email;

@@ -18,7 +18,7 @@ const personalSlice = createSlice({
       state.gender = action.payload.gender;
       state.phone = action.payload.phone;
       state.languages = action.payload.languages.map((language) => language);
-    },
+    }
   },
 });
 

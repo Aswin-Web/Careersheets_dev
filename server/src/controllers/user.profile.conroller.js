@@ -261,6 +261,26 @@ const updateProfileRole = async (req, res) => {
   }
 };
 
+
+const updateProfileName = async (req, res) => {
+  const { name } = req.body;
+  const user = req.user._id.toString();
+  try {
+    let userName = await User.findByIdAndUpdate(
+      user,
+      { $set: { name: name } },
+      { new: true }
+    );
+    const updatedName = userName.name;
+    res.status(200).json({ message: "name updated Successfully", name: updatedName });
+    console.log(userName);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error });
+  }
+};
+
+
 const GetAllJobs = async (req, res, next) => {
   try {
     const user = req.user._id.toString();
@@ -444,6 +464,9 @@ const sendEmailOnJobApplication = async (req, res) => {
   const user_info = req.user;
   const { job } = req.body;
 
+  console.log("user info", user_info);
+  console.log("job info", job);
+
   const user = req.user._id.toString();
   const userInfo = await User.findOne({ _id: user }).populate("skill");
 
@@ -467,25 +490,25 @@ const sendEmailOnJobApplication = async (req, res) => {
   });
 
   let response = {
-      body: {
-          table: {
-              data: [{
-                  Applicant_Name: user_info.name,
-                  Applicant_Email: user_info.email,
-                  Applicant_Skill: userSkills, 
-                  Comapny_Name: job.companyName,
-                  Skills_Required_For_Job: job.SkillsRequired,
-                  Role: job.roleName,
-                  Location: job.location
-              }]
-          }
-      }
-  };
+    body: {
+        table: {
+            data: [{
+                Applicant_Name: user_info.name,
+                Applicant_Email: user_info.email,
+                Comapny_Name: job.companyName,
+                Skills_Required_For_Job: job.SkillsRequired,
+                Role: job.roleName,
+                Location: job.location,
+                Resume:`https://www.app.careersheets.in/admin/profile/resume/${job._id}/${user_info._id}`
+            }]
+        }
+    }
+};
 
   let mail = mailGenerator.generate(response);
   let message = {
       from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
-      to: "dhanesh@ibacustechlabs.in",
+      to: "dhanesh@ibacustech.com",
       subject: "Job Application Received",
       html: mail
   };
@@ -509,6 +532,7 @@ module.exports = {
   deleteSkill,
   updateStatus,
   updateProfileRole,
+  updateProfileName,
   postProject,
   deleteProject,
   GetAllJobs,
