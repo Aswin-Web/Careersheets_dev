@@ -30,10 +30,19 @@ export default function FormPropsTextFields(props) {
   const [applicationDate, setapplicationDate] = React.useState("");
   const [location, setlocation] = React.useState("");
 
+
+  const handleDateChange = (date) => {
+    setapplicationDate(date);
+  };
+
   DataTransfer = (data) => {
     setButtonDisable(false);
     return val.push(data);
   };
+
+  console.log("data from ad application", company,designation, whereApply, joblink, applicationDate,location);
+  console.log("date", applicationDate);
+
   const buttonController = () => {
     if (
       company !== "" &&
@@ -135,7 +144,7 @@ export default function FormPropsTextFields(props) {
             />
             </Box>
           <Box sx={{ marginTop: "-6px" }}>
-            <ReusableDate label="Applied Date" onchange={setapplicationDate} />
+            <ReusableDate label="Applied Date" value={applicationDate} onChange={handleDateChange} />
           </Box>
         </Box>
       </Box>
