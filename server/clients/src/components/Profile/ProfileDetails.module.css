@@ -49,6 +49,11 @@
   font-size: 0.799rem;
   color: #D63301;
 }
+.swotButton {
+  margin-top: 10px;
+  background-color: #007bff;
+}
+
 
 
 @media (max-width: 620px) {
