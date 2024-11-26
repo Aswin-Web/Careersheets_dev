@@ -167,14 +167,14 @@ const ProfileDetails = () => {
       console.error("Error Editting status:", error);
     }
   };
-   const handleSwotClick = () => {
-     window.location.href = "https://dev-decision-coach.onrender.com/profile";
-   };
 
-   const handleSoftSkillsClick = () => {
-     window.location.href = "https://dev-decision-coach.onrender.com/skillget";
-   };
+const handleSwotClick = () => {
+  window.open("https://decisioncoach.onrender.com/profile", "_blank");
+};
 
+const handleSoftSkillsClick = () => {
+  window.open("https://decisioncoach.onrender.com/skillget", "_blank");
+};
 
   const handleGetStatus = async (event) => {
  
@@ -277,7 +277,10 @@ const ProfileDetails = () => {
               color: "white",
               width: "20%",
             }}
+            
+          
           >
+            
             Go to SWOT Analysis
           </Button>
         </Card>
