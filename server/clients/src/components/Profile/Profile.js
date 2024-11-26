@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import RoleForm from "./RoleForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-//MUI///
+
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -20,7 +20,6 @@ import { personalActions } from "../../redux/reducers/personalInfo";
 import { REACT_APP_SERVER_URL } from "../../config";
 import { event } from "react-ga";
 
-// import { pipeline } from '@xenova/transformers';
 
 
 const Profile = () => {
@@ -34,7 +33,7 @@ const Profile = () => {
   const [editName, setEditName] = React.useState();
   const name = editName || UseAuth().name;
   const token = useSelector((state) => state.auth.value);
-  // const userData = useSelector((state) => state.data.value);
+
 
   const updateRequest = async () => {
     const response = await axios
