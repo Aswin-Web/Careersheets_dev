@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+console.log(process.env.CLIENT_SECRET,"gggggggggggggggggggggggggg")
+
 const app = require("./app");
 
 const http = require("http");

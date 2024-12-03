@@ -41,6 +41,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
   return (
     <div>
       <div className="container mt-4">
+
         <div className="row">
           <div className="col">
             <Box
@@ -91,6 +92,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
                     : skillMatchPercentage
                 }% skill matches your skillset `}
               </p>
+
 
               <Box>
                 <Box sx={centerItems}>
