@@ -4,6 +4,7 @@ import classes from "./ProfileDetails.module.css";
 import ProfileCard from "./UI/ProfileCard"; 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Typography} from "@mui/material";
 
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -114,8 +115,7 @@ const ProfileDetails = () => {
         displayPicture: profilePicture,
         date: date
     };
-////////////////
-    //console.log("request data  from status submit", requestData)
+
     
     try {
       const response = await axios.post(`${REACT_APP_SERVER_URL}/user/status/postStatus`, requestData, {
@@ -133,7 +133,7 @@ const ProfileDetails = () => {
         });
       }
       console.log("response got in frontend", response);
-      //console.log("response status", response.status);
+      
 
     } catch (error) {
       console.error("Error Editting status:", error);
@@ -142,7 +142,7 @@ const ProfileDetails = () => {
   
   const handleEditStatusSubmit = async (event) => {
     event.preventDefault();
-    //console.log("formdata from Edittttttttttttttt status submit", formEditData.id)
+  
     const id = formEditData.id;
     try {
       const response = await axios.put(`${REACT_APP_SERVER_URL}/user/status/updateWorkingQuestion/${id}`, formEditData, {
@@ -161,15 +161,23 @@ const ProfileDetails = () => {
         setIsEditFormVisible(false);
       }
       console.log("response got in Editttttttttttttt frontend", response);
-      //console.log("response status", response.status);
+ 
 
     } catch (error) {
       console.error("Error Editting status:", error);
     }
   };
 
+const handleSwotClick = () => {
+  window.open("https://decisioncoach.onrender.com/profile", "_blank");
+};
+
+const handleSoftSkillsClick = () => {
+  window.open("https://decisioncoach.onrender.com/skillget", "_blank");
+};
+
   const handleGetStatus = async (event) => {
-    //event.preventDefault();
+ 
     try {
       const response = await axios.get(`${REACT_APP_SERVER_URL}/user/status/getStatus`, {
         headers: {
@@ -178,7 +186,7 @@ const ProfileDetails = () => {
         },
       });
       if(response.status === 200){
-        //toast("Status Data Retrived Successfully");
+     
         setStatusData({
           skills: response.data[0].skills,
           tips: response.data[0].tips,
@@ -193,7 +201,7 @@ const ProfileDetails = () => {
 
       }
       console.log("response got in frontend Status Get function", response.data[0]);
-      //console.log("response status", response.status);
+    
     } catch (error) {
       console.error("Error submitting status:", error);
     }
@@ -210,7 +218,7 @@ const ProfileDetails = () => {
       let details = data.education.reverse();
       let project = data.project.reverse();
       let user = data.personal[0];
-      // console.log(data);
+    
       dispatch(summaryAction.addSummary({ summary: data.summary }));
       dispatch(educationActions.replaceEdu(details));
       dispatch(projectActions.replaceProject(project));
@@ -229,15 +237,76 @@ const ProfileDetails = () => {
           })
         );
       }
-      // full data to the state
+   
       dispatch(dataAction.AddData(data));
     });
   }, [dispatch]);
 
-  // console.log(data,"data from the redux state")
+
 
   return (
     <div className={classes.details}>
+      <div>
+        <Typography
+          variant="h4"
+          style={{
+            fontWeight: "bold",
+            textAlign: "left",
+            marginBottom: "20px",
+            marginLeft: "20px",
+            fontSize: "24px",
+            color: "black",
+          }}
+        >
+          Enhance Your Personal Development
+        </Typography>
+
+        <Card style={{ margin: "20px", padding: "20px" }}>
+          <Typography variant="h6">SWOT Analysis</Typography>
+          <Typography variant="body2">
+            Understand your strengths, weaknesses, opportunities, and threats.
+          </Typography>
+          <Button
+            onClick={handleSwotClick}
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: "10px",
+              fontWeight: "bold",
+              backgroundColor: "#11144C",
+              color: "white",
+              width: "20%",
+            }}
+            
+          
+          >
+            
+            Go to SWOT Analysis
+          </Button>
+        </Card>
+
+        <Card style={{ margin: "20px", padding: "20px" }}>
+          <Typography variant="h6">Soft Skills</Typography>
+          <Typography variant="body2">
+            Improve and showcase your interpersonal and communication skills.
+          </Typography>
+          <Button
+            onClick={handleSoftSkillsClick}
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: "10px",
+              fontWeight: "bold",
+              backgroundColor: "#11144C",
+              color: "white",
+              width: "20%",
+            }}
+          >
+            Go to Soft Skills
+          </Button>
+        </Card>
+      </div>
+
       <div>
         <ProfileCard CardName="Summary">
           <h3 className="m-3">Summary</h3>
@@ -271,99 +340,142 @@ const ProfileDetails = () => {
         {status === "Working" && !statusData ? (
           <div style={{ marginLeft: "3rem" }}>
             <>
-              <br/><h4>{status}</h4>
-              <div style={{backgroundColor:"#f2f2f2", maxWidth:"80rem"}}>
-              <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
-                <br />
-                <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>Help Your Friends Just By Answering The Below Questions</h2>
-                <Form.Group className="mb-3" controlId="formBasicSkills">
-                  <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="Skills"
-                    name="skills"
-                    value={formData.skills}
-                    onChange={handleData}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicTips">
-                  <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    placeholder="Tips"
-                    name="tips"
-                    value={formData.tips}
-                    onChange={handleData}
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit" style={{marginTop:"1rem",marginBottom:"2rem"}}>
-                  Submit
-                </Button>
-              </Form>
+              <br />
+              <h4>{status}</h4>
+              <div style={{ backgroundColor: "#f2f2f2", maxWidth: "80rem" }}>
+                <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
+                  <br />
+                  <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
+                    Help Your Friends Just By Answering The Below Questions
+                  </h2>
+                  <Form.Group className="mb-3" controlId="formBasicSkills">
+                    <Form.Label style={{ color: "black" }}>
+                      <b>What Helped You Secure A Job?</b>
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Skills"
+                      name="skills"
+                      value={formData.skills}
+                      onChange={handleData}
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="formBasicTips">
+                    <Form.Label style={{ color: "black" }}>
+                      <b>
+                        What Tips Do You Have For Students From Your College To
+                        Prepare For Job Interview?
+                      </b>
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Tips"
+                      name="tips"
+                      value={formData.tips}
+                      onChange={handleData}
+                    />
+                  </Form.Group>
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    style={{ marginTop: "1rem", marginBottom: "2rem" }}
+                  >
+                    Submit
+                  </Button>
+                </Form>
               </div>
             </>
           </div>
         ) : status === "Working" && statusData ? (
           <div style={{ marginLeft: "3rem" }}>
-            <br/><h4>{status}</h4><br/>
+            <br />
+            <h4>{status}</h4>
+            <br />
             <Card style={{ maxWidth: "80rem" }}>
               <Card.Header>
-                <b>Approval Status:</b> <span style={{color:"#ff9142"}}><b>{statusData.approval}</b></span>
+                <b>Approval Status:</b>{" "}
+                <span style={{ color: "#ff9142" }}>
+                  <b>{statusData.approval}</b>
+                </span>
                 <br />
                 <span style={{ fontSize: "0.6rem" }}>
                   You Can Only Edit Your Answers Until It Is Approved by Admin
                 </span>
               </Card.Header>
               <Card.Body style={{ lineHeight: "2rem" }}>
-                <Card.Text><b>1. What Helped You Secure A Job?</b></Card.Text>
+                <Card.Text>
+                  <b>1. What Helped You Secure A Job?</b>
+                </Card.Text>
                 <Card.Text style={{ marginLeft: "2rem" }}>
                   {statusData.skills}
                 </Card.Text>
-                <Card.Text><b>2. What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Card.Text>
+                <Card.Text>
+                  <b>
+                    2. What Tips Do You Have For Students From Your College To
+                    Prepare For Job Interview?
+                  </b>
+                </Card.Text>
                 <Card.Text style={{ marginLeft: "2rem" }}>
                   {statusData.tips}
                 </Card.Text>
                 <Button
                   variant="primary"
-                  onClick={() => setIsEditFormVisible(true)} 
-                  disabled={statusData.approval === "Approved"} 
+                  onClick={() => setIsEditFormVisible(true)}
+                  disabled={statusData.approval === "Approved"}
                 >
                   Update
                 </Button>
                 {isEditFormVisible && (
-                  <div style={{backgroundColor:"#f2f2f2"}}>
-                  <Form
-                    style={{ margin: "2rem" }}
-                    onSubmit={handleEditStatusSubmit}
-                  >
-                    <br />
-                    <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
-                      Update Your Answers Here
-                    </h2>
-                    <Form.Group className="mb-3" controlId="formEditBasicSkills">
-                      <Form.Label style={{color:"black"}}><b>What Helped You Secure A Job?</b></Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        placeholder="Skills"
-                        name="skills"
-                        value={formEditData.skills}
-                        onChange={handleEditData}
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formEditBasicTips">
-                      <Form.Label style={{color:"black"}}><b>What Tips Do You Have For Students From Your College To Prepare For Job Interview?</b></Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        placeholder="Tips"
-                        name="tips"
-                        value={formEditData.tips}
-                        onChange={handleEditData}
-                      />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" style={{marginTop:"2rem", marginBottom:"2rem"}}>
-                      Update
-                    </Button>
-                  </Form>
+                  <div style={{ backgroundColor: "#f2f2f2" }}>
+                    <Form
+                      style={{ margin: "2rem" }}
+                      onSubmit={handleEditStatusSubmit}
+                    >
+                      <br />
+                      <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
+                        Update Your Answers Here
+                      </h2>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formEditBasicSkills"
+                      >
+                        <Form.Label style={{ color: "black" }}>
+                          <b>What Helped You Secure A Job?</b>
+                        </Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          placeholder="Skills"
+                          name="skills"
+                          value={formEditData.skills}
+                          onChange={handleEditData}
+                        />
+                      </Form.Group>
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formEditBasicTips"
+                      >
+                        <Form.Label style={{ color: "black" }}>
+                          <b>
+                            What Tips Do You Have For Students From Your College
+                            To Prepare For Job Interview?
+                          </b>
+                        </Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          placeholder="Tips"
+                          name="tips"
+                          value={formEditData.tips}
+                          onChange={handleEditData}
+                        />
+                      </Form.Group>
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        style={{ marginTop: "2rem", marginBottom: "2rem" }}
+                      >
+                        Update
+                      </Button>
+                    </Form>
                   </div>
                 )}
               </Card.Body>
@@ -379,7 +491,7 @@ const ProfileDetails = () => {
         <h3 className="m-3">Skills : </h3>
         {skillError && <p className={classes.skillError}>{skillErrMsg}</p>}
         <div className={classes.skillItem}>
-          {skillItems.map((skill,index) => (
+          {skillItems.map((skill, index) => (
             <div className={classes.skillCard} key={index}>
               <SkillItem
                 key={index}
@@ -436,9 +548,9 @@ const ProfileDetails = () => {
           </h4>
 
           <ul style={{ display: "flex", flexWrap: "wrap" }}>
-            {Languages.map((item,index) => (
+            {Languages.map((item, index) => (
               <li
-              key={index}
+                key={index}
                 style={{
                   textDecoration: "none",
                   listStyle: "none",
@@ -461,3 +573,5 @@ const ProfileDetails = () => {
 };
 
 export default ProfileDetails;
+
+

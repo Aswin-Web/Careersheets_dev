@@ -6,7 +6,7 @@ import { HiMail } from "react-icons/hi";
 
 function Resume({ data }) {
   console.log(data, "kkkk");
-  //   const userInfo = personal[0]
+
   return (
     <div className="mainContainer">
       {data && (
@@ -28,13 +28,11 @@ function Resume({ data }) {
               <h2>{data.name}</h2>
             )}
           </div>
-          {/* PHONE SECTION */}
+        
           <div className={classes.phone}>
             {data.personal[0] ? (
               <div className={classes.phoneItems}>
-                {/* <p style={{ marginRight: "5px" }}>
-                  <ImLocation2 size={16} />
-                </p> */}
+                
                 <p>
                   {data.personal[0].hometown ? (
                     <>
@@ -89,7 +87,6 @@ function Resume({ data }) {
           </div>
           <div className={classes.lineBig}></div>
 
-          {/* SUMMARY SECTION */}
           {data.summary && (
             <>
               <div className={classes.line}>
@@ -102,7 +99,7 @@ function Resume({ data }) {
               </div>
             </>
           )}
-          {/* SKILL SECTION */}
+      
           {data.skill.length !== 0 && (
             <>
               <div className={classes.line}>
@@ -120,7 +117,7 @@ function Resume({ data }) {
               </div>
             </>
           )}
-          {/* EDUCATION */}
+        
           {data.education.length !== 0 && (
             <>
               <div className={classes.line}>
@@ -162,7 +159,7 @@ function Resume({ data }) {
               </div>
             </>
           )}
-          {/* PROJECTS */}
+        
           {data.project.length !== 0 && (
             <>
               <div className={classes.line}>
@@ -194,7 +191,7 @@ function Resume({ data }) {
               <div className={classes.empty}></div>
             </>
           )}
-          {/* PERSONAL INFORMATION */}
+       
           {data.personal.length !== 0 && (
             <>
               <div className={classes.line}>
@@ -259,3 +256,7 @@ function Resume({ data }) {
 }
 
 export default Resume;
+
+
+
+

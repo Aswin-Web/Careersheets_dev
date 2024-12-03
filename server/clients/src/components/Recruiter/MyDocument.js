@@ -12,9 +12,8 @@ import {
 import RobotoRegular from "./assets/roboto/Roboto-Regular.ttf";
 import RobotoBold from "./assets/roboto/Roboto-Bold.ttf";
 import RobotoMedium from "./assets/roboto/Roboto-Medium.ttf";
-// Create Document Component
+
 const MyDocument = (props) => {
-  // console.log(props.data, "mmmmmmmm");
   const data = props.data;
 
   return (
@@ -110,7 +109,7 @@ const MyDocument = (props) => {
                 )}
                 ) : (<Text>{""}</Text>)
               </View>
-              {/* Summary section */}
+
               {data.summary && (
                 <>
                   <View
@@ -163,7 +162,7 @@ const MyDocument = (props) => {
                   </View>
                 </>
               )}
-              {/* skills section */}
+
               {data.skill.length !== 0 && (
                 <>
                   <View
@@ -202,7 +201,6 @@ const MyDocument = (props) => {
                       }}
                     ></View>
                   </View>
-                  {/* skill items */}
 
                   <View
                     style={{
@@ -228,7 +226,6 @@ const MyDocument = (props) => {
                 </>
               )}
 
-              {/* Education Section */}
               {data.education.length !== 0 && (
                 <>
                   <View
@@ -266,7 +263,7 @@ const MyDocument = (props) => {
                       }}
                     ></View>
                   </View>
-                  {/* Education items */}
+
                   <View
                     style={{
                       marginTop: "8px",
@@ -344,7 +341,7 @@ const MyDocument = (props) => {
                   </View>
                 </>
               )}
-              {/* Project section */}
+
               {data.project.length !== 0 && (
                 <View>
                   <View
@@ -382,7 +379,7 @@ const MyDocument = (props) => {
                       }}
                     ></View>
                   </View>
-                  {/* PROJECTS*/}
+
                   <View
                     style={{
                       padding: "10px",
@@ -420,15 +417,15 @@ const MyDocument = (props) => {
                               fontStyle: "medium",
                             }}
                           >
-                            {" "}
                             {item.projectDomain}
                           </Text>
                         </View>
                         <View
                           style={{
                             display: "flex",
-
                             fontSize: "13px",
+                            padding: "10",
+                            margin: "10",
                           }}
                         >
                           <Text
@@ -437,18 +434,19 @@ const MyDocument = (props) => {
                               fontStyle: "medium",
                             }}
                           >
-                            Project Description :-{" "}
+                            Project Description :
                           </Text>
+
                           <Text
                             style={{
+                              width: "100%",
                               textAlign: "justify",
-                              textIndent: "70px",
-                              lineHeight: "1.2px",
-                              fontSize: "13px",
+                              lineHeight: "0",
+                              fontSize: "24px",
+                              fontStyle: "medium",
                             }}
                           >
-                            {" "}
-                            {item.projectDescription}
+                            {item.projectDescription}asdadsadadada
                           </Text>
                         </View>
                       </View>
@@ -456,9 +454,6 @@ const MyDocument = (props) => {
                   </View>
                 </View>
               )}
-
-              {/* Personal Information section */}
-
               {data.personal.length !== 0 && (
                 <View style={{ marginTop: "10px" }}>
                   <View
@@ -496,7 +491,7 @@ const MyDocument = (props) => {
                       }}
                     ></View>
                   </View>
-                  {/* Personal Information */}
+
                   <View>
                     {data.personal.map((info) => (
                       <View
@@ -552,9 +547,9 @@ const MyDocument = (props) => {
 Font.register({
   family: "Roboto",
   fonts: [
-    { src: RobotoBold, fontStyle: "bold" },
-    { src: RobotoRegular, fontStyle: "normal" },
-    { src: RobotoMedium, fontStyle: "medium" },
+    { src: RobotoBold, fontWeight: "bold" },
+    { src: RobotoRegular, fontWeight: "normal" },
+    { src: RobotoMedium, fontWeight: "500" },
   ],
 });
 
