@@ -34,6 +34,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
       score = score + 1;
     }
   });
+
   const projectMatch = JobSkillset.map((skill) => {
     if (skillOfProject.toString().toLowerCase().includes(skill.toLowerCase())) {
       projectScore = projectScore + 1;
@@ -73,7 +74,7 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
       >
         {/* Heading */}
         <Box sx={{}}>
-          <h3>
+          <h3> 
             {" "}
             {item.roleName
               ? item.roleName.length <= 14
@@ -138,19 +139,18 @@ const JobCard = ({ item, skillofUser, skillOfProject }) => {
           <p style={{ color: "grey" }}>
             {`${
               item.appliedUsers.length !== 0
-                ? item.appliedUsers.length + " Applications received"
+                ? item.appliedUsers.length + "Applications received"
                 : "None applied"
             } `}
-          </p>
+          </p>  
                     
           {/* <Link to={`/user/jobs/${item._id}`}>
             <p>View</p>
           </Link> */}
 
-<Link to={`/user/jobs/${item._id}?disableApplyButton=${disableApplyButton}`}>
-  <p>View</p>
-</Link>
-          
+          <Link to={`/user/jobs/${item._id}?disableApplyButton=${disableApplyButton}`}>
+            <p>View</p>
+          </Link>
         </Box>
       </Box>
     </div>

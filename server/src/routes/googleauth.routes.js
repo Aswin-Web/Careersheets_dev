@@ -15,6 +15,10 @@ const router = express.Router();
 
 const jwt = require("jsonwebtoken");
 
+
+const {insertLoginHistory} = require("../utils/gift.helpers.utils");
+
+
 async function generateJWT(
   _id,
   email,
@@ -60,6 +64,24 @@ router.get(
   async function (req, res, next) {
     res.setHeader("Access-Control-Allow-Credentials", true);
     try {
+
+      console.log("tokeennenenenenneneneeee", req.user)
+      console.log("req.body", req.hostname, req.originalUrl, )
+
+      const user_domain = req.user.emails[0].value.split('@')[1].split('.')[0];
+      console.log("user_domain", user_domain);
+
+          const responseFromGift = await insertLoginHistory(
+            req.hostname,
+            req.originalUrl,
+            req.headers["user-agent"] || "Unknown",
+            req.user.emails[0].value,
+            "sso",
+            user_domain
+          );
+
+      console.log("resssssssss", responseFromGift);
+
       const email = req.user.emails[0].value;
       const name = req.user.displayName;
       const photo = req.user.photos[0].value;

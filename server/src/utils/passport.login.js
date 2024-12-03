@@ -5,6 +5,7 @@ const { Strategy } = require("passport-google-oauth20");
 
 const CLIENT_ID = process.env.CLIENT_ID;
 
+
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 
 passport.serializeUser((user, done) => {

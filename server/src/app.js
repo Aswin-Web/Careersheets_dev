@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const ObjectId = require('mongodb').ObjectId;
 const express = require("express");
 const passport = require("passport");
@@ -21,7 +21,6 @@ const connectDB = require("./utils/connectDB");
 // Routes Import
 const userRoutes = require("./routes/user.routes");
 
-
 const authRoutes = require("./routes/auth.routes");
 const googleAuthRoutes = require("./routes/googleauth.routes");
 const CSVroutes = require("./routes/csv.routes");
@@ -40,6 +39,8 @@ const app = express();
 // Cookie-Parser
 
 // MongoDB Connection String
+
+console.log("connecteddddd")
 connectDB();
 
 // Elastic SERVER
