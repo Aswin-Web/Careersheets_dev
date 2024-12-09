@@ -67,6 +67,7 @@ import PDFViewAdmin from "./components/Admin/PDFViewAdmin";
 import LastSeen from "./components/Admin/LastSeen";
 import RecruiterController from "./components/Controller/RecruiterController";
 import Jobs from "./components/Recruiter/Jobs";
+import Scheduleint from "./components/Recruiter/Scheduleint/Scheduleint";
 import RecruiterTable from "./components/Admin/RecruiterTable";
 import Company_Info from "./components/Recruiter/Company_Info";
 import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
@@ -204,6 +205,7 @@ function App() {
           <Route index element={<Jobs />} />
           <Route path="profile" element={<Company_Info />} />
           <Route path="jobs/*" element={<ViewRecruiterJobs />} />
+          <Route path ='schedule'element={<Scheduleint/>}></Route>
           <Route path="profile/resume/pdf/*" element={<PDFViewRecruiter />} />
           <Route path="profile/resume/*" element={<ResumeViewRecruiter />} />
         </Route>
