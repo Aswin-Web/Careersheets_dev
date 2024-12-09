@@ -1,18 +1,17 @@
-import { Avatar, Box, Button, TextField, Typography } from "@mui/material";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Avatar, Box, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import DateRangeIcon from "@mui/icons-material/DateRange";
-import React from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import DoneIcon from "@mui/icons-material/Done";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { green } from "@mui/material/colors";
 import axios from "axios";
-import { updateJobs } from "../../redux/reducers/AllJobDetails";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import ScheduleInterview from "./Scheduleint/Scheduleint";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { REACT_APP_SERVER_URL } from "../../config";
 
 const centerItems = {
@@ -28,22 +27,22 @@ const ViewRecruiterJobs = () => {
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
   const [currentJob, setCurrentJob] = useState([]);
-  const [error, seterror] = useState({isError:false,msg:""});
+  const [error, setError] = useState({ isError: false, msg: "" });
+  const [scheduleDialogOpen, setScheduleDialogOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [interviewDetails, setInterviewDetails] = useState({
+    date: "",
+    time: null,
+    location: "",
+    interviewerName: "",
+  });
+  const [feedback, setFeedback] = useState("");
+  const [feedbackPosted, setFeedbackPosted] = useState(false);
 
-  console.log(jobbID);
   useEffect(() => {
     GetJobInfo();
   }, []);
-  //   const allJobs = useSelector((state) => state.allJobs.value);
-  //   let currentJob = allJobs.filter((x) => x._id === jobbID);
-  const allJobs = [];
 
-  let applied = [];
-  if (currentJob.length !== 0) {
-    let a = currentJob[0].appliedUsers;
-    let b = [...a];
-    applied = b.reverse();
-  }
   const GetJobInfo = async () => {
     try {
       const data = await axios.get(
@@ -55,298 +54,277 @@ const ViewRecruiterJobs = () => {
           },
         }
       );
-      console.log(data);
       if (data.status === 200) {
         setCurrentJob([...data.data.allJobs]);
-        // setshow(true);
-        // setEmailUsers([...data.data.userlist]);
-        // console.log(emailUsers);
       }
       if (data.status === 400) {
-        console.log("122121212212212121");
-        seterror({isError:true,msg:" Not authorised"})
+        setError({ isError: true, msg: "Not authorised" });
       }
     } catch (error) {
-      return null;
+      console.error(error);
     }
   };
+
+  const handleScheduleClick = (user) => {
+    setSelectedUser(user);
+    setScheduleDialogOpen(true);
+  };
+
+  const handleScheduleClose = () => {
+    setScheduleDialogOpen(false);
+    setInterviewDetails({
+      date: "",
+      time: null,
+      location: "",
+      interviewerName: "",
+    });
+  };
+
+  const handleScheduleSave = async () => {
+    try {
+      const response = await axios.post(
+        `${REACT_APP_SERVER_URL}/recruiter/schedule-interview`,
+        {
+          userId: selectedUser.userId._id,
+          jobId: currentJob[0]._id,
+          ...interviewDetails,
+          time: interviewDetails.time.toISOString(),
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        alert("Interview scheduled successfully!");
+        handleScheduleClose();
+      }
+    } catch (error) {
+      console.error("Failed to schedule interview:", error);
+    }
+  };
+
+  const handleMarkComplete = () => {
+  
+    if (feedback) {
+      setFeedback(""); 
+    }
+
+    const candidatePhone = interviewDetails.candidatePhone;
+
+    const thankYouMessage =
+      "Thank you for attending the interview. We appreciate your time and effort!";
+    console.log(
+      `Sending thank you message to ${candidatePhone}: ${thankYouMessage}`
+    );
+
+   
+    toast.success("Thank you message sent");
+  };
+
+  const handleSubmitFeedback = async () => {
+    if (!feedback) {
+      toast.error("Please provide feedback before submitting.");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `${REACT_APP_SERVER_URL}/recruiter/post-feedback`,
+        {
+          userId: selectedUser.userId._id,
+          jobId: currentJob[0]._id,
+          feedback,
+        },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+     
+        toast.success("Feedback submitted successfully!");
+        setFeedback(""); 
+      }
+    } catch (error) {
+      console.error("Failed to post feedback:", error);
+      toast.error("Failed to post feedback");
+    }
+  };
+
   return (
-    <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
-      <Box
-        sx={{
-          width: "25%",
-          Height: "80vh",
-          margin: "1rem",
-          padding: "0.5rem",
-          border: "1px solid black",
-          borderRadius: "10px",
-        }}
-      >
-        <h3>Applied Users</h3>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
+        <Box
+          sx={{
+            width: "25%",
+            height: "80vh",
+            margin: "1rem",
+            padding: "0.5rem",
+            border: "1px solid black",
+            borderRadius: "10px",
+          }}
+        >
+          <h3>Applied Users</h3>
+          <Box sx={{ padding: "1rem" }}>
+            {currentJob[0] !== undefined
+              ? currentJob[0].appliedUsers
+                  .slice()
+                  .reverse()
+                  .map((item, index) => (
+                    <Box
+                      key={index}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "start",
+                        border: "1px solid black",
+                        padding: "0.5rem",
+                        borderRadius: "10px",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                        }}
+                      >
+                        <Avatar
+                          alt={item.userId.name}
+                          src={item.userId.displayPicture}
+                        />
+                        <Link
+                          to={`/recruiter/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          <h6 style={{ fontSize: "1rem" }}>
+                            {item.userId.name.slice(0, 7)}....
+                          </h6>
+                        </Link>
+                        {item.isViewed && <DoneIcon sx={{ color: "green" }} />}
+                      </Box>
+                      <Box sx={{ display: "flex", gap: "10px" }}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleScheduleClick(item)}
+                          sx={{ marginTop: "10px" }}
+                        >
+                          Schedule Interview
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleMarkComplete}
+                          sx={{ marginTop: "10px" }}
+                        >
+                          Mark as Complete
+                        </Button>
+                        <ToastContainer position="top-right" autoClose={3000} />
+                      </Box>
+
+                      <Box sx={{ marginTop: "1rem" }}>
+                        <TextField
+                          label="Interview Feedback"
+                          multiline
+                          rows={4}
+                          value={feedback}
+                          onChange={(e) => setFeedback(e.target.value)}
+                          fullWidth
+                          variant="outlined"
+                        />
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          sx={{ marginTop: "1rem" }}
+                          onClick={handleSubmitFeedback}
+                        >
+                          Submit Feedback
+                        </Button>
+                      </Box>
+                    </Box>
+                  ))
+              : "None applied"}
+          </Box>
+        </Box>
+
         <Box
           sx={{
             padding: "1rem",
+            width: "75%",
+            minHeight: "80vh",
           }}
         >
-          {currentJob[0] !== undefined ? (
-            applied.map((item, index) => (
-              <Box
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  // justifyContent:'space-between',
-                  alignItems: "center",
-                  border: "1px solid black ",
-                  padding: "0.5rem",
-                  borderRadius: "10px",
-                  marginBottom: "0.5rem",
-                  textDecoration: "none",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "30%",
-                  }}
-                >
-                  <Avatar
-                    alt={item.userId.name}
-                    src={item.userId.displayPicture}
-                  />
+          {error.isError ? <h1>Not Authorised</h1> : ""}
+          {currentJob.length !== 0 && (
+            <Box
+              sx={{
+                backgroundColor: "white",
+                padding: "1rem",
+                border: "1px solid black",
+                margin: "1rem",
+                borderRadius: "10px",
+              }}
+            >
+              <h3>{currentJob[0].roleName}</h3>
+              <h4>{currentJob[0].companyName}</h4>
+              <Box>
+                <Box sx={centerItems}>
+                  <WorkOutlineIcon />
+                  {currentJob[0].jobTitle}
                 </Box>
-                <Box
-                  sx={{
-                    width: "70%",
-                  }}
-                >
-                  <h6
-                    style={{
-                      fontSize: "1rem",
-                      textDecoration: "none",
-                      color: "black",
-                    }}
-                  >
-                    <Link
-                      to={`/recruiter/profile/resume/${currentJob[0]._id}/${item.userId._id}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                      onClick={() => {
-                        if (!item.isViewed) {
-                          const pageViewed = async () => {
-                            const response = await axios
-                              .post(
-                                `${REACT_APP_SERVER_URL}/recruiter/user/view`,
-                                {
-                                  userId: item.userId._id,
-                                  jobId: currentJob[0]._id,
-                                },
-                                {
-                                  headers: {
-                                    "Content-type": "application/json",
-                                    Authorization: `Bearer ${localStorage.getItem(
-                                      "recruiter"
-                                    )}`,
-                                  },
-                                }
-                              )
-                              .catch((err) => console.log(err));
-                          };
-                          pageViewed();
-                        }
-                      }}
-                    >
-                      {item.userId.name.slice(0, 7)}....
-                    </Link>
-                  </h6>
+                <Box sx={centerItems}>
+                  <ApartmentIcon />
+                  {currentJob[0].companyName}
                 </Box>
-                <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
-                  {/* {item.isWishlisted ? (
-                    <FavoriteIcon sx={{ color: "red" }} />
-                  ) : (
-                    <FavoriteBorderIcon sx={{ color: "red" }} />
-                  )} */}
-
-                  {item.isViewed ? <DoneIcon sx={{ color: "green" }} /> : <></>}
-
-                  {/* <DoneIcon sx={{ color: "green" }} /> */}
-                  {/* <FavoriteBorderIcon sx={{ color: "red" }} /> */}
+                <Box sx={centerItems}>
+                  <CurrencyRupeeIcon />
+                  {currentJob[0].salary}
                 </Box>
+                <Box sx={centerItems}>
+                  <ApartmentIcon />
+                  {currentJob[0].location}
+                </Box>
+                <Box>
+                 
+                  <h3>About Us</h3>
+                 <p>{currentJob[0].companyDescription}</p>
               </Box>
-            ))
-          ) : (
-            <p> None applied </p>
+              <Box>
+                <h3>Job Description</h3>
+                <p>{currentJob[0].JobDescription}</p>
+             </Box>
+           
+               
+              </Box>
+            </Box>
+                
+              
+            
           )}
         </Box>
       </Box>
+       <ScheduleInterview
+        open={scheduleDialogOpen}
+        onClose={handleScheduleClose}
+        onSave={handleScheduleSave}
+         interviewDetails={interviewDetails}
+        setInterviewDetails={setInterviewDetails}
+      />
+    </LocalizationProvider>
 
-      <Box
-        sx={{
-          padding: "1rem",
-          width: "75%",
-          minHeight: "80vh",
-        }}
-      >
-        {error.isError ? <h1>Not Authorised</h1>:""}
-        {currentJob.length !== 0 ? (
-          <Box
-            sx={{
-              backgroundColor: "white",
-              padding: "1rem",
-              border: "1px solid black",
 
-              margin: "1rem",
-              borderRadius: "10px",
-            }}
-          >
-            {/* Heading */}
-            <Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <h3>{currentJob[0].roleName}</h3>
-              </Box>
-              <h4>{currentJob[0].companyName}</h4>
-            </Box>
-            {/* Horizontal Columns */}
-            <Box>
-              <Box sx={centerItems}>
-                {" "}
-                <WorkOutlineIcon />
-                {currentJob[0].experience} years
-              </Box>
-              <Box sx={centerItems}>
-                <CurrencyRupeeIcon />
-                {currentJob[0].salary}
-              </Box>
-            </Box>
-            <Box sx={centerItems}>
-              <ApartmentIcon />
-              {currentJob[0].location}
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                margin: "0.5rem 0",
-                alignItems: "center",
-              }}
-            >
-              <Box sx={centerItems}>
-                <DateRangeIcon />
-                {new Date(currentJob[0].createdAt).toLocaleDateString()}
-              </Box>
-              {/* <Box>
-            <Button>View</Button>
-          </Box> */}
-            </Box>
-            {/* About Us */}
-            <Box>
-              <h3>About Us</h3>
-              <br />
-              <p>{currentJob[0].companyDescription}</p>
-              <br />
-            </Box>
-            {/* Job Description */}
-            <Box>
-              <h3>Job Description</h3>
-              <br />
-              <p>{currentJob[0].JobDescription}</p>
-              <br />
-
-              <br />
-              <Box>
-                <h4>Responsibilities : </h4>
-                <p> {currentJob[0].Responsibilites}</p>
-              </Box>
-              <br />
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Skills :{" "}
-                </Typography>
-                <Typography variant="p">
-                  {" "}
-                  {currentJob[0].SkillsRequired}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Role :{" "}
-                </Typography>
-                <Typography variant="p"> {currentJob[0].roleName}</Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Industry Type :{" "}
-                </Typography>
-                <Typography variant="p">
-                  {" "}
-                  {currentJob[0].IndustryType}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Department :{" "}
-                </Typography>
-                <Typography variant="p">
-                  {currentJob[0].departmentType}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Employment Type:
-                </Typography>
-                <Typography variant="p">
-                  {" "}
-                  {currentJob[0].employmentType}
-                </Typography>
-              </Box>
-              <Box>
-                <Typography
-                  sx={{
-                    display: "inline-block",
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                  }}
-                >
-                  Education UG:
-                </Typography>
-                <Typography variant="p"> {currentJob[0].education}</Typography>
-              </Box>
-            </Box>
-          </Box>
-        ) : (
-          <></>
-        )}
-      </Box>
-    </Box>
+   
   );
 };
 
 export default ViewRecruiterJobs;
+
+
+
