@@ -17,8 +17,9 @@ export const CollegeAdminListSlice = createSlice({
         }else{
           return item
         }
-        state.value=[...modifyDocunment]
+       
       })
+       state.value = [...modifyDocunment];
     }
    
   },
