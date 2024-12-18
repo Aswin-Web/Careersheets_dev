@@ -30,7 +30,7 @@ const SkillAdminform = (props) => {
   const [inputs, setInputs] = useState();
   const [addedSkills, setaddedSkills] = useState([...props.SkillValues]);
   // console.log(addedSkills,"Please Verify")
-  const [err, setErr] = useState(false);
+  // const [err, setErr] = useState(false);
   //
   const getAllSkills = async () => {
     const response = await axios.get(

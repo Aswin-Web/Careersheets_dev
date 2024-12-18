@@ -27,7 +27,7 @@ const Skillform = (props) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState();
   const [level, setLevel] = useState();
-  const [err, setErr] = useState(false);
+  // const [err, setErr] = useState(false);
   //
   const getAllSkills = async () => {
     const response = await axios.get(
@@ -107,7 +107,7 @@ const Skillform = (props) => {
       postRequest()
         .then((data) => {
           if (!data) {
-            setErr(true);
+            // setErr(true);
             dispatch(
               skillActions.skillError(
                 "This skill is already in your skill list.\n Try to add new Skill!!"
@@ -115,7 +115,7 @@ const Skillform = (props) => {
             );
           }
           let skill = data.newSkill;
-          setErr(false);
+          // setErr(false);
           if (data) {
             dispatch(skillActions.addSkill({ ...skill }));
           }
