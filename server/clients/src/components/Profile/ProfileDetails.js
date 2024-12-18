@@ -4,13 +4,24 @@ import classes from "./ProfileDetails.module.css";
 import ProfileCard from "./UI/ProfileCard"; 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Typography} from "@mui/material";
+import {
+  Typography,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Box
+} from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Card from 'react-bootstrap/Card';
-
+import Certification from "../Certification/Certification";
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
 import EducationItems from "./EducationItems";
@@ -40,6 +51,19 @@ const ProfileDetails = () => {
   const token = useSelector((state) => state.auth.value);
   const data = useSelector((state) => state.data.value);
   const Languages = personalState.languages.map((item) => item);
+
+   const [certifications, setCertifications] = useState([]);
+  
+   
+   
+const handleAddCertification = (newCertification) => {
+  setCertifications([...certifications, newCertification]);
+  
+};
+
+   const handleDeleteCertification = (id) => {
+     setCertifications(certifications.filter((cert) => cert.id !== id));
+   };
 
   const sendRequest = async () => {
     const response = await axios
@@ -72,6 +96,7 @@ const ProfileDetails = () => {
     tips: "",
     collegeName: personalState.collegeName || ""
   });
+
 
   const [formEditData, setFormEditData] = useState({
     skills: "",
@@ -175,7 +200,7 @@ const handleSwotClick = () => {
 const handleSoftSkillsClick = () => {
   window.open("https://decisioncoach.onrender.com/skillget", "_blank");
 };
-
+ 
   const handleGetStatus = async (event) => {
  
     try {
@@ -242,8 +267,8 @@ const handleSoftSkillsClick = () => {
     });
   }, [dispatch]);
 
-
-
+ 
+console.log(certifications,"jjjjjjjjjjjj")
   return (
     <div className={classes.details}>
       <div>
@@ -277,10 +302,7 @@ const handleSoftSkillsClick = () => {
               color: "white",
               width: "20%",
             }}
-            
-          
           >
-            
             Go to SWOT Analysis
           </Button>
         </Card>
@@ -520,6 +542,53 @@ const handleSoftSkillsClick = () => {
           ))}
         </ul>
       </ProfileCard>
+      <ProfileCard CardName="certification">
+        <h3 className="m-3"> Certification</h3>
+        
+        {certifications.length > 0 && (
+          <Box sx={{ mt: 3 }}>
+            <Typography variant="h6" color="text.secondary" gutterBottom>
+              Added Certifications
+            </Typography>
+            <Table size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Certificate Name</TableCell>
+                  <TableCell>Issued By</TableCell>
+                  <TableCell>Issued On</TableCell>
+                  <TableCell>Start Date</TableCell>
+                  {certifications.some((cert) => cert.endDate) && (
+                    <TableCell>Expiry Date</TableCell>
+                  )}
+                  <TableCell>Certificate ID</TableCell>
+                  <TableCell>Actions</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {certifications.map((cert) => (
+                  <TableRow key={cert.id}>
+                    <TableCell>{cert.certificateName}</TableCell>
+                    <TableCell>{cert.providedBy}</TableCell>
+                    <TableCell>{cert.issuedOn}</TableCell>
+                    <TableCell>{cert.startDate || "N/A"}</TableCell>
+                    {cert.endDate && <TableCell>{cert.endDate}</TableCell>}
+                    <TableCell>{cert.certificateId}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="error"
+                        onClick={() => handleDeleteCertification(cert.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        )}
+      </ProfileCard>
+
       <ProfileCard CardName="info">
         <h3 className="m-3">Personal Information</h3>
         <div className="m-5">

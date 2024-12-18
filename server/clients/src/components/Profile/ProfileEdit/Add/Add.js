@@ -9,6 +9,7 @@ import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import StatusForm from "./StatusForm";
 import Skillform from "./Skillform";
+import CertificationForm from "../../../Certification/Certification";
 import ProjectForm from "./ProjectForm";
 import axios from "axios";
 // import { isAbsoluteUrl } from "next/dist/shared/lib/utils";
@@ -25,6 +26,7 @@ export default function Add(props) {
   const [skills, setSkills] = React.useState(false);
   const [project, setProject] = React.useState(false);
   const [info, setInfo] = React.useState(false);
+  const [certification,setCertification]=React.useState(false)
 
   ///// GETTING COLLEGE LIST/////
   const sendRequest = async () => {
@@ -47,6 +49,9 @@ export default function Add(props) {
     if (props.Card === "education") {
       setEducation(true);
     }
+      if (props.Card === "certification") {
+        setCertification(true);
+      }
     if (props.Card === "status") {
       setStatus(true);
     }
@@ -90,6 +95,7 @@ export default function Add(props) {
         {project && <ProjectForm onClose={handleClose} />}
         {about && <SummaryForm onClose={handleClose} />}
         {info && <PersonalInfoForm onClose={handleClose} />}
+        {certification && <CertificationForm onClose={handleClose} />}
 
         <Button
           sx={{ marginLeft: "auto", marginRight: "5em", bottom: "3.2em" }}

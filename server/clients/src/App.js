@@ -73,6 +73,7 @@ import Company_Info from "./components/Recruiter/Company_Info";
 import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
+import Certification from "./components/Certification/Certification"
 import SearchUser from "./components/Admin/SearchUser";
 import Tips from "./components/JobSeekerPage/Tips";
 import { REACT_APP_CLIENT_URL } from "./config";
@@ -156,6 +157,7 @@ function App() {
           <Route path="jobs/*" element={<ViewJobApplications />} />
           {/* Applied Jobs */}
           <Route path="applied" element={<AppliedJobsMenuComponent />} />
+          <Route path="certification" element={<Certification/>}></Route>
           <Route path="applied/*" element={<ViewAppliedJobApplications />} />
           <Route path="tips" element={<Tips />}/>
         </Route>
