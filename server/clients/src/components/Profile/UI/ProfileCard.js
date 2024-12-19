@@ -1,3 +1,4 @@
+
 import React from "react";
 import classes from "./ProfileCard.module.css";
 import { Box } from "@mui/material";
@@ -5,9 +6,9 @@ import { Box } from "@mui/material";
 import Add from "../ProfileEdit/Add/Add";
 import { Helmet } from "react-helmet-async";
 
-
 const ProfileCard = (props) => {
-  //console.log("props from profile card", props);
+  console.log("CardName:", props.CardName); 
+
   return (
     <div className={classes.profileCard}>
       <Helmet>
@@ -20,8 +21,12 @@ const ProfileCard = (props) => {
       </Helmet>
       <Box display="flex" sx={{ padding: "0.5em" }}>
         <Box sx={{ marginLeft: "auto", display: "flex" }}>
-          {/* <Edit Card={props.CardName} /> */}
-          <Add Card={props.CardName} />
+         
+          {props.CardName &&
+            props.CardName.toLowerCase().trim() !== "swot analysis" &&
+            props.CardName.toLowerCase().trim() !== "soft skills" && (
+              <Add Card={props.CardName} />
+            )}
         </Box>
       </Box>
       <div className={classes.cardContent}>{props.children}</div>

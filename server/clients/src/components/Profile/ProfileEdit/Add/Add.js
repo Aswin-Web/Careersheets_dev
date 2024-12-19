@@ -12,7 +12,7 @@ import Skillform from "./Skillform";
 import CertificationForm from "../../../Certification/Certification";
 import ProjectForm from "./ProjectForm";
 import axios from "axios";
-// import { isAbsoluteUrl } from "next/dist/shared/lib/utils";
+
 import SummaryForm from "./SummaryForm";
 import PersonalInfoForm from "./PersonalInfoForm";
 import { REACT_APP_SERVER_URL } from "../../../../config";
@@ -28,7 +28,7 @@ export default function Add(props) {
   const [info, setInfo] = React.useState(false);
   const [certification,setCertification]=React.useState(false)
 
-  ///// GETTING COLLEGE LIST/////
+ 
   const sendRequest = async () => {
     const response = await axios.get(
       `${REACT_APP_SERVER_URL}/collegelist`
@@ -107,3 +107,7 @@ export default function Add(props) {
     </div>
   );
 }
+
+
+
+
