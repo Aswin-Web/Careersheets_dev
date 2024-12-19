@@ -1,9 +1,7 @@
-.details h3 {
+ .details h3 {
   margin-bottom: 0.6em;
 }
-/* .details h4 {
-  margin-bottom: 1em;
-} */
+
 .details p {
   margin-left: 0.5em;
 }
@@ -27,9 +25,8 @@
   flex-wrap: wrap;
   
 }
-/* .skillCard p {
-  display: inline;
-} */
+
+
 .educationList li{
     list-style: none;
 }
@@ -69,4 +66,7 @@
   .skillItem {
     width: 100%;
   }
+
+
 }
+ 

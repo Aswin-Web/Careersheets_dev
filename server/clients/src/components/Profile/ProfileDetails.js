@@ -286,11 +286,14 @@ console.log(certifications,"jjjjjjjjjjjj")
           Enhance Your Personal Development
         </Typography>
 
-        <Card style={{ margin: "20px", padding: "20px" }}>
-          <Typography variant="h6">SWOT Analysis</Typography>
-          <Typography variant="body2">
+        <ProfileCard style={{ margin: "20px", padding: "20px" }}>
+          {/* <Typography variant="h6">SWOT Analysis</Typography> */}
+          <h3 className="m-3" >SWOT Analysis</h3>
+          <p style={{ fontSize: 10 }}></p>
+
+          <p style={{fontSize:14}}>
             Understand your strengths, weaknesses, opportunities, and threats.
-          </Typography>
+          </p>
           <Button
             onClick={handleSwotClick}
             variant="contained"
@@ -300,18 +303,20 @@ console.log(certifications,"jjjjjjjjjjjj")
               fontWeight: "bold",
               backgroundColor: "#11144C",
               color: "white",
-              width: "20%",
+              width: "24%",
             }}
           >
             Go to SWOT Analysis
           </Button>
-        </Card>
+        </ProfileCard>
 
-        <Card style={{ margin: "20px", padding: "20px" }}>
-          <Typography variant="h6">Soft Skills</Typography>
-          <Typography variant="body2">
+        <ProfileCard style={{ margin: "20px", padding: "20px" }}>
+          {/* <Typography variant="h6">Soft Skills</Typography> */}
+          <h3 className="m-3">Soft Skills</h3>
+          <p style={{ fontSize: 10 }}></p>
+          <p style={{fontSize:14}}>
             Improve and showcase your interpersonal and communication skills.
-          </Typography>
+          </p>
           <Button
             onClick={handleSoftSkillsClick}
             variant="contained"
@@ -326,7 +331,7 @@ console.log(certifications,"jjjjjjjjjjjj")
           >
             Go to Soft Skills
           </Button>
-        </Card>
+        </ProfileCard>
       </div>
 
       <div>
@@ -544,7 +549,7 @@ console.log(certifications,"jjjjjjjjjjjj")
       </ProfileCard>
       <ProfileCard CardName="certification">
         <h3 className="m-3"> Certification</h3>
-        
+
         {certifications.length > 0 && (
           <Box sx={{ mt: 3 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
