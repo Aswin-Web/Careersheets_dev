@@ -49,6 +49,7 @@ import Dashboard from "./components/Admin/Dashboard";
 import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
 import WorkingStatusTable from "./components/Admin/WorkingStatusTable"
+import CertificationVerifyTable from "./components/Admin/CertificationVerifyTable"
 import SingleProfile from "./components/Admin/SingleProfile";
 import PlatFormAdminController from "./components/Controller/PlatFormAdminController";
 import ResumeMain from "./components/Profile/Resume/ResumeMain";
@@ -73,9 +74,9 @@ import Company_Info from "./components/Recruiter/Company_Info";
 import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
-import Certification from "./components/Certification/Certification"
 import SearchUser from "./components/Admin/SearchUser";
 import Tips from "./components/JobSeekerPage/Tips";
+import GenerateCertificateMain from "./components/Profile/Certification/CertificationApprovalTemplate";
 import { REACT_APP_CLIENT_URL } from "./config";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -151,13 +152,13 @@ function App() {
           <Route path="help" element={<Help />} />
           <Route path="devstage" element={<CommingSoon />} />
           <Route path="profile/resume" element={<ResumeMain />} />
+          <Route path="profile/certification" element={<GenerateCertificateMain />} />
           <Route path="profile/resume/pdf" element={<PDF />} />
           {/* Jobs Menu */}
           <Route path="jobs" element={<JobsMenuComponent />} />
           <Route path="jobs/*" element={<ViewJobApplications />} />
           {/* Applied Jobs */}
           <Route path="applied" element={<AppliedJobsMenuComponent />} />
-          <Route path="certification" element={<Certification/>}></Route>
           <Route path="applied/*" element={<ViewAppliedJobApplications />} />
           <Route path="tips" element={<Tips />}/>
         </Route>
@@ -190,6 +191,9 @@ function App() {
 
           {/* Working Status Question */}
           <Route path="verify/workingStatusAnswer" element={<WorkingStatusTable />} />
+
+          {/* Working Status Question */}
+          <Route path="verify/certifications" element={<CertificationVerifyTable />} />
 
           {/* Search */}
           <Route path="search" element={<SearchUser />} />

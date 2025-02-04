@@ -8,8 +8,12 @@ const mongoose = require("mongoose");
 const Jobs = require("../models/jobs.models");
 const Application = require("../models/application.models");
 const JobsHistory = require("../models/jobshistory.models");
+const Certification = require("../models/certification.models");
+const CertificationProvider = require("../models/certificateProvider.models");
+
 const nodemailer = require('nodemailer');
 const Mailgen = require('mailgen');
+
 
 const getUserInfo = async (req, res) => {
 
@@ -23,6 +27,38 @@ const getUserInfo = async (req, res) => {
       .populate("skill")
       .populate("project")
       .populate("personal");
+
+      if (!userDetails) {
+        return res.status(400).json({ message: "Could not find user" });
+      }
+      console.log("userdetail", userDetails)
+
+      if (Array.isArray(userDetails.certification)) {
+        let certifications = await Certification.find({
+          _id: { $in: userDetails.certification },
+        }).populate({
+          path: "issuedBy",
+          model: "certificationProvider",
+          select: "ProviderName", 
+        });
+  
+        certifications = certifications.map(cert => ({
+          ...cert.toObject(),
+          issuedBy: cert.issuedBy?.ProviderName || null, 
+        }));
+
+        console.log("certification", certifications)
+        userDetails = {
+          ...userDetails.toObject(),
+          certification: certifications,
+        };
+      } else {
+        userDetails = {
+          ...userDetails.toObject(),
+          certification: [],
+        };
+      }
+
   } catch (error) {
     console.log(error);
   }
@@ -524,6 +560,188 @@ const sendEmailOnJobApplication = async (req, res) => {
 }
 
 
+
+
+
+//Certifications
+
+const createCertifications = async (req, res) => {
+  const userId = req.user._id.toString();
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(userId);
+    console.log("user found", existingUser);
+
+    if (!existingUser) {
+      return res.status(400).json({ message: "Unable to find the user" });
+    }
+
+    const {
+      existingId,
+      certificateName,
+      providedBy,
+      issuedOn,
+      startDate,
+      endDate,
+      certificateId,
+      approval
+    } = req.body.formData;
+
+    const {isCustomProvider} = req.body;
+
+    console.log("custommmmm", isCustomProvider, req.body.formData);
+
+    let existingCertification;
+    let matchedCertificateId;
+
+    if (existingId) {
+      existingCertification = await Certification.find({ _id: existingId });
+
+      matchedCertificateId = existingCertification.find(
+        (el) => el.certificateId == certificateId
+      );
+
+      if (matchedCertificateId) {
+        console.log("true certificateId matches");
+        return res.status(400).json({
+          message:
+            "A certification with this certificate ID already exists for the user.",
+        });
+      } else {
+        console.log("certificate ID mismatches");
+      }
+    }
+
+    let certificationProvider = [];
+
+    if (isCustomProvider) {
+      const newCertificationProvider = new CertificationProvider({
+        ProviderName: providedBy,
+      });
+
+      const savedProvider = await newCertificationProvider.save();
+      
+      console.log("New provider created:", savedProvider);
+
+      certificationProvider.unshift(savedProvider);
+
+      console.log("New provider createdddddddddddddddddddd", certificationProvider);
+
+    } else {
+
+      certificationProvider = await CertificationProvider.find({Providername:providedBy});
+
+      if (!certificationProvider) {
+        return res
+          .status(404)
+          .json({ message: "Certification Provider not found" });
+      }
+    }
+
+
+    console.log("sssssssssssssssssss idiidid", certificationProvider) 
+
+    const certification = new Certification({
+      certificationName: certificateName,
+      issuedBy: certificationProvider[0]._id,
+      certificateIssuedDate: issuedOn,
+      startDate,
+      expiryDate: endDate,
+      certificateId,
+      user: userId,
+      approval,
+    });
+
+    await certification.save();
+
+    if (Array.isArray(existingUser.certification)) {
+      existingUser.certification.push(certification._id);
+    } else {
+      existingUser.certification = [certification._id];
+    }
+
+    const userArray = await existingUser.save();
+
+    console.log("certificiciiciccc", certification)
+
+    return res.status(200).json({
+      message: "Certification added successfully",
+      certification,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "An error occurred", error });
+  }
+};
+
+
+const getCertifications = async (req, res, next) => {
+  try {
+    const user = req.user._id.toString();
+
+    const userInfo = await Certification.find({ user: user });
+
+    console.log("user infooooooooooooo", userInfo);
+
+
+    return res.json({ userInfo });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const deleteCertificate = async (req, res) => {
+  const id = req.params.id;
+
+  let existingCertificate;
+
+  try {
+    existingCertificate = await Certification.findByIdAndRemove(id).populate("user");
+
+    await existingCertificate.user.certification.pull(existingCertificate);
+    await existingCertificate.user.save();
+
+    if (!existingCertificate) {
+      return res.status(500).json({ message: "Unable to delete Certificate" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error });
+  }
+  return res
+    .status(200)
+    .json({ message: "Successfully Deleted the Certificate", existingCertificate });
+};
+
+
+
+const getCertificationProvider = async (req, res, next) => {
+  try {
+    const CertificationProviderInfo = await CertificationProvider.find();
+
+    console.log("Certification Provider Info", CertificationProviderInfo);
+
+    return res.json({ CertificationProviderInfo });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+const generateCertification = async (req, res, next) => {
+  try {
+    sendEmail(req.user.email, "CareerSheets", message);
+    
+    return res.json({ CertificationProviderInfo });
+  } catch (error) {
+    console.log(error);
+    return next();
+  }
+};
+
+
 module.exports = {
   getUserInfo,
   postEducation,
@@ -541,5 +759,10 @@ module.exports = {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
-  sendEmailOnJobApplication
+  sendEmailOnJobApplication,
+  createCertifications,
+  getCertifications,
+  deleteCertificate,
+  getCertificationProvider,
+  generateCertification
 };

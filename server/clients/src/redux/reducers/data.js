@@ -9,7 +9,6 @@ export const dataSlice = createSlice({
     AddData(state, action) {
       state.value = {...action.payload};
     },
-    
    
   }
 });
