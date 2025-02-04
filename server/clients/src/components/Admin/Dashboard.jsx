@@ -59,56 +59,60 @@ const Dashboard = () => {
           <Box
             sx={{
               display: "flex",
-              flexWrap: "wrap", // Wrap buttons to the next line
-              justifyContent: "center", // Center items horizontally
-              gap: "0.5rem", // Add space between buttons
-              marginBottom: "1rem", // Add margin bottom
+              flexWrap: "wrap",
+              justifyContent: "center",
+              gap: "0.5rem",
+              marginBottom: "1rem",
             }}
           >
             <Button
               variant="outlined"
               sx={{
-                // margin: "0 1rem",
-                color: "white",backgroundColor: "#11144C",}} onClick={() => navigate("/user")}> 
+                color: "white",backgroundColor: "#11144C",width: "20%",}} onClick={() => navigate("/user")}> 
                 Goto User Dashboard
             </Button>
             <Button
               variant="outlined"
-              color="error" sx={{ margin: "0 0.5rem" }} onClick={() => navigate("/admin/verify")}>
+              color="error" sx={{ width: "20%", }} onClick={() => navigate("/admin/verify")}>
               Verify CollegeAdmin
             </Button>
             <Button
-              variant="outlined" color="error" onClick={() => navigate("/admin/verify/recruiter")}>
+              variant="outlined" color="error" onClick={() => navigate("/admin/verify/recruiter")} sx={{width: "20%",}}>
               Verify Recruiter
             </Button>
             <Button
-              variant="outlined" color="error" onClick={() => navigate("/admin/verify/workingStatusAnswer")}>
+              variant="outlined" color="error" onClick={() => navigate("/admin/verify/workingStatusAnswer")} sx={{width: "20%",}}>
               Verify Working Status
             </Button>
             <Button
-              sx={{ margin: "0 0.5rem" }}
-              variant="outlined" color="error" onClick={() => navigate("/admin/new")}>
+              
+              variant="outlined" color="error" onClick={() => navigate("/admin/new")} sx={{width: "20%",}}>
               New Job
             </Button>
             <Button
-              sx={{ margin: "0 0.5rem" }}
-              variant="outlined" color="error" onClick={() => navigate("/admin/jobs")}>
+              
+              variant="outlined" color="error" onClick={() => navigate("/admin/jobs")} sx={{width: "20%",}}>
               View Jobs
             </Button>
 
             <Button
-              sx={{ margin: "0 0.5rem" }}
-              variant="outlined" color="error" onClick={() => navigate("/admin/lastseen")}>
+              variant="outlined"
+              color="error"  onClick={() => navigate("/admin/verify/certifications")} sx={{width: "20%",}}>
+              Verify Certifications
+            </Button>
+
+            <Button
+              variant="outlined" color="error" onClick={() => navigate("/admin/lastseen")} sx={{width: "20%",}}>
               View Last Seen
             </Button>
 
             <Button variant="outlined" color="error"
-              sx={{ padding:"0.5rem", margin:"1rem"}}
+              sx={{ width: "20%",}}
               onClick={() => {localStorage.clear(); navigate("/");}}>
               Logout
             </Button>
             
-            <Button variant="outlined" color="error" sx={{ padding:"0.5rem", margin:"1rem" }} onClick={() => {navigate("/admin/search"); }}>
+            <Button variant="outlined" color="error" sx={{ width: "20%", }} onClick={() => {navigate("/admin/search"); }}>
               Search
             </Button>
           </Box>

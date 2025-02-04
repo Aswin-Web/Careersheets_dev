@@ -11,6 +11,7 @@ import collegeAdminData from "./reducers/collegeAdmin-data";
 import applicationDetailSlice from "./reducers/applicationDetails";
 import CollegeAdminListSlice from "./reducers/collegeAdminlist";
 import projectSlice from "./reducers/project-data";
+import certificateSlice from "./reducers/certificationInfo";
 import roleSlice from "./reducers/role-data";
 import personalSlice from "./reducers/personalInfo";
 import summarySlice from "./reducers/summary-data";
@@ -27,6 +28,7 @@ export default configureStore({
     collegeAdmin: collegeAdminData.reducer,
     applicationDetail: applicationDetailSlice.reducer,
     project: projectSlice.reducer,
+    certificate: certificateSlice.reducer,
     role: roleSlice.reducer,
     application: applicationSlice,
     notification: notificationSlice,

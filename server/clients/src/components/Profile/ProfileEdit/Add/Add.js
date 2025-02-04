@@ -9,7 +9,7 @@ import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import StatusForm from "./StatusForm";
 import Skillform from "./Skillform";
-import CertificationForm from "../../../Certification/Certification";
+import CertificationForm from "./CertificationForm";
 import ProjectForm from "./ProjectForm";
 import axios from "axios";
 
@@ -98,7 +98,7 @@ export default function Add(props) {
         {certification && <CertificationForm onClose={handleClose} />}
 
         <Button
-          sx={{ marginLeft: "auto", marginRight: "5em", bottom: "3.2em" }}
+          sx={{ marginLeft: "auto", marginRight: "5em", bottom: "3.2em", }}
           onClick={handleClose}
         >
           Cancel

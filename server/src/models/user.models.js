@@ -37,6 +37,8 @@ const Schema = new mongoose.Schema(
 
     education: [{ type: mongoose.Types.ObjectId, ref: "Education" }],
     project: [{ type: mongoose.Types.ObjectId, ref: "Project" }],
+    certification: [{ type: mongoose.Types.ObjectId, ref: "Certification" }],
+    
     skill: [
       {
         type: mongoose.Types.ObjectId,
@@ -69,5 +71,4 @@ const Schema = new mongoose.Schema(
 );
 
 const User = mongoose.model("User", Schema);
-
 module.exports = User;

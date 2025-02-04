@@ -7,8 +7,6 @@ import Add from "../ProfileEdit/Add/Add";
 import { Helmet } from "react-helmet-async";
 
 const ProfileCard = (props) => {
-  console.log("CardName:", props.CardName); 
-
   return (
     <div className={classes.profileCard}>
       <Helmet>

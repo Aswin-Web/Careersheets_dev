@@ -1,27 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import classes from "./ProfileDetails.module.css";
-import ProfileCard from "./UI/ProfileCard"; 
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import {
-  Typography,
-  IconButton,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Box
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Card from 'react-bootstrap/Card';
-import Certification from "../Certification/Certification";
+import ProfileCard from "./UI/ProfileCard";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { Typography } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Card from "react-bootstrap/Card";
 import { useSelector, useDispatch } from "react-redux";
 import { educationActions } from "../../redux/reducers/education-Data";
 import EducationItems from "./EducationItems";
@@ -29,12 +15,15 @@ import { skillActions } from "../../redux/reducers/Skill-data";
 import SkillItem from "./SkillItem";
 import { statusActions } from "../../redux/reducers/status-data";
 import ProjectItems from "./ProjectItems";
+import CertificateDisplay from "./Certification/CertificateDisplay";
 import { projectActions } from "../../redux/reducers/project-data";
 import { roleActions } from "../../redux/reducers/role-data";
 import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
+import { certificateActions } from "../../redux/reducers/certificationInfo";
 import { dataAction } from "../../redux/reducers/data";
 import { REACT_APP_SERVER_URL } from "../../config";
+import { Table, TableCell, TableHead, TableRow, Box , TableBody  } from "@mui/material";
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -47,23 +36,17 @@ const ProfileDetails = () => {
   const status = useSelector((state) => state.status.status);
   const eduItems = useSelector((state) => state.edu.items);
   const projectItems = useSelector((state) => state.project.items);
+  const certificationItems = useSelector((state) => state.certificate.items);
   const skillItems = useSelector((state) => state.skill.skills);
   const token = useSelector((state) => state.auth.value);
   const data = useSelector((state) => state.data.value);
   const Languages = personalState.languages.map((item) => item);
 
-   const [certifications, setCertifications] = useState([]);
-  
-   
-   
-const handleAddCertification = (newCertification) => {
-  setCertifications([...certifications, newCertification]);
-  
-};
+  const [certifications, setCertifications] = useState([]);
 
-   const handleDeleteCertification = (id) => {
-     setCertifications(certifications.filter((cert) => cert.id !== id));
-   };
+  const handleDeleteCertification = (id) => {
+    setCertifications(certifications.filter((cert) => cert.id !== id));
+  };
 
   const sendRequest = async () => {
     const response = await axios
@@ -75,7 +58,7 @@ const handleAddCertification = (newCertification) => {
       })
       .catch((err) => console.log(err));
     const data = await response.data;
-    console.log("Response from whole profile",data);
+    //console.log("Response from whole profile", data);
 
     let highestEducation = null;
     if (data.education && data.education.length > 0) {
@@ -84,9 +67,8 @@ const handleAddCertification = (newCertification) => {
       );
     }
 
-
-    const { displayPicture,name } = data;
-    return { ...data, profilePicture: displayPicture,name, highestEducation  };
+    const { displayPicture, name } = data;
+    return { ...data, profilePicture: displayPicture, name, highestEducation };
   };
 
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
@@ -94,24 +76,22 @@ const handleAddCertification = (newCertification) => {
   const [formData, setFormData] = useState({
     skills: "",
     tips: "",
-    collegeName: personalState.collegeName || ""
+    collegeName: personalState.collegeName || "",
   });
-
 
   const [formEditData, setFormEditData] = useState({
     skills: "",
     tips: "",
-    id: ""
+    id: "",
   });
 
   const [statusData, setStatusData] = useState(null);
-  
 
   const handleData = (e) => {
     const { name, value } = e.target;
-    setFormData(previousData => ({
+    setFormData((previousData) => ({
       ...previousData,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -123,33 +103,37 @@ const handleAddCertification = (newCertification) => {
     }));
   };
 
-
   const handleStatusSubmit = async (event) => {
     event.preventDefault();
 
-    const { profilePicture, name, highestEducation  } = await sendRequest();
-    
-    const collegeName = highestEducation ? highestEducation.collegeName : "Unknown College";
+    const { profilePicture, name, highestEducation } = await sendRequest();
+
+    const collegeName = highestEducation
+      ? highestEducation.collegeName
+      : "Unknown College";
 
     const date = new Date();
-    
+
     const requestData = {
-        ...formData,
-        collegeName: collegeName || "Unknown College", 
-        studentName: name || "Unknown User",
-        displayPicture: profilePicture,
-        date: date
+      ...formData,
+      collegeName: collegeName || "Unknown College",
+      studentName: name || "Unknown User",
+      displayPicture: profilePicture,
+      date: date,
     };
 
-    
     try {
-      const response = await axios.post(`${REACT_APP_SERVER_URL}/user/status/postStatus`, requestData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if(response.status === 200){
+      const response = await axios.post(
+        `${REACT_APP_SERVER_URL}/user/status/postStatus`,
+        requestData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
         toast("Status Submitted For Review");
         setStatusData({
           skills: response.data.skills,
@@ -158,95 +142,98 @@ const handleAddCertification = (newCertification) => {
         });
       }
       console.log("response got in frontend", response);
-      
-
     } catch (error) {
       console.error("Error Editting status:", error);
     }
   };
-  
+
   const handleEditStatusSubmit = async (event) => {
     event.preventDefault();
-  
+
     const id = formEditData.id;
     try {
-      const response = await axios.put(`${REACT_APP_SERVER_URL}/user/status/updateWorkingQuestion/${id}`, formEditData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if(response.status === 200){
+      const response = await axios.put(
+        `${REACT_APP_SERVER_URL}/user/status/updateWorkingQuestion/${id}`,
+        formEditData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
         toast("Status Editted Successfully");
         setStatusData({
           skills: response.data.skills,
           tips: response.data.tips,
-          approval: response.data.approval
+          approval: response.data.approval,
         });
         setIsEditFormVisible(false);
       }
       console.log("response got in Editttttttttttttt frontend", response);
- 
-
     } catch (error) {
       console.error("Error Editting status:", error);
     }
   };
 
-const handleSwotClick = () => {
-  window.open("https://decisioncoach.onrender.com/profile", "_blank");
-};
+  const handleSwotClick = () => {
+    window.open("https://decisioncoach.onrender.com/profile", "_blank");
+  };
 
-const handleSoftSkillsClick = () => {
-  window.open("https://decisioncoach.onrender.com/skillget", "_blank");
-};
- 
+  const handleSoftSkillsClick = () => {
+    window.open("https://decisioncoach.onrender.com/skillget", "_blank");
+  };
+
   const handleGetStatus = async (event) => {
- 
     try {
-      const response = await axios.get(`${REACT_APP_SERVER_URL}/user/status/getStatus`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if(response.status === 200){
-     
+      const response = await axios.get(
+        `${REACT_APP_SERVER_URL}/user/status/getStatus`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
         setStatusData({
           skills: response.data[0].skills,
           tips: response.data[0].tips,
           approval: response.data[0].approval,
-      });
-      setFormEditData({
-        skills: response.data[0].skills,
-        tips: response.data[0].tips,
-        id:response.data[0]._id
-      });
-      console.log("Form Edit Datavvvvvvvv", formEditData);
-
+        });
+        setFormEditData({
+          skills: response.data[0].skills,
+          tips: response.data[0].tips,
+          id: response.data[0]._id,
+        });
+        console.log("Form Edit Datavvvvvvvv", formEditData);
       }
-      console.log("response got in frontend Status Get function", response.data[0]);
-    
+      console.log(
+        "response got in frontend Status Get function",
+        response.data[0]
+      );
     } catch (error) {
       console.error("Error submitting status:", error);
     }
-  }
- 
-  useEffect(()=>{
-    handleGetStatus();
-  },[]);
+  };
 
+  useEffect(() => {
+    handleGetStatus();
+  }, []);
 
   useEffect(() => {
     sendRequest().then((data) => {
+      console.log("datattataaaa", data);
       let status = data.status;
       let details = data.education.reverse();
       let project = data.project.reverse();
       let user = data.personal[0];
-    
+
       dispatch(summaryAction.addSummary({ summary: data.summary }));
       dispatch(educationActions.replaceEdu(details));
       dispatch(projectActions.replaceProject(project));
+      dispatch(certificateActions.replaceCertificate(data.certification));
       dispatch(skillActions.replaceSkill(data.skill));
       dispatch(statusActions.changeStatus(status));
       dispatch(roleActions.changeRole(data.profileRole));
@@ -262,13 +249,11 @@ const handleSoftSkillsClick = () => {
           })
         );
       }
-   
       dispatch(dataAction.AddData(data));
     });
   }, [dispatch]);
 
- 
-console.log(certifications,"jjjjjjjjjjjj")
+  console.log(certifications, "jjjjjjjjjjjj");
   return (
     <div className={classes.details}>
       <div>
@@ -288,10 +273,10 @@ console.log(certifications,"jjjjjjjjjjjj")
 
         <ProfileCard style={{ margin: "20px", padding: "20px" }}>
           {/* <Typography variant="h6">SWOT Analysis</Typography> */}
-          <h3 className="m-3" >SWOT Analysis</h3>
+          <h3 className="m-3">SWOT Analysis</h3>
           <p style={{ fontSize: 10 }}></p>
 
-          <p style={{fontSize:14}}>
+          <p style={{ fontSize: 14 }}>
             Understand your strengths, weaknesses, opportunities, and threats.
           </p>
           <Button
@@ -314,7 +299,7 @@ console.log(certifications,"jjjjjjjjjjjj")
           {/* <Typography variant="h6">Soft Skills</Typography> */}
           <h3 className="m-3">Soft Skills</h3>
           <p style={{ fontSize: 10 }}></p>
-          <p style={{fontSize:14}}>
+          <p style={{ fontSize: 14 }}>
             Improve and showcase your interpersonal and communication skills.
           </p>
           <Button
@@ -514,6 +499,7 @@ console.log(certifications,"jjjjjjjjjjjj")
           </div>
         )}
       </ProfileCard>
+
       <ProfileCard CardName="skills">
         <h3 className="m-3">Skills : </h3>
         {skillError && <p className={classes.skillError}>{skillErrMsg}</p>}
@@ -547,51 +533,66 @@ console.log(certifications,"jjjjjjjjjjjj")
           ))}
         </ul>
       </ProfileCard>
-      <ProfileCard CardName="certification">
-        <h3 className="m-3"> Certification</h3>
 
-        {certifications.length > 0 && (
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              Added Certifications
-            </Typography>
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Certificate Name</TableCell>
-                  <TableCell>Issued By</TableCell>
-                  <TableCell>Issued On</TableCell>
-                  <TableCell>Start Date</TableCell>
-                  {certifications.some((cert) => cert.endDate) && (
-                    <TableCell>Expiry Date</TableCell>
-                  )}
-                  <TableCell>Certificate ID</TableCell>
-                  <TableCell>Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {certifications.map((cert) => (
-                  <TableRow key={cert.id}>
-                    <TableCell>{cert.certificateName}</TableCell>
-                    <TableCell>{cert.providedBy}</TableCell>
-                    <TableCell>{cert.issuedOn}</TableCell>
-                    <TableCell>{cert.startDate || "N/A"}</TableCell>
-                    {cert.endDate && <TableCell>{cert.endDate}</TableCell>}
-                    <TableCell>{cert.certificateId}</TableCell>
-                    <TableCell>
-                      <IconButton
-                        color="error"
-                        onClick={() => handleDeleteCertification(cert.id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        )}
+      <ProfileCard CardName="certification">
+        <h3 className="m-3"> Certifications</h3>
+        <Box sx={{
+        p: 2,
+        backgroundColor: "background.paper",
+        borderRadius: 2,
+        overflowX: "auto", 
+        maxWidth: "100%",
+      }}>
+      <Typography variant="h6" gutterBottom className="mb-3">
+        Added Certifications
+      </Typography>
+      <Table  sx={{
+          borderCollapse: "collapse",
+          width: "100%"
+        }}>
+        <TableHead sx={{backgroundColor:"#CEE5D0"  }}>
+          <TableRow>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Certificate Name
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Issued By
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Issued On
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Start Date
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Expiry Date
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+              Certificate ID
+            </TableCell>
+            <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
+              Actions
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {certificationItems.map((item) => (
+            <CertificateDisplay
+              key={item._id}
+              id={item._id}
+              certificationName={item.certificationName}
+              issuedBy={item.issuedBy}
+              certificateIssuedDate={item.certificateIssuedDate}
+              startDate={item.startDate}
+              expiryDate={item.expiryDate}
+              certificateId={item.certificateId}
+              approval={item.approval}
+              name={data.name}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </Box>
       </ProfileCard>
 
       <ProfileCard CardName="info">
@@ -647,5 +648,3 @@ console.log(certifications,"jjjjjjjjjjjj")
 };
 
 export default ProfileDetails;
-
-

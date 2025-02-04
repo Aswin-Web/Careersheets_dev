@@ -32,7 +32,7 @@ const topLanguages = [
   "Malayalam",
   "Tamil",
   "Telugu",
-  "Portuguese",
+  "Portuguese",   
   "Russian",
   "Spanish",
 ];

@@ -7,6 +7,7 @@ export const allJobsSlice = createSlice({
   },
   reducers: {
     AddJobsUser(state, action) {
+      console.log("eeeeeeeeeeeeeeeeeee", action)
       state.value = [...action.payload];
     },
     updateJobsUser(state, action) {

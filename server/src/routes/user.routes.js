@@ -22,7 +22,12 @@ const {
   AppliedJobs,
   SearchAppliedJobs,
   GetAllPlatFormSkills,
-  sendEmailOnJobApplication
+  sendEmailOnJobApplication,
+  createCertifications,
+  getCertifications,
+  deleteCertificate,
+  getCertificationProvider,
+  generateCertification
 } = require("../controllers/user.profile.conroller");
 
 const {
@@ -107,5 +112,16 @@ router.get("/platformskills",GetAllPlatFormSkills);
 
 //Trigger Email On Job Application
 router.post("/sendEmailOnJobApplication",sendEmailOnJobApplication);
+
+
+//Certifications
+router.post("/createCertification", createCertifications);
+router.get("/getCertification", getCertifications);
+router.delete("/deleteCertification/:id", deleteCertificate);
+router.get("/generateCertification", generateCertification);
+
+
+//Certification Provider
+router.get("/getCertificationProvider", getCertificationProvider);
 
 module.exports = router;
