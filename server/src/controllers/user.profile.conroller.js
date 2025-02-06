@@ -678,12 +678,22 @@ const createCertifications = async (req, res) => {
 
 const getCertifications = async (req, res, next) => {
   try {
-    const user = req.user._id.toString();
+    const id = req.user._id.toString();
 
-    const userInfo = await Certification.find({ user: user });
+    let userInfo = await Certification.find({
+      user: id ,
+    }).populate({
+      path: "issuedBy",
+      model: "certificationProvider",
+      select: "ProviderName", 
+    });
 
-    console.log("user infooooooooooooo", userInfo);
+    userInfo = userInfo.map(cert => ({
+      ...cert.toObject(),
+      issuedBy: cert.issuedBy?.ProviderName || null, 
+    }));
 
+    console.log("certification", userInfo)
 
     return res.json({ userInfo });
   } catch (error) {

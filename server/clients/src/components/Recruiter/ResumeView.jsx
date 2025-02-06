@@ -16,6 +16,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Box } from "@mui/material";
 import { REACT_APP_CLIENT_URL, REACT_APP_SERVER_URL } from "../../config";
+
 const ResumeViewRecruiter = () => {
   console.log(`${REACT_APP_CLIENT_URL}admin/profile/resume/pdf/`);
 

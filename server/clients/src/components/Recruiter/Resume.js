@@ -54,7 +54,13 @@ function Resume({ data }) {
             )}
 
             <div className={classes.phoneItems}>
-              <p style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
+              <p
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <HiMail size={20} style={{ marginRight: "2px" }} />
                 {data.email}
               </p>
@@ -188,6 +194,47 @@ function Resume({ data }) {
               <div className={classes.empty}></div>
             </>
           )}
+
+          {/* Certification Information */}
+          {data.certification?.length > 0 && (
+            <>
+              <div className={classes.line}>
+                <div className={classes.splitLineSummary}></div>
+                <p>CERTIFICATIONS</p>
+                <div className={classes.splitLineSummary}></div>
+              </div>
+
+              <div className={classes.personal}>
+                <div className={classes.certificationsGrid}>
+                  {data.certification.map((cert, index) => (
+                    <div key={cert._id} className={classes.certCard}>
+                      <div className={classes.certData}>
+                        <h3>{cert.certificationName}</h3>
+                        <p>
+                          <strong>Issued By:</strong> {cert.issuedBy}
+                        </p>
+                        <p>
+                          <strong>Certificate ID:</strong> {cert.certificateId}
+                        </p>
+                        <p>
+                          <strong>Issued Date:</strong>{" "}
+                          {new Date(cert.startDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
+
           {/* PERSONAL INFORMATION */}
           {data.personal.length !== 0 && (
             <>
@@ -241,6 +288,3 @@ function Resume({ data }) {
 }
 
 export default Resume;
-
-
-

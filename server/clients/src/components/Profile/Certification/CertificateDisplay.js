@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 
 import {
   IconButton,
@@ -15,7 +15,6 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { certificateActions } from "../../../redux/reducers/certificationInfo";
 import { REACT_APP_SERVER_URL } from "../../../config";
-
 
 const CertificateDisplay = (props) => {
   console.log("props from display", props);
@@ -55,7 +54,7 @@ const CertificateDisplay = (props) => {
       });
   };
 
-  const generateCertificateHandler = async() => {
+  const generateCertificateHandler = async () => {
     navigate("/user/profile/certification", { state: { data: props } });
   };
 
@@ -63,9 +62,29 @@ const CertificateDisplay = (props) => {
     <TableRow key={props._id}>
       <TableCell>{props.certificationName}</TableCell>
       <TableCell>{props.issuedBy}</TableCell>
-      <TableCell>{props.certificateIssuedDate}</TableCell>
-      <TableCell>{props.startDate || "N/A"}</TableCell>
-      <TableCell>{props.expiryDate ? props.expiryDate : "-"}</TableCell>
+      <TableCell>
+        {new Date(props.certificateIssuedDate).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }) || "N/A"}
+      </TableCell>
+      <TableCell>
+        {new Date(props.startDate).toLocaleDateString("en-GB", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }) || "N/A"}
+      </TableCell>
+      <TableCell>
+        {props.expiryDate
+          ? new Date(props.expiryDate).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            })
+          : "-"}
+      </TableCell>
       <TableCell>{props.certificateId}</TableCell>
       <TableCell>
         {props.approval === "false" ? (
@@ -74,36 +93,39 @@ const CertificateDisplay = (props) => {
           </Typography>
         ) : (
           <>
-          
-          {(props.issuedBy === "I-Bacus Tech" || props.issuedBy === "Greenestep") ? (<Tooltip title="Generate Certificate">
-            <IconButton
-              color="error"
-              onClick={generateCertificateHandler}
-              sx={{
-                "&:hover": {
-                  backgroundColor: "#CEE5D0",
-                  color: "error",
-                },
-              }}
-            >
-              <GenerateIcon />
-            </IconButton>
-            </Tooltip>) :(<></>) }
-           
-          
+            {props.issuedBy === "I-Bacus Tech" ||
+            props.issuedBy === "Greenestep" ? (
+              <Tooltip title="Generate Certificate">
+                <IconButton
+                  color="error"
+                  onClick={generateCertificateHandler}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#CEE5D0",
+                      color: "error",
+                    },
+                  }}
+                >
+                  <GenerateIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <></>
+            )}
+
             <Tooltip title="Delete Certificate">
-            <IconButton
-              color="error"
-              onClick={deleteCertificateHandler}
-              sx={{
-                "&:hover": {
-                  backgroundColor: "#CEE5D0",
-                  color: "error",
-                },
-              }}
-            >
-              <DeleteIcon />
-            </IconButton>
+              <IconButton
+                color="error"
+                onClick={deleteCertificateHandler}
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#CEE5D0",
+                    color: "error",
+                  },
+                }}
+              >
+                <DeleteIcon />
+              </IconButton>
             </Tooltip>
           </>
         )}

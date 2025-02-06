@@ -196,16 +196,18 @@ const ProfileDetails = () => {
           },
         }
       );
+
+      console.log("resssssssssss", response)
       if (response.status === 200) {
         setStatusData({
-          skills: response.data[0].skills,
-          tips: response.data[0].tips,
-          approval: response.data[0].approval,
+          skills: response.data[0]?.skills,
+          tips: response.data[0]?.tips,
+          approval: response.data[0]?.approval,
         });
         setFormEditData({
-          skills: response.data[0].skills,
-          tips: response.data[0].tips,
-          id: response.data[0]._id,
+          skills: response.data[0]?.skills,
+          tips: response.data[0]?.tips,
+          id: response.data[0]?._id,
         });
         console.log("Form Edit Datavvvvvvvv", formEditData);
       }
@@ -228,7 +230,8 @@ const ProfileDetails = () => {
       let status = data.status;
       let details = data.education.reverse();
       let project = data.project.reverse();
-      let user = data.personal[0];
+      let user = data.personal?.length ? data.personal[0] : null;
+
 
       dispatch(summaryAction.addSummary({ summary: data.summary }));
       dispatch(educationActions.replaceEdu(details));

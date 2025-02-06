@@ -1,6 +1,4 @@
-const certificationSendMailTemplate = (Username,certificationName, issuedBy, certificateIssuedDate) => {
-
-
+const certificationSendMailTemplate = (Username, certificationName, issuedBy, certificateIssuedDate) => {
     return `
     <!DOCTYPE html>
     <html lang="en">
@@ -10,7 +8,7 @@ const certificationSendMailTemplate = (Username,certificationName, issuedBy, cer
         <title>Certification Approved</title>
         <style>
             body {
-                font-family: Arial, sans-serif;
+                font-family: 'Arial', sans-serif;
                 background-color: #f3f4f6;
                 margin: 0;
                 padding: 0;
@@ -25,33 +23,37 @@ const certificationSendMailTemplate = (Username,certificationName, issuedBy, cer
                 overflow: hidden;
             }
             .header {
-                background-color: #ACCBEE; /* Professional navy blue */
-                color: #000;
-                padding: 20px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: #ffffff;
+                padding: 30px;
                 text-align: center;
             }
             .header h1 {
                 margin: 0;
-                font-size: 26px;
+                font-size: 28px;
+                font-weight: bold;
             }
             .content {
-                padding: 20px;
+                padding: 30px;
                 text-align: center;
             }
             .content h2 {
-                color: #000;
-                margin: 0 0 10px;
-                font-size: 22px;
+                color: #333333;
+                margin: 0 0 20px;
+                font-size: 24px;
+                position: relative;
+                display: inline-block;
             }
+           
             .content p {
-                margin: 10px 0;
+                margin: 15px 0;
                 font-size: 16px;
                 line-height: 1.6;
                 color: #555555;
             }
             .ribbon {
-                background-color: #ACCBEE; /* Bold blue ribbon */
-                color: #000;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: #ffffff;
                 display: inline-block;
                 padding: 10px 20px;
                 font-size: 18px;
@@ -67,14 +69,18 @@ const certificationSendMailTemplate = (Username,certificationName, issuedBy, cer
             }
             .footer {
                 background-color: #f9fafb;
-                padding: 15px;
+                padding: 20px;
                 text-align: center;
                 font-size: 12px;
                 color: #6b7280;
             }
             .footer a {
-                color: #ACCBEE;
+                color: #667eea;
                 text-decoration: none;
+                font-weight: bold;
+            }
+            .footer a:hover {
+                text-decoration: underline;
             }
         </style>
     </head>
@@ -88,13 +94,12 @@ const certificationSendMailTemplate = (Username,certificationName, issuedBy, cer
             <!-- Content Section -->
             <div class="content">
                 <h2>Congratulations, ${Username}!</h2>
-                <p>Your certification <strong>${certificationName}</strong> issued by <strong>${issuedBy}</strong> on <strong>${new Date(certificateIssuedDate)}</strong> has been <span style="color: #1e3a8a; font-weight: bold;">approved</span> by the Careersheets Admin Team!</p>
+                <p>Your certification <strong>${certificationName}</strong> issued by <strong>${issuedBy}</strong> on <strong>${new Date(certificateIssuedDate).toLocaleDateString()}</strong> has been <span style="color: #667eea; font-weight: bold;">approved</span> by the Careersheets Admin Team!</p>
                 
                 <div class="ribbon">✅ Certification Approved Successfully</div>
                 
-                <p>We are proud to recognize your accomplishment. Keep reaching for the stars!</p>
-                 <p>You can download the Generated certificate from your careersheets profile</p>
-               
+                <p>We are proud to recognize your accomplishment. Keep reaching for the stars! You can view the certificate in your <a href="https://www.app.careersheets.in/user/profile" target="_blank">Careersheets profile</a>.</p>
+
             </div>
              
             <!-- Footer Section -->

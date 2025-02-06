@@ -67,12 +67,11 @@ export default function CertificationVerifyTable() {
         }
       );
 
-      console.log("response", response)
-      if(response.status === 200){
-        getCertification(); 
-      }
-      else{
-        toast("Failed to update the Approval Status")
+      console.log("response", response);
+      if (response.status === 200) {
+        getCertification();
+      } else {
+        toast("Failed to update the Approval Status");
       }
 
       console.log("Response from verify", response.data.data);
@@ -93,7 +92,7 @@ export default function CertificationVerifyTable() {
     return sum / ratings.length;
   };
 
-  console.log("ststts", statusData)
+  console.log("ststts", statusData);
 
   return (
     <Grid container spacing={2}>
@@ -107,8 +106,8 @@ export default function CertificationVerifyTable() {
                 <TableCell>Issued By</TableCell>
                 <TableCell>Issued On</TableCell>
                 <TableCell>Start Date</TableCell>
-                
-                  <TableCell>Expiry Date</TableCell>
+
+                <TableCell>Expiry Date</TableCell>
                 <TableCell>Certificate ID</TableCell>
                 <TableCell>Actions</TableCell>
                 <TableCell>Status</TableCell>
@@ -124,10 +123,38 @@ export default function CertificationVerifyTable() {
                     {index + 1}
                   </TableCell>
                   <TableCell>{user.certificationName}</TableCell>
-                  <TableCell>{user.issuedBy}</TableCell>
-                  <TableCell>{user.certificateIssuedDate}</TableCell>
-                  <TableCell>{user.startDate || "N/A"}</TableCell>
-                 <TableCell>{user.expiryDate ? user.expiryDate :"-"}</TableCell>
+                  <TableCell>
+                   {user.issuedBy}
+                  </TableCell>
+                  <TableCell>
+                  {new Date(user.certificateIssuedDate).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }) || "N/A"}
+
+                  </TableCell>
+                  <TableCell>
+                    {new Date(user.startDate).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }) || "N/A"}
+                  </TableCell>
+                  <TableCell>
+                    {user.expiryDate ? (
+                      <>
+                        {" "}
+                        {new Date(user.expiryDate).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
                   <TableCell>{user.certificateId}</TableCell>
 
                   <TableCell>
@@ -141,7 +168,9 @@ export default function CertificationVerifyTable() {
                       <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={user.approval === "true" ? "Approved" : "Not Approved"}
+                        value={
+                          user.approval === "true" ? "Approved" : "Not Approved"
+                        }
                         onChange={(event) => handleChange(event, user._id)}
                       >
                         <MenuItem value="Not Approved">Not Approved</MenuItem>
