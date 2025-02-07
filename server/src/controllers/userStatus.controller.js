@@ -59,11 +59,16 @@ let userStatusPost = async (req, res) => {
 let getUserWorkingQuestions = async (req, res) => {
   console.log("Fetch Status Data Function");
   const fetchid = req.user._id.toString();
+
+  console.log("sssss", fetchid)
   try {
     const data = await UserStatus.find({ user: fetchid });
     if (!data) {
       res.send("Data Not Found");
     }
+ 
+    console.log("sssss", fetchid)
+    
     res.send(data);
   } catch (err) {
     res.send(err);
@@ -162,16 +167,33 @@ let updateCertification = async (req, res) => {
       return res.status(404).send("Certificate Not Found");
     }
 
-    console.log("datattaaaa", data, req.user);
+    console.log("datatta", data)
+
+    let certificationInfo = await Certification.find({
+      _id: data._id ,
+    }).populate({
+      path: "issuedBy",
+      model: "certificationProvider",
+      select: "ProviderName", 
+    });
+
+    certificationInfo = certificationInfo.map(cert => ({
+      ...cert.toObject(),
+      issuedBy: cert.issuedBy?.ProviderName || null, 
+    }));
+
+    console.log("certification", certificationInfo)
     const Username = req.user.name;
+    const formattedDate = new Date(data.certificateIssuedDate).toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
 
-    console.log("ssnamananmamaa", Username)
+    if (approve === "true" && certificationInfo) {
 
-    if (approve === "true" && data) {
-
-        console.log("ssnamananmamaa", Username)
       const html = certificationSendMailTemplate(
-        Username,  data.certificationName, data.issuedBy, data.certificateIssuedDate
+        Username,  certificationInfo[0].certificationName, certificationInfo[0].issuedBy, formattedDate
       );
 
       email(req.user.email, "Certification Update", html).catch((e) =>

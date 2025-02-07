@@ -215,7 +215,7 @@ function Resume({ data }) {
                           <strong>Issued Date:</strong>{" "}
                           {new Date(cert.startDate).toLocaleDateString(
                             "en-GB",
-                            {
+                            { 
                               day: "numeric",
                               month: "short",
                               year: "numeric",

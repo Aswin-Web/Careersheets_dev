@@ -386,7 +386,7 @@ const MyDocument = (props) => {
                       lineHeight: "1.2px",
                       marginBottom: "-14px",
                       display: "flex",
-                      gap: "50px",
+                      gap: "10px",
                     }}
                   >
                     {data.project.map((item) => (
@@ -424,8 +424,6 @@ const MyDocument = (props) => {
                           style={{
                             display: "flex",
                             fontSize: "13px",
-                            padding: "10",
-                            margin: "10",
                           }}
                         >
                           <Text
@@ -442,11 +440,11 @@ const MyDocument = (props) => {
                               width: "100%",
                               textAlign: "justify",
                               lineHeight: "0",
-                              fontSize: "24px",
+                              fontSize: "14px",
                               fontStyle: "medium",
                             }}
                           >
-                            {item.projectDescription}asdadsadadada
+                            {item.projectDescription}
                           </Text>
                         </View>
                       </View>
@@ -454,6 +452,105 @@ const MyDocument = (props) => {
                   </View>
                 </View>
               )}
+
+              {/* Certification Information section */}
+
+              {data.certification.length !== 0 && (
+                <View style={{ marginTop: "10px" }}>
+                  <View
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View
+                      style={{
+                        borderBottom: "0.8px",
+                        borderColor: "black",
+                        borderStyle: "bold",
+                        width: "35%",
+                      }}
+                    ></View>
+                    <Text
+                      style={{
+                        fontSize: "14px",
+                        fontFamily: "Roboto",
+                        fontStyle: "medium",
+                      }}
+                    >
+                      Certification
+                    </Text>
+                    <View
+                      style={{
+                        borderBottom: "0.8px",
+                        borderColor: "black",
+                        borderStyle: "bold",
+                        width: "35%",
+                      }}
+                    ></View>
+                  </View>
+
+                  {/* Certification Information */}
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      justifyContent: "space-between",
+                      marginTop: 10,
+                    }}
+                  >
+                    {data.certification.map((cert) => (
+                      <View
+                        key={cert._id}
+                        style={{
+                          width: "48%",
+                          padding: 12,
+                          borderRadius: 8,
+                          marginBottom: 10,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            fontWeight: "bold",
+                            marginBottom: 15,
+                          }}
+                        >
+                          {cert.certificationName}
+                        </Text>
+                        <Text style={{ fontSize: 13, marginBottom: 10 }}>
+                          <Text style={{ fontWeight: "bold" }}>Issued By:</Text>{" "}
+                          {cert.issuedBy}
+                        </Text>
+                        <Text style={{ fontSize: 13, marginBottom: 10 }}>
+                          <Text style={{ fontWeight: "bold" }}>
+                            Certificate ID:
+                          </Text>{" "}
+                          {cert.certificateId}
+                        </Text>
+                        <Text style={{ fontSize: 13, marginBottom: 10 }}>
+                          <Text style={{ fontWeight: "bold" }}>
+                            Issued Date:
+                          </Text>{" "}
+                          {new Date(cert.startDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              )}
+
               {data.personal.length !== 0 && (
                 <View style={{ marginTop: "10px" }}>
                   <View

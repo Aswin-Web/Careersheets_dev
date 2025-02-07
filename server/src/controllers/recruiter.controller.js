@@ -1,6 +1,7 @@
 const Recruiter = require("../models/recruiterinfo.models");
 const User = require("../models/user.models");
 const Jobs = require("../models/jobs.models");
+const Certification = require("../models/certification.models");
 const Mongoose = require("mongoose");
 
 const CreateProfile = async (req, res, next) => {
@@ -126,7 +127,7 @@ const GetAParticularJobForRecruiter = async (req, res, next) => {
   }
 };
 
-const GetUserInfoRecruiter = async (req, res, next) => {
+/* const GetUserInfoRecruiter = async (req, res, next) => {
   const id = req.params.id;
   try {
     let userEducation;
@@ -149,6 +150,57 @@ const GetUserInfoRecruiter = async (req, res, next) => {
     console.log(error);
     return next();
   }
+}; */
+
+const GetUserInfoRecruiter = async (req, res, next) => {
+  const id = req.params.id;
+  let userEducation;
+  try {
+    userDetails = await User.findById(id)
+      .populate("education")
+      .populate("skill")
+      .populate("project")
+      .populate("personal");
+
+      if (!userDetails) {
+        return res.status(400).json({ message: "Could not find user" });
+      }
+      console.log("userdetailssssssssssssssssss", userDetails)
+
+      if (Array.isArray(userDetails.certification)) {
+        let certifications = await Certification.find({
+          _id: { $in: userDetails.certification },
+        }).populate({
+          path: "issuedBy",
+          model: "certificationProvider",
+          select: "ProviderName", 
+        });
+  
+        certifications = certifications.map(cert => ({
+          ...cert.toObject(),
+          issuedBy: cert.issuedBy?.ProviderName || null, 
+        }));
+
+        console.log("certification", certifications)
+        userDetails = {
+          ...userDetails.toObject(),
+          certification: certifications,
+        };
+      } else {
+        userDetails = {
+          ...userDetails.toObject(),
+          certification: [],
+        };
+      }
+
+  } catch (error) {
+    console.log(error);
+  }
+  if (!userDetails) {
+    return res.status(400).json({ message: "Could not find user" });
+  }
+
+  return res.status(200).json(userDetails);
 };
 
 const ViewProfile = async (req, res, next) => {

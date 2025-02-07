@@ -4,6 +4,8 @@ const { verifyToken } = require("../utils/jwt.decode");
 
 require("../utils/passport.google");
 
+const { insertLoginHistory } = require("./../utils/gift.helper.utils");
+
 // MODEL - MongoDB
 const User = require("../models/user.models");
 const LoginHistory = require("../models/login.history.model");
@@ -64,7 +66,7 @@ router.get(
       const name = req.user.displayName;
       const photo = req.user.photos[0].value;
       const isUser = await User.find({ email: email });
-      console.log(isUser);
+      console.log(isUser, "rrrrrrrrrr");
       // User Creation start
       if (isUser.length === 0) {
         const savedUser = await User.create({
@@ -104,6 +106,29 @@ router.get(
           const savelogin = await LoginHistory.create({
             user_id: isUser[0]._id,
           });
+
+          const user_domain = req.user.emails[0].value
+            .split("@")[1]
+            .split(".")[0];
+
+          /* console.log(
+            "Careersheets",
+            req.hostname,
+            req.originalUrl,
+            req.user.emails[0].value,
+            "sso",
+            user_domain
+          ); */
+
+          const responseFromGift = await insertLoginHistory(
+            req.hostname,
+            req.originalUrl,
+            req.headers["user-agent"] || "Unknown",
+            req.user.emails[0].value,
+            "sso",
+            user_domain
+          );
+
           const token = await generateToken(isUser[0]._id);
 
           //
@@ -159,7 +184,12 @@ router.put("/verify", authenticateUser, async (req, res, next) => {
 
     const resp = await User.updateOne(
       { _id: req.user._id },
-      { role: type, ...type==='recruiter'?{verification: false}:{verification: true} },
+      {
+        role: type,
+        ...(type === "recruiter"
+          ? { verification: false }
+          : { verification: true }),
+      },
       { new: true }
     );
 
