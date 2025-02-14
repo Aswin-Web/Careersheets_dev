@@ -1,6 +1,6 @@
 import * as React from "react";
 import classes from "./EducationForm.module.css";
-
+import { useEffect } from "react";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -21,8 +21,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { educationActions } from "../../../../redux/reducers/education-Data";
 import { REACT_APP_SERVER_URL } from "../../../../config";
-
-  
 
 const degree = [
   { degree: "BE/B.Tech" },
@@ -54,6 +52,7 @@ const EducationForm = (props) => {
     collegeName: "",
     id: "",
   });
+  const [existId, setExistId] = React.useState();
 
   const [educationData, setEducationData] = React.useState({
     collegeName: "",
@@ -62,6 +61,7 @@ const EducationForm = (props) => {
     graduated: "",
     graduationYear: "",
     registerNumber: "",
+    existId: "",
   });
 
   ////college list////
@@ -83,7 +83,30 @@ const EducationForm = (props) => {
     collegeData.sort(compare);
   }
 
+  useEffect(() => {
+    if (props.editdata) {
+      const eduData = props.editdata;
+      setEnteredDegree({ degree: eduData.degree });
+      setEnteredGraduated(eduData.graduated || "");
+      setEnteredStream(eduData.stream);
+      setEnteredGraduationYear(eduData.graduationYear);
+      setRegister(eduData.registerNumber);
+      setCollegeName({ collegeName: eduData.collegeName, id: eduData._id });
+      setExistId(eduData.id);
+    }
+  }, [props.editdata]);
+
   const postRequest = async () => {
+    console.log(
+      "posttt educatio",
+      collegeName,
+      enteredDegree,
+      enteredGraduated,
+      enteredGraduationYear,
+      register,
+      enteredStream,
+      existId
+    );
     const response = await axios
       .post(
         REACT_APP_SERVER_URL + "/user/profile/education",
@@ -94,6 +117,7 @@ const EducationForm = (props) => {
           graduationYear: enteredGraduationYear,
           registerNumber: register,
           stream: enteredStream,
+          id: existId,
         },
         {
           headers: {
@@ -146,9 +170,14 @@ const EducationForm = (props) => {
   };
 
   const educationFormSubmitHandler = (event) => {
+    console.log("hadler");
     event.preventDefault();
 
     postRequest().then((data) => {
+      if (props.onClose) {
+        props.onClose();
+      }
+
       const obj = {
         collegeName: data.edu.collegeName,
         degree: data.edu.degree,
@@ -159,7 +188,11 @@ const EducationForm = (props) => {
         stream: data.edu.stream,
       };
 
-      dispatch(educationActions.addEducation({ ...obj }));
+      if (props.editdata) {
+        dispatch(educationActions.updateEducation({ ...obj }));
+      } else {
+        dispatch(educationActions.addEducation({ ...obj }));
+      }
     });
 
     setEducationData({
@@ -174,46 +207,96 @@ const EducationForm = (props) => {
   return (
     <React.Fragment>
       <form onSubmit={educationFormSubmitHandler}>
-        <DialogTitle>Add Education</DialogTitle>
+        <DialogTitle>{props.editdata ? "Edit Education" : "Add Education"}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              name="collegeName"
-              options={collegeData}
-              getOptionLabel={(option) => option.name}
-              onChange={collegeNameHandler}
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="College"
-                  variant="standard"
+            {props.editdata ? (
+              <>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
                   name="collegeName"
+                  options={collegeData}
+                  getOptionLabel={(option) => option.name}
+                  onChange={collegeNameHandler}
                   fullWidth
+                  value={{
+                    name: collegeName?.collegeName,
+                    id: collegeName?.id,
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="College"
+                      variant="standard"
+                      name="collegeName"
+                      fullWidth
+                    />
+                  )}
                 />
-              )}
-            />
 
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              name="degree"
-              options={degree}
-              getOptionLabel={(option) => option.degree}
-              onChange={degreeChange}
-              fullWidth
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Degree"
-                  variant="standard"
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
                   name="degree"
+                  options={degree}
+                  getOptionLabel={(option) => option.degree}
+                  onChange={degreeChange}
+                  value={{ degree: enteredDegree?.degree }}
                   fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Degree"
+                      variant="standard"
+                      name="degree"
+                      fullWidth
+                    />
+                  )}
                 />
-              )}
-            />
+              </>
+            ) : (
+              <>
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  name="collegeName"
+                  options={collegeData}
+                  getOptionLabel={(option) => option.name}
+                  onChange={collegeNameHandler}
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="College"
+                      variant="standard"
+                      name="collegeName"
+                      fullWidth
+                    />
+                  )}
+                />
+
+                <Autocomplete
+                  disablePortal
+                  id="combo-box-demo"
+                  name="degree"
+                  options={degree}
+                  getOptionLabel={(option) => option.degree}
+                  onChange={degreeChange}
+                  fullWidth
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Degree"
+                      variant="standard"
+                      name="degree"
+                      fullWidth
+                    />
+                  )}
+                />
+              </>
+            )}
+
             <TextField
               name="stream"
               margin="dense"
@@ -222,6 +305,7 @@ const EducationForm = (props) => {
               placeholder="Eg.Computer Science"
               type="text"
               fullWidth
+              value={enteredStream}
               variant="standard"
               // sx={{ width: "35.5em" }}
               onChange={streamChange}
@@ -234,6 +318,7 @@ const EducationForm = (props) => {
                 aria-labelledby="graduated"
                 name="graduated"
                 onChange={graduatedChange}
+                value={enteredGraduated || ""}
               >
                 <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                 <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -248,6 +333,7 @@ const EducationForm = (props) => {
               inputProps={{ maxLength: 4 }}
               fullWidth
               variant="standard"
+              value={enteredGraduationYear}
               // sx={{ width: "35.5em" }}
               onChange={graduationYearChange}
             />
@@ -259,6 +345,7 @@ const EducationForm = (props) => {
               label="Register Number"
               type="text"
               inputProps={{ maxLength: 15 }}
+              value={register}
               fullWidth
               variant="standard"
               // sx={{ width: "35.5em" }}
@@ -267,9 +354,7 @@ const EducationForm = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.onClose} type="submit">
-            Add
-          </Button>
+          <Button type="submit">{props.editdata ? "Update" : "Add"}</Button>
         </DialogActions>
       </form>
     </React.Fragment>

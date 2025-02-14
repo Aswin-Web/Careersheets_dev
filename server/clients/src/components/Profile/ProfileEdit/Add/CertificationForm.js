@@ -10,7 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-
+  fabClasses,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -20,7 +20,8 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { certificateActions } from "../../../../redux/reducers/certificationInfo";
 
-const CertificationForm = ({ onClose }) => {
+const CertificationForm = (props) => {
+  console.log("propssss form certificate", props);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
 
@@ -32,12 +33,42 @@ const CertificationForm = ({ onClose }) => {
     startDate: "",
     endDate: "",
     certificateId: "",
-    approval: "false",
+    approval: "true",
   });
 
   const [certificationProviders, setCertificationProviders] = useState([]);
   const [customProvider, setCustomProvider] = useState("");
   const [isCustomProvider, setIsCustomProvider] = useState(false);
+
+  useEffect(() => {
+    if (props.editdata) {
+      const certificationData = props.editdata;
+      const providerExists = certificationProviders.some(
+        (provider) => provider.ProviderName === certificationData.issuedBy
+      );
+
+      setFormData({
+        existingId: certificationData.id,
+        certificateName: certificationData.certificationName,
+        providedBy: providerExists ? certificationData.issuedBy : "",
+        issuedOn: certificationData.certificateIssuedDate.split("T")[0],
+        startDate: certificationData.startDate.split("T")[0],
+        endDate: certificationData.expiryDate
+          ? certificationData.expiryDate.split("T")[0]
+          : "",
+        certificateId: certificationData.certificateId,
+        approval: certificationData.approval,
+      });
+
+      if (!providerExists) {
+        setIsCustomProvider(true);
+        setCustomProvider(certificationData.issuedBy);
+      } else {
+        setIsCustomProvider(false);
+        setCustomProvider("");
+      }
+    }
+  }, [props.editdata, certificationProviders]);
 
   useEffect(() => {
     getCertificationProvider();
@@ -52,13 +83,21 @@ const CertificationForm = ({ onClose }) => {
     if (
       !formData.certificateName ||
       !formData.providedBy ||
-      !formData.certificateId
+      !formData.issuedOn ||
+      !formData.startDate
     ) {
       alert("Please fill in all required fields.");
       return;
     } else {
-      sendRequest();
-      dispatch(certificateActions.addCertification({ ...formData }));
+      sendRequest().then((data) => {
+      console.log("aoewuyfqbiu23", data);
+        if (props.editdata) {
+          dispatch(certificateActions.updateCertification({ ...data, existingId: formData.existingId }));
+        } else {
+          dispatch(certificateActions.addCertification({ ...data }));
+        }
+      })
+      
     }
   };
 
@@ -69,17 +108,33 @@ const CertificationForm = ({ onClose }) => {
       setFormData({ ...formData, providedBy: "" });
     } else {
       setIsCustomProvider(false);
+      setCustomProvider("");
       setFormData({ ...formData, providedBy: value });
     }
   };
 
   const sendRequest = async () => {
+    if (
+      formData.providedBy === "I-Bacus Tech" ||
+      formData.providedBy === "Greenestep"
+    ) {
+      formData.approval = "false";
+    }
+
+    const provider = certificationProviders.find(
+      (provider) => provider.ProviderName === formData.providedBy
+    );
+    const providerId = provider ? provider._id : null;
+
     const response = await axios
       .post(
         REACT_APP_SERVER_URL + "/user/createCertification",
         {
-          formData,
-          isCustomProvider
+          formData: {
+            ...formData,
+            providerId,
+          },
+          isCustomProvider,
         },
         {
           headers: {
@@ -93,7 +148,7 @@ const CertificationForm = ({ onClose }) => {
     const data = response.data.certification;
     console.log("dataaaaaaaaaaa", data);
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       setFormData({
         existingId: "",
         certificateName: "",
@@ -104,7 +159,7 @@ const CertificationForm = ({ onClose }) => {
         certificateId: "",
       });
 
-      onClose();
+      props.onClose();
     } else {
       toast("Failed to add the Certification");
     }
@@ -122,16 +177,14 @@ const CertificationForm = ({ onClose }) => {
       .catch((error) => console.log(error, "@status error"));
 
     const data = response.data.CertificationProviderInfo;
+    console.log("provider", data);
 
-    
     if (response.status === 200) {
       setCertificationProviders(data);
     } else {
       toast("Failed to add the Certification");
     }
   };
-
-  console.log("certification providerrrrrrrrrrrrrrrrrr", certificationProviders);
 
   return (
     <Box sx={{ p: 2, maxWidth: 800, mx: "auto" }}>
@@ -151,7 +204,7 @@ const CertificationForm = ({ onClose }) => {
             right: 8,
             zIndex: 1,
           }}
-          onClick={onClose}
+          onClick={props.onClose}
         >
           <CloseIcon />
         </IconButton>
@@ -163,7 +216,7 @@ const CertificationForm = ({ onClose }) => {
           color="black"
           style={{ marginBottom: "2rem", fontWeight: "bolder" }}
         >
-          Certification Details
+          {props.editdata ? "Edit Certification" : "Add Certification"}
         </Typography>
 
         <Box component="form" sx={{ mt: 1 }}>
@@ -178,7 +231,6 @@ const CertificationForm = ({ onClose }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-
             {/* <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -216,7 +268,7 @@ const CertificationForm = ({ onClose }) => {
                     setCustomProvider(e.target.value);
                     setFormData({ ...formData, providedBy: e.target.value });
                   }}
-                  sx={{marginTop:"1rem"}}
+                  sx={{ marginTop: "1rem" }}
                 />
               )}
             </Grid>
@@ -224,6 +276,7 @@ const CertificationForm = ({ onClose }) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
+                required
                 label="Certificate Issued On"
                 name="issuedOn"
                 type="date"
@@ -232,10 +285,10 @@ const CertificationForm = ({ onClose }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-
             <Grid item xs={6}>
               <TextField
                 fullWidth
+                required
                 label="Start Date"
                 name="startDate"
                 type="date"
@@ -244,7 +297,6 @@ const CertificationForm = ({ onClose }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-
             <Grid item xs={6}>
               <TextField
                 fullWidth
@@ -256,18 +308,21 @@ const CertificationForm = ({ onClose }) => {
                 onChange={handleInputChange}
               />
             </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                required
-                label="Certificate ID"
-                name="certificateId"
-                value={formData.certificateId}
-                onChange={handleInputChange}
-              />
-            </Grid>
-
+            {formData.providedBy === "I-Bacus Tech" ||
+            formData.providedBy === "Greenestep" ? (
+              <></>
+            ) : (
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Certificate ID"
+                  name="certificateId"
+                  value={formData.certificateId}
+                  onChange={handleInputChange}
+                />
+              </Grid>
+            )}
             <Grid item xs={6}>
               <Button
                 onClick={handleAddCertification}
@@ -276,7 +331,7 @@ const CertificationForm = ({ onClose }) => {
                   left: "2rem",
                 }}
               >
-                Add Certification
+                {props.editdata ? "Update Certification" : "Add Certification"}
               </Button>
             </Grid>
           </Grid>

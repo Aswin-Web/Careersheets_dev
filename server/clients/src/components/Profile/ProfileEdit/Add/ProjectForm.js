@@ -16,11 +16,14 @@ import { REACT_APP_SERVER_URL } from "../../../../config";
 const ProjectForm = (props) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
-  const [domain, setDomain] = useState();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [domain, setDomain] = useState("");
   const [skillItems, setskillItems] = useState([]);
   const [skill, setSkill] = useState([]);
+  const [id, setId] = useState("");
+
+  console.log("propspsppssss", props);
 
   const getAllSkills = async () => {
     const response = await axios.get(
@@ -58,6 +61,17 @@ const ProjectForm = (props) => {
     return 0;
   }
 
+  useEffect(() => {
+    if (props.editdata) {
+      const projectData = props.editdata;
+      setTitle(projectData.title);
+      setDomain(projectData.domain);
+      setDescription(projectData.description);
+      setSkill(projectData.skills);
+      setId(projectData.id);
+    }
+  }, [props.editdata]);
+
   const skills = skillItems.sort(compare);
 
   const postRequest = async () => {
@@ -68,7 +82,8 @@ const ProjectForm = (props) => {
           projectTitle: title,
           projectDomain: domain,
           projectDescription: description,
-          skill
+          skill,
+          id: props.editdata ? id : "",
         },
         {
           headers: {
@@ -88,16 +103,25 @@ const ProjectForm = (props) => {
 
     postRequest()
       .then((data) => {
-        console.log(data)
+        if (props.onClose) {
+          props.onClose();
+        }
+        console.log(data.newProject, "sgabiulwr");
+
         const obj = {
           _id: data.newProject._id,
           projectTitle: data.newProject.projectTitle,
           projectDescription: data.newProject.projectDescription,
           projectDomain: data.newProject.projectDomain,
-          projectSkills:data.newProject.projectSkills
+          projectSkills: data.newProject.projectSkills,
         };
 
-        dispatch(projectActions.addProject({ ...obj }));
+        if (props.editdata) {
+          dispatch(projectActions.updateProject({ ...obj }));
+        } else {
+          dispatch(projectActions.addProject({ ...obj }));
+        }
+        props.onClose(); 
       })
       .catch((err) => console.log(err));
   };
@@ -115,14 +139,14 @@ const ProjectForm = (props) => {
   const inputChangeHandler = (event, values) => {
     // setSkill(values);
     setSkill(values);
-    console.log(values)
+    console.log(values);
   };
 
   return (
     <div>
       <form onSubmit={projectSubmitHandler}>
         <DialogContent sx={{ lineHeight: "25px" }}>
-          <DialogContentText>Add projects</DialogContentText>
+          <DialogContentText>{props.editdata ? "Edit Project" : "Add Project"}</DialogContentText>
           <TextField
             name="projectTitle"
             autoFocus
@@ -131,6 +155,7 @@ const ProjectForm = (props) => {
             label="Title"
             fullWidth
             variant="standard"
+            value={title}
             // sx={{ width: "35.5em" }}
             onChange={titleChangeHandler}
           />
@@ -143,6 +168,7 @@ const ProjectForm = (props) => {
             placeholder="Eg. Cloud / IOT  "
             fullWidth
             variant="standard"
+            value={domain}
             // sx={{ width: "35.5em" }}
             onChange={domainChangeHandler}
           />{" "}
@@ -151,6 +177,7 @@ const ProjectForm = (props) => {
             id="tags-standard"
             options={skills.map((option) => option.skill)}
             onChange={inputChangeHandler}
+            value={skill}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -189,6 +216,7 @@ const ProjectForm = (props) => {
               id="outlined-multiline-static"
               label="Project Description"
               multiline
+              value={description}
               rows={4}
               placeholder="Description"
               onChange={descriptionChangeHandler}
@@ -196,8 +224,8 @@ const ProjectForm = (props) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.onClose} type="submit">
-            Add
+          <Button type="submit">
+          {props.editdata ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </form>

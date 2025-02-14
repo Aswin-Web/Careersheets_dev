@@ -22,11 +22,13 @@ import { REACT_APP_SERVER_URL } from "../../../../config";
 
 const Skillform = (props) => {
   // const skillItems = useSelector((state) => state.skill.skills);
-  const [skillItems,setskillItems]=useState([])
+  const [skillItems, setskillItems] = useState([]);
   const token = useSelector((state) => state.auth.value);
   const dispatch = useDispatch();
-  const [inputs, setInputs] = useState();
-  const [level, setLevel] = useState();
+  const [inputs, setInputs] = useState("");
+  const [level, setLevel] = useState("");
+  const [id, setId] = useState("");
+
   // const [err, setErr] = useState(false);
   //
   const getAllSkills = async () => {
@@ -44,14 +46,14 @@ const Skillform = (props) => {
     // console.log(response,"Skills From Backend");
     const data = await response.data;
 
-    if (response.status=== 200) {
-      setskillItems([...response.data.skill])
+    if (response.status === 200) {
+      setskillItems([...response.data.skill]);
       return data;
     }
   };
 
   useEffect(() => {
-    getAllSkills()
+    getAllSkills();
   }, []);
 
   // skills
@@ -81,6 +83,7 @@ const Skillform = (props) => {
         {
           skill: inputs,
           level: level,
+          id: props.editdata ? id : "",
         },
         {
           headers: {
@@ -104,6 +107,10 @@ const Skillform = (props) => {
     event.preventDefault();
 
     if (formValid) {
+      if (props.onClose) {
+        props.onClose();
+      }
+
       postRequest()
         .then((data) => {
           if (!data) {
@@ -113,11 +120,13 @@ const Skillform = (props) => {
                 "This skill is already in your skill list.\n Try to add new Skill!!"
               )
             );
-          }
-          let skill = data.newSkill;
-          // setErr(false);
-          if (data) {
-            dispatch(skillActions.addSkill({ ...skill }));
+          } else {
+            if (props.editdata) {
+              dispatch(skillActions.updateSkill({ id, skill: inputs, level }));
+            } else {
+              dispatch(skillActions.addSkill({ ...data.newSkill }));
+            }
+            props.onClose();
           }
         })
         .catch((err) => console.log(err));
@@ -125,6 +134,15 @@ const Skillform = (props) => {
       console.log("falseee");
     }
   };
+
+  useEffect(() => {
+    if (props.editdata) {
+      const skillData = props.editdata;
+      setInputs(skillData.skillName);
+      setLevel(skillData.level);
+      setId(skillData.id);
+    }
+  }, [props.editdata]);
 
   const inputChangeHandler = (event, values) => {
     setInputs(values);
@@ -135,7 +153,7 @@ const Skillform = (props) => {
   return (
     <div>
       <form onSubmit={skillFormSubmitHandler}>
-        <DialogTitle>Add skills</DialogTitle>
+        <DialogTitle>{props.editdata ? "Edit Skill" : "Add Skill"}</DialogTitle>
 
         <DialogContent>
           <DialogContentText>
@@ -145,6 +163,7 @@ const Skillform = (props) => {
               disableClearable
               options={skills.map((option) => option.skill)}
               onChange={inputChangeHandler}
+              value={inputs}
               // sx={{ width: "500px" }}
               renderInput={(params) => (
                 <TextField
@@ -164,6 +183,7 @@ const Skillform = (props) => {
                 aria-labelledby="demo-row-radio-buttons-group-label"
                 name="row-radio-buttons-group"
                 onChange={levelChange}
+                value={level}
               >
                 <FormControlLabel
                   value="Beginner"
@@ -185,8 +205,8 @@ const Skillform = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button disabled={!formValid} onClick={props.onClose} type="submit">
-            Add
+          <Button disabled={!formValid} type="submit">
+            {props.editdata ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </form>

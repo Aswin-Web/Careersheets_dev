@@ -19,7 +19,6 @@ const ProfileCard = (props) => {
       </Helmet>
       <Box display="flex" sx={{ padding: "0.5em" }}>
         <Box sx={{ marginLeft: "auto", display: "flex" }}>
-         
           {props.CardName &&
             props.CardName.toLowerCase().trim() !== "swot analysis" &&
             props.CardName.toLowerCase().trim() !== "soft skills" && (
