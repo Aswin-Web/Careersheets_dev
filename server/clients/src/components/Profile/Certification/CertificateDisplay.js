@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 
 import {
   IconButton,
@@ -9,6 +9,9 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import GenerateIcon from "@mui/icons-material/Save";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+
+import Add from "../ProfileEdit/Add/Add";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +24,7 @@ const CertificateDisplay = (props) => {
   const token = useSelector((state) => state.auth.value);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const certificateRef = useRef(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   const id = props.id;
 
@@ -55,82 +58,140 @@ const CertificateDisplay = (props) => {
   };
 
   const generateCertificateHandler = async () => {
-    navigate("/user/profile/certification", { state: { data: props } });
+    if (props.state === "user") {
+      navigate("/user/profile/certification", { state: { data: props } });
+    } else {
+      navigate("print", { state: { data: props } });
+    }
+  };
+
+  const editCertificateHandler = async () => {
+    console.log("ssssaaaaaaaaaaa", isEdit);
+    try {
+      setIsEdit(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCloseAdd = () => {
+    setIsEdit(false);
   };
 
   return (
-    <TableRow key={props._id}>
-      <TableCell>{props.certificationName}</TableCell>
-      <TableCell>{props.issuedBy}</TableCell>
-      <TableCell>
-        {new Date(props.certificateIssuedDate).toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        }) || "N/A"}
-      </TableCell>
-      <TableCell>
-        {new Date(props.startDate).toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-        }) || "N/A"}
-      </TableCell>
-      <TableCell>
-        {props.expiryDate
-          ? new Date(props.expiryDate).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            })
-          : "-"}
-      </TableCell>
-      <TableCell>{props.certificateId}</TableCell>
-      <TableCell>
-        {props.approval === "false" ? (
-          <Typography variant="body2" color="textSecondary">
-            Approval Pending
-          </Typography>
-        ) : (
-          <>
-            {props.issuedBy === "I-Bacus Tech" ||
-            props.issuedBy === "Greenestep" ? (
-              <Tooltip title="Generate Certificate">
+    <>
+      <TableRow key={props._id}>
+        <TableCell>{props.certificationName}</TableCell>
+        <TableCell>{props.issuedBy}</TableCell>
+        <TableCell>
+          {new Date(props.certificateIssuedDate).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }) || "N/A"}
+        </TableCell>
+        <TableCell>
+          {new Date(props.startDate).toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          }) || "N/A"}
+        </TableCell>
+        <TableCell>
+          {props.expiryDate
+            ? new Date(props.expiryDate).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
+            : "-"}
+        </TableCell>
+
+        <TableCell>
+          {props.approval === "false" ? (
+            <>
+              <Tooltip title="Certification Approval is Pending">
+                {props.issuedBy === "I-Bacus Tech" ||
+                props.issuedBy === "Greenestep" ? (
+                  <IconButton disabled={true}>
+                    <GenerateIcon />
+                  </IconButton>
+                ) : (
+                  <></>
+                )}
+
+                {props.state === "collegeadmin" ? (
+                  <></>
+                ) : (
+                  <IconButton disabled={true}>
+                    <DeleteIcon />
+                  </IconButton>
+                )}
+              </Tooltip>
+              <Tooltip title="You Can Edit The Information Until The Certificate is Approved">
                 <IconButton
-                  color="error"
-                  onClick={generateCertificateHandler}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "#CEE5D0",
-                      color: "error",
-                    },
-                  }}
+                  onClick={editCertificateHandler}
                 >
-                  <GenerateIcon />
+                  <EditOutlinedIcon />
                 </IconButton>
               </Tooltip>
-            ) : (
-              <></>
-            )}
+            </>
+          ) : (
+            <>
+              {props.issuedBy === "I-Bacus Tech" ||
+              props.issuedBy === "Greenestep" ? (
+                <Tooltip title="Generate Certificate">
+                  <IconButton
+                    color="error"
+                    onClick={generateCertificateHandler}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#CEE5D0",
+                        color: "error",
+                      },
+                    }}
+                  >
+                    <GenerateIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <>
+                  {props.state === "collegeadmin" ? (
+                    <>Issued by Other Oraganization</>
+                  ) : (
+                    <></>
+                  )}
+                </>
+              )}
 
-            <Tooltip title="Delete Certificate">
-              <IconButton
-                color="error"
-                onClick={deleteCertificateHandler}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#CEE5D0",
-                    color: "error",
-                  },
-                }}
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </>
-        )}
-      </TableCell>
-    </TableRow>
+              {props.state === "collegeadmin" ? (
+                <></>
+              ) : (
+                <Tooltip title="Delete Certificate">
+                  <IconButton
+                    color="error"
+                    onClick={deleteCertificateHandler}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#CEE5D0",
+                        color: "error",
+                      },
+                    }}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+
+
+            </>
+          )}
+        </TableCell>
+      </TableRow>
+      {isEdit && (
+        <Add Card={"certification"} editdata={props} onCloseEdit={handleCloseAdd} />
+      )}
+    </>
   );
 };
 

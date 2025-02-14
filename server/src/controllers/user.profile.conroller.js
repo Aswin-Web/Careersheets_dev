@@ -10,13 +10,12 @@ const Application = require("../models/application.models");
 const JobsHistory = require("../models/jobshistory.models");
 const Certification = require("../models/certification.models");
 const CertificationProvider = require("../models/certificateProvider.models");
+const generateCertificateId = require("./../utils/certificationIdGenerator.utils");
 
-const nodemailer = require('nodemailer');
-const Mailgen = require('mailgen');
-
+const nodemailer = require("nodemailer");
+const Mailgen = require("mailgen");
 
 const getUserInfo = async (req, res) => {
-
   //console.log("Request body from getUserInfo", req.user);
   const id = req.user._id.toString();
 
@@ -28,37 +27,34 @@ const getUserInfo = async (req, res) => {
       .populate("project")
       .populate("personal");
 
-      if (!userDetails) {
-        return res.status(400).json({ message: "Could not find user" });
-      }
-      console.log("userdetail", userDetails)
+    if (!userDetails) {
+      return res.status(400).json({ message: "Could not find user" });
+    }
+   
+    if (Array.isArray(userDetails.certification)) {
+      let certifications = await Certification.find({
+        _id: { $in: userDetails.certification },
+      }).populate({
+        path: "issuedBy",
+        model: "certificationProvider",
+        select: "ProviderName",
+      });
 
-      if (Array.isArray(userDetails.certification)) {
-        let certifications = await Certification.find({
-          _id: { $in: userDetails.certification },
-        }).populate({
-          path: "issuedBy",
-          model: "certificationProvider",
-          select: "ProviderName", 
-        });
-  
-        certifications = certifications.map(cert => ({
-          ...cert.toObject(),
-          issuedBy: cert.issuedBy?.ProviderName || null, 
-        }));
+      certifications = certifications.map((cert) => ({
+        ...cert.toObject(),
+        issuedBy: cert.issuedBy?.ProviderName || null,
+      }));
 
-        console.log("certification", certifications)
-        userDetails = {
-          ...userDetails.toObject(),
-          certification: certifications,
-        };
-      } else {
-        userDetails = {
-          ...userDetails.toObject(),
-          certification: [],
-        };
-      }
-
+      userDetails = {
+        ...userDetails.toObject(),
+        certification: certifications,
+      };
+    } else {
+      userDetails = {
+        ...userDetails.toObject(),
+        certification: [],
+      };
+    }
   } catch (error) {
     console.log(error);
   }
@@ -69,8 +65,9 @@ const getUserInfo = async (req, res) => {
   return res.status(200).json(userDetails);
 };
 
-const postEducation = async (req, res) => {
-  const { college, degree, graduated, graduationYear, registerNumber, stream } =
+/* const postEducation = async (req, res) => {
+  console.log("eddiiitititit", req.body)
+  const { college, degree, graduated, graduationYear, registerNumber, stream, id } =
     req.body;
   const user = req.user._id.toString();
 
@@ -120,7 +117,87 @@ const postEducation = async (req, res) => {
   }
 
   return res.status(200).json({ message: "education added", edu });
+}; */
+
+const postEducation = async (req, res) => {
+  const { college, degree, graduated, graduationYear, registerNumber, stream, id } = req.body;
+  const user = req.user._id.toString();
+
+
+  let existingUser;
+  let existingCollege;
+  let matchedRegister;
+
+  try {
+    existingUser = await JobSeeker.findById(user).populate("education");
+    if (!existingUser) {
+      return res.status(400).json({ message: "Unable to find the user" });
+    }
+
+    // If ID is provided, update the existing record
+    if (id) {
+      const existingEducation = await Education.findById(id);
+      if (!existingEducation) {
+        return res.status(404).json({ message: "Education record not found" });
+      }
+
+      // Check for duplicate registerNumber in the same college before updating
+      existingCollege = await Education.find({ collegeName: college });
+      matchedRegister = existingCollege.find(
+        (el) => el.registerNumber === registerNumber && el._id.toString() !== id
+      );
+
+      if (matchedRegister) {
+        return res.status(400).json({
+          message: "The user with this register number for this college already exists.!!",
+        });
+      }
+
+      // Update the existing record
+      existingEducation.collegeName = college;
+      existingEducation.degree = degree;
+      existingEducation.graduated = graduated;
+      existingEducation.graduationYear = graduationYear;
+      existingEducation.registerNumber = registerNumber;
+      existingEducation.stream = stream;
+
+      await existingEducation.save();
+      return res.status(200).json({ message: "Education updated", edu: existingEducation });
+    }
+
+    // Check for duplicate registerNumber before creating a new record
+    existingCollege = await Education.find({ collegeName: college });
+    matchedRegister = existingCollege.find((el) => el.registerNumber === registerNumber);
+
+    if (matchedRegister) {
+      return res.status(400).json({
+        message: "The user with this register number for this college already exists.!!",
+      });
+    }
+
+    // If no ID is provided, create a new education record
+    const edu = new Education({
+      collegeName: college,
+      graduated,
+      graduationYear,
+      degree,
+      registerNumber,
+      user,
+      stream,
+    });
+
+    await edu.save();
+    existingUser.education.push(edu);
+    await existingUser.save();
+
+    return res.status(200).json({ message: "Education added", edu });
+
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error", error });
+  }
 };
+
 
 const deleteEducation = async (req, res) => {
   const id = req.params.id;
@@ -142,7 +219,8 @@ const deleteEducation = async (req, res) => {
 };
 /////skill post ///////
 
-const postSkill = async (req, res) => {
+/* const postSkill = async (req, res) => {
+  console.log("req body in skill", req.body)
   const { skill, level } = req.body;
   const user = req.user._id.toString();
   let existingUser;
@@ -154,7 +232,7 @@ const postSkill = async (req, res) => {
   if (!existingUser) {
     return res.status(400).json({ message: "could not find the user" });
   }
-  
+
   const findSkill = existingUser.skill.find((el) => el.skill === skill);
 
   if (findSkill) {
@@ -173,7 +251,47 @@ const postSkill = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: error });
   }
+}; */
+
+const postSkill = async (req, res) => {
+  const { skill, level, id } = req.body; 
+  const user = req.user._id.toString();
+
+  try {
+    const existingUser = await JobSeeker.findById(user).populate("skill");
+
+    if (!existingUser) {
+      return res.status(400).json({ message: "Could not find the user" });
+    }
+
+    if (id) {
+      const existingSkill = await Skill.findById(id);
+      if (!existingSkill) {
+        return res.status(404).json({ message: "Skill not found" });
+      }
+      existingSkill.skill = skill;
+      existingSkill.level = level;
+      await existingSkill.save();
+      return res.status(200).json({ message: "Skill updated", skill: existingSkill });
+    } else {
+      const findSkill = existingUser.skill.find((el) => el.skill === skill);
+      if (findSkill) {
+        return res.status(400).json({ message: "This skill is already present" });
+      }
+
+      const newSkill = new Skill({ skill, user, level });
+      await newSkill.save();
+      existingUser.skill.push(newSkill);
+      await existingUser.save();
+
+      return res.status(200).json({ message: "Skill added", newSkill });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
+
 
 const deleteSkill = async (req, res) => {
   const skillId = req.params.id;
@@ -200,7 +318,7 @@ const updateStatus = async (req, res) => {
 
   if (status === "") {
     return res.status(422).json({ message: "Invalid Inputs" });
-  } 
+  }
 
   let existingUser;
   try {
@@ -212,9 +330,8 @@ const updateStatus = async (req, res) => {
   return res.status(200).json({ message: "status updated", status });
 };
 
-
 ////////POSTING PROJECT/////
-const postProject = async (req, res) => {
+/* const postProject = async (req, res) => {
   const { projectTitle, projectDescription, projectDomain, skill } = req.body;
   const user = req.user._id.toString();
   let existingUser;
@@ -232,7 +349,6 @@ const postProject = async (req, res) => {
   //   return res.status(400).json({ message: "This skill is already present" });
   // }
   const projectSkills = skill;
-  console.log(projectSkills, "kkkkkk");
 
   const newProject = new Project({
     projectTitle,
@@ -252,7 +368,52 @@ const postProject = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: error });
   }
+}; */
+
+const postProject = async (req, res) => {
+  console.log("req body in project", req.body);
+  const { projectTitle, projectDescription, projectDomain, skill, id } = req.body;
+  const user = req.user._id.toString();
+
+  try {
+    const existingUser = await JobSeeker.findById(user).populate("project");
+
+    if (!existingUser) {
+      return res.status(400).json({ message: "Could not find the user" });
+    }
+
+    if (id) {
+      const existingProject = await Project.findById(id);
+      if (!existingProject) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+      existingProject.projectTitle = projectTitle;
+      existingProject.projectDescription = projectDescription;
+      existingProject.projectDomain = projectDomain;
+      existingProject.projectSkills = skill;
+      await existingProject.save();
+      return res.status(200).json({ message: "Project updated", newProject: existingProject });
+    } else {
+      const newProject = new Project({
+        projectTitle,
+        projectDomain,
+        projectDescription,
+        projectSkills: skill,
+        user,
+      });
+
+      await newProject.save();
+      existingUser.project.push(newProject);
+      await existingUser.save();
+
+      return res.status(200).json({ message: "Project added", newProject });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
+
 
 //////DELETE PROJECT/////
 const deleteProject = async (req, res) => {
@@ -297,7 +458,6 @@ const updateProfileRole = async (req, res) => {
   }
 };
 
-
 const updateProfileName = async (req, res) => {
   const { name } = req.body;
   const user = req.user._id.toString();
@@ -308,14 +468,15 @@ const updateProfileName = async (req, res) => {
       { new: true }
     );
     const updatedName = userName.name;
-    res.status(200).json({ message: "name updated Successfully", name: updatedName });
+    res
+      .status(200)
+      .json({ message: "name updated Successfully", name: updatedName });
     console.log(userName);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error });
   }
 };
-
 
 const GetAllJobs = async (req, res, next) => {
   try {
@@ -326,7 +487,7 @@ const GetAllJobs = async (req, res, next) => {
 
     const acceptJobs = await Jobs.find({
       _id: { $nin: userInfo.appliedPlatformJobs },
-      isClosed: false
+      isClosed: false,
     })
       .sort([["createdAt", -1]])
       .select(
@@ -334,7 +495,7 @@ const GetAllJobs = async (req, res, next) => {
       );
 
     const jobs = acceptJobs;
-  
+
     return res.json({ jobs });
   } catch (error) {
     console.log(error);
@@ -416,7 +577,6 @@ const ApplyForPlatformJobs = async (req, res, next) => {
     return next();
   }
 };
-
 
 const AddUserToJobHistory = async (req, res, next) => {
   try {
@@ -500,78 +660,76 @@ const sendEmailOnJobApplication = async (req, res) => {
   const user_info = req.user;
   const { job } = req.body;
 
-  console.log("user info", user_info);
-  console.log("job info", job);
-
   const user = req.user._id.toString();
   const userInfo = await User.findOne({ _id: user }).populate("skill");
 
-  const userSkills = userInfo.skill.map(skill => `${skill.skill} - ${skill.level}`).join(", ");
+  const userSkills = userInfo.skill
+    .map((skill) => `${skill.skill} - ${skill.level}`)
+    .join(", ");
 
   let config = {
-      service: 'gmail',
-      auth: {
-          user: process.env.APPLICATION_EMAIL,
-          pass: process.env.APPLICATION_PASSWORD
-      }
+    service: "gmail",
+    auth: {
+      user: process.env.APPLICATION_EMAIL,
+      pass: process.env.APPLICATION_PASSWORD,
+    },
   };
   let transporter = nodemailer.createTransport(config);
 
   let mailGenerator = new Mailgen({
-      theme: "default",
-      product: {
-          name: "Careersheets",
-          link: 'https://app.careersheets.in/'
-      }
+    theme: "default",
+    product: {
+      name: "Careersheets",
+      link: "https://app.careersheets.in/",
+    },
   });
 
   let response = {
     body: {
-        table: {
-            data: [{
-                Applicant_Name: user_info.name,
-                Applicant_Email: user_info.email,
-                Comapny_Name: job.companyName,
-                Skills_Required_For_Job: job.SkillsRequired,
-                Role: job.roleName,
-                Location: job.location,
-                Resume:`https://www.app.careersheets.in/admin/profile/resume/${job._id}/${user_info._id}`
-            }]
-        }
-    }
-};
+      table: {
+        data: [
+          {
+            Applicant_Name: user_info.name,
+            Applicant_Email: user_info.email,
+            Comapny_Name: job.companyName,
+            Skills_Required_For_Job: job.SkillsRequired,
+            Role: job.roleName,
+            Location: job.location,
+            Resume: `https://www.app.careersheets.in/admin/profile/resume/${job._id}/${user_info._id}`,
+          },
+        ],
+      },
+    },
+  };
 
   let mail = mailGenerator.generate(response);
   let message = {
-      from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
-      to: "dhanesh@ibacustech.com",
-      subject: "Job Application Received",
-      html: mail
+    from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
+    to: "dhanesh@ibacustech.com",
+    subject: "Job Application Received",
+    html: mail,
   };
 
   try {
-      // Send email
-      await transporter.sendMail(message);
-      return res.status(201).json({ msg: "Mail sent successfully!" });
+    // Send email
+    await transporter.sendMail(message);
+    return res.status(201).json({ msg: "Mail sent successfully!" });
   } catch (error) {
-      console.error("Error sending mail:", error);
-      return res.status(500).json({ error: "Error sending mail." });
+    console.error("Error sending mail:", error);
+    return res.status(500).json({ error: "Error sending mail." });
   }
-}
-
-
-
-
+};
 
 //Certifications
 
-const createCertifications = async (req, res) => {
+/* const createCertifications = async (req, res) => {
+
+  console.log("sssssssssssss", req.body)
   const userId = req.user._id.toString();
   let existingUser;
 
   try {
     existingUser = await User.findById(userId);
-    console.log("user found", existingUser);
 
     if (!existingUser) {
       return res.status(400).json({ message: "Unable to find the user" });
@@ -585,12 +743,11 @@ const createCertifications = async (req, res) => {
       startDate,
       endDate,
       certificateId,
-      approval
+      approval,
     } = req.body.formData;
 
-    const {isCustomProvider} = req.body;
+    const { isCustomProvider } = req.body;
 
-    console.log("custommmmm", isCustomProvider, req.body.formData);
 
     let existingCertification;
     let matchedCertificateId;
@@ -603,7 +760,6 @@ const createCertifications = async (req, res) => {
       );
 
       if (matchedCertificateId) {
-        console.log("true certificateId matches");
         return res.status(400).json({
           message:
             "A certification with this certificate ID already exists for the user.",
@@ -621,16 +777,13 @@ const createCertifications = async (req, res) => {
       });
 
       const savedProvider = await newCertificationProvider.save();
-      
-      console.log("New provider created:", savedProvider);
 
       certificationProvider.unshift(savedProvider);
 
-      console.log("New provider createdddddddddddddddddddd", certificationProvider);
-
     } else {
-
-      certificationProvider = await CertificationProvider.find({Providername:providedBy});
+      certificationProvider = await CertificationProvider.find({
+        Providername: providedBy,
+      });
 
       if (!certificationProvider) {
         return res
@@ -638,9 +791,17 @@ const createCertifications = async (req, res) => {
           .json({ message: "Certification Provider not found" });
       }
     }
+    let CertID;
+    let prefix;
 
-
-    console.log("sssssssssssssssssss idiidid", certificationProvider) 
+    if (certificateId === "") {
+      if (providedBy === "I-Bacus Tech") {
+        prefix = "IBT";
+      } else {
+        prefix = "Green";
+      }
+      CertID = await generateCertificateId(prefix);
+    }
 
     const certification = new Certification({
       certificationName: certificateName,
@@ -648,7 +809,7 @@ const createCertifications = async (req, res) => {
       certificateIssuedDate: issuedOn,
       startDate,
       expiryDate: endDate,
-      certificateId,
+      certificateId: certificateId === "" ? CertID : certificateId ,
       user: userId,
       approval,
     });
@@ -663,7 +824,6 @@ const createCertifications = async (req, res) => {
 
     const userArray = await existingUser.save();
 
-    console.log("certificiciiciccc", certification)
 
     return res.status(200).json({
       message: "Certification added successfully",
@@ -673,27 +833,263 @@ const createCertifications = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: "An error occurred", error });
   }
+}; */
+
+
+/* const createCertifications = async (req, res) => {
+  console.log("Request Data:", req.body);
+  const userId = req.user._id.toString();
+
+  try {
+    let existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const {
+      existingId,
+      certificateName,
+      providedBy,
+      providerId,
+      issuedOn,
+      startDate,
+      endDate,
+      certificateId,
+      approval,
+    } = req.body.formData;
+
+    const { isCustomProvider } = req.body;
+    
+    let certificationProvider = [];
+
+    if (isCustomProvider) {
+      const newCertificationProvider = new CertificationProvider({
+        ProviderName: providedBy,
+      });
+      const savedProvider = await newCertificationProvider.save();
+      certificationProvider.unshift(savedProvider);
+    } else {
+      certificationProvider = await CertificationProvider.findOne({ ProviderName: providedBy });
+      if (!certificationProvider) {
+        return res.status(404).json({ message: "Certification Provider not found" });
+      }
+    }
+
+    let CertID = certificateId;
+    if (!certificateId) {
+      const prefix = providedBy === "I-Bacus Tech" ? "IBT" : "Green";
+      CertID = await generateCertificateId(prefix);
+    }
+
+    if (existingId) {
+      let existingCertification = await Certification.findById(existingId);
+      if (!existingCertification) {
+        return res.status(404).json({ message: "Certification not found" });
+      }
+
+      const duplicateCert = await Certification.findOne({
+        certificateId: CertID,
+        _id: { $ne: existingId }, 
+      });
+
+      if (duplicateCert) {
+        return res.status(400).json({
+          message: "A certification with this certificate ID already exists.",
+        });
+      }
+
+      existingCertification.certificationName = certificateName;
+      existingCertification.issuedBy = providerId;
+      existingCertification.certificateIssuedDate = issuedOn;
+      existingCertification.startDate = startDate;
+      existingCertification.expiryDate = endDate;
+      existingCertification.certificateId = CertID;
+      existingCertification.approval = approval;
+
+      await existingCertification.save();
+
+      return res.status(201).json({
+        message: "Certification updated successfully",
+        certification: existingCertification,
+      });
+
+    } else {
+      const newCertification = new Certification({
+        certificationName: certificateName,
+        issuedBy: certificationProvider._id,
+        certificateIssuedDate: issuedOn,
+        startDate,
+        expiryDate: endDate,
+        certificateId: CertID,
+        user: userId,
+        approval,
+      });
+
+      await newCertification.save();
+
+      existingUser.certification = Array.isArray(existingUser.certification)
+        ? [...existingUser.certification, newCertification._id]
+        : [newCertification._id];
+
+      await existingUser.save();
+
+      return res.status(201).json({
+        message: "Certification added successfully",
+        certification: newCertification,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred", error });
+  }
+}; */
+
+const createCertifications = async (req, res) => {
+  console.log("Request Data:", req.body);
+  const userId = req.user._id.toString();
+
+  try {
+    let existingUser = await User.findById(userId);
+    if (!existingUser) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const {
+      existingId,
+      certificateName,
+      providedBy,
+      providerId,
+      issuedOn,
+      startDate,
+      endDate,
+      certificateId,
+      approval,
+    } = req.body.formData;
+
+    const { isCustomProvider } = req.body;
+
+    let certificationProvider;
+
+    if (isCustomProvider) {
+      // If a new provider is being created
+      const newCertificationProvider = new CertificationProvider({
+        ProviderName: providedBy,
+      });
+      const savedProvider = await newCertificationProvider.save();
+      certificationProvider = savedProvider;
+    } else {
+      // Find an existing provider
+      certificationProvider = await CertificationProvider.findOne({ ProviderName: providedBy });
+
+      if (!certificationProvider) {
+        return res.status(404).json({ message: "Certification Provider not found" });
+      }
+    }
+
+    let CertID = certificateId;
+    if (!certificateId) {
+      const prefix = providedBy === "I-Bacus Tech" ? "IBT" : "Green";
+      CertID = await generateCertificateId(prefix);
+    }
+
+    if (existingId) {
+      // Update existing certification
+      let existingCertification = await Certification.findById(existingId);
+      if (!existingCertification) {
+        return res.status(404).json({ message: "Certification not found" });
+      }
+
+      const duplicateCert = await Certification.findOne({
+        certificateId: CertID,
+        _id: { $ne: existingId }, 
+      });
+
+      if (duplicateCert) {
+        return res.status(400).json({
+          message: "A certification with this certificate ID already exists.",
+        });
+      }
+
+      // Check if the provider has changed
+      const providerHasChanged = existingCertification.issuedBy.toString() !== certificationProvider._id.toString();
+      let newApprovalStatus = approval;
+
+      // If provider changed and it's not I-Bacus Tech or Greenestep, set approval to true
+      if (providerHasChanged && !["I-Bacus Tech", "Greenestep"].includes(providedBy)) {
+        newApprovalStatus = "true";
+      }
+
+      existingCertification.certificationName = certificateName;
+      existingCertification.issuedBy = certificationProvider._id; // Update provider
+      existingCertification.certificateIssuedDate = issuedOn;
+      existingCertification.startDate = startDate;
+      existingCertification.expiryDate = endDate;
+      existingCertification.certificateId = CertID;
+      existingCertification.approval = newApprovalStatus; // Ensure auto-approval logic
+
+      await existingCertification.save();
+
+      return res.status(201).json({
+        message: "Certification updated successfully",
+        certification: {
+          ...existingCertification.toObject(),
+          issuedBy: certificationProvider.ProviderName,  
+        },
+      });
+
+    } else {
+      // Create new certification
+      const newCertification = new Certification({
+        certificationName: certificateName,
+        issuedBy: certificationProvider._id,
+        certificateIssuedDate: issuedOn,
+        startDate,
+        expiryDate: endDate,
+        certificateId: CertID,
+        user: userId,
+        approval,
+      });
+
+      await newCertification.save();
+
+      existingUser.certification = Array.isArray(existingUser.certification)
+        ? [...existingUser.certification, newCertification._id]
+        : [newCertification._id];
+
+      await existingUser.save();
+
+      return res.status(201).json({
+        message: "Certification added successfully",
+        certification: {
+          ...newCertification.toObject(),
+          issuedBy: certificationProvider.ProviderName,  
+        },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred", error });
+  }
 };
 
 
 const getCertifications = async (req, res, next) => {
   try {
-    const id = req.user._id.toString();
-
-    let userInfo = await Certification.find({
-      user: id ,
-    }).populate({
+    let userInfo = await Certification.find().populate({
       path: "issuedBy",
       model: "certificationProvider",
-      select: "ProviderName", 
-    });
+      select: "ProviderName",
+    })
+    .populate({
+      path: "user",
+      model: "User",
+      select: "name", 
+    });;
 
-    userInfo = userInfo.map(cert => ({
+    userInfo = userInfo.map((cert) => ({
       ...cert.toObject(),
-      issuedBy: cert.issuedBy?.ProviderName || null, 
+      issuedBy: cert.issuedBy?.ProviderName || null,
     }));
-
-    console.log("certification", userInfo)
 
     return res.json({ userInfo });
   } catch (error) {
@@ -708,7 +1104,9 @@ const deleteCertificate = async (req, res) => {
   let existingCertificate;
 
   try {
-    existingCertificate = await Certification.findByIdAndRemove(id).populate("user");
+    existingCertificate = await Certification.findByIdAndRemove(id).populate(
+      "user"
+    );
 
     await existingCertificate.user.certification.pull(existingCertificate);
     await existingCertificate.user.save();
@@ -722,16 +1120,15 @@ const deleteCertificate = async (req, res) => {
   }
   return res
     .status(200)
-    .json({ message: "Successfully Deleted the Certificate", existingCertificate });
+    .json({
+      message: "Successfully Deleted the Certificate",
+      existingCertificate,
+    });
 };
-
-
 
 const getCertificationProvider = async (req, res, next) => {
   try {
     const CertificationProviderInfo = await CertificationProvider.find();
-
-    console.log("Certification Provider Info", CertificationProviderInfo);
 
     return res.json({ CertificationProviderInfo });
   } catch (error) {
@@ -743,14 +1140,13 @@ const getCertificationProvider = async (req, res, next) => {
 const generateCertification = async (req, res, next) => {
   try {
     sendEmail(req.user.email, "CareerSheets", message);
-    
+
     return res.json({ CertificationProviderInfo });
   } catch (error) {
     console.log(error);
     return next();
   }
 };
-
 
 module.exports = {
   getUserInfo,
@@ -774,5 +1170,5 @@ module.exports = {
   getCertifications,
   deleteCertificate,
   getCertificationProvider,
-  generateCertification
+  generateCertification,
 };

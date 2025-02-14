@@ -18,6 +18,19 @@ const projectSlice = createSlice({
         });
       }
     },
+    updateProject(state, action) {
+      const { _id, projectTitle, projectDescription, projectDomain, projectSkills } = action.payload;
+      const index = state.items.findIndex((item) => item._id === _id);
+      if (index !== -1) {
+        state.items[index] = { 
+          ...state.items[index], 
+          projectTitle, 
+          projectDescription, 
+          projectDomain, 
+          projectSkills 
+        };
+      }
+    },    
     removeProject(state, action) {
       const id = action.payload;
       //   const existingEdu=state.items.find((item)=>item._id===id)
@@ -27,6 +40,7 @@ const projectSlice = createSlice({
       const data = action.payload;
       state.items = [...data];
     },
+    
   },
 });
 

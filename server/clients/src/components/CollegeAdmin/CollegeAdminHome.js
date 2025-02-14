@@ -8,17 +8,22 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { detailsAction } from "../../redux/reducers/userDetails";
 import { collegeAdminAction } from "../../redux/reducers/collegeAdmin-data";
+import {certificateActions} from "../../redux/reducers/certificationInfo";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { REACT_APP_SERVER_URL } from "../../config";
+import { rootShouldForwardProp } from "@mui/material/styles/styled";
 
 const CollegeAdminHome = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
   const details = useSelector((state) => state.userDetail.details);
+  const certificationItems = useSelector((state) => state.certificate.items);
+
   const [err, seterr] = useState();
+
 
   const sendRequest = async () => {
     const response = await axios
@@ -32,12 +37,12 @@ const CollegeAdminHome = () => {
         seterr(err.response.data.message);
         return err.response.data.message;
       });
-
     if (response === "notselected") {
       navigate("/collegeadmin/selectcollege");
     }
 
     const data = await response.data;
+    
 
     return data;
   };
@@ -46,9 +51,10 @@ const CollegeAdminHome = () => {
     sendRequest()
       .then((data) => {
         if (data) {
-          
           dispatch(detailsAction.addData(data.userApplication));
           dispatch(collegeAdminAction.addValue(data.collegeAdmin));
+          dispatch(certificateActions.getCertifications(data.certificationInfo));
+          dispatch()
         }
       })
       .catch((err) => {
@@ -111,6 +117,7 @@ const CollegeAdminHome = () => {
               key={data.user}
               id={data.user}
               details={data}
+              certifications={certificationItems}
               status={{ selected, pending, cleared, rejected }}
             />
           );

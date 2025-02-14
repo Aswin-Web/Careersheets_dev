@@ -25,7 +25,7 @@ const {
   sendEmailOnJobApplication,
   createCertifications,
   getCertifications,
-  deleteCertificate,
+  deleteCertificate, 
   getCertificationProvider,
   generateCertification
 } = require("../controllers/user.profile.conroller");

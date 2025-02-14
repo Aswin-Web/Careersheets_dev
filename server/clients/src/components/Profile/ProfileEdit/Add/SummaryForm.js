@@ -17,6 +17,8 @@ const AboutForm = (props) => {
     setSummary(e.target.value);
   };
 
+  console.log("Ssssssssssssssssssss", props)
+
   //USER FETCHING
   const sendRequest = async () => {
     const response = await axios
@@ -58,7 +60,6 @@ const AboutForm = (props) => {
       )
       .catch((error) => console.log(error, "@status error"));
     const data = await response.data;
-
     return data;
   };
 
@@ -71,6 +72,7 @@ const AboutForm = (props) => {
       console.log(error);
     }
   };
+
   return (
     <form onSubmit={formSubimt}>
       <Box

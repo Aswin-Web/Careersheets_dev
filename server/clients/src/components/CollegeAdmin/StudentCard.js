@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { applicationDetailAction } from "../../redux/reducers/applicationDetails";
 import { REACT_APP_SERVER_URL } from "../../config";
+import { certificateActions } from "../../redux/reducers/certificationInfo";
 
 const StudentCard = (props) => {
   const { selected, pending, cleared, rejected } = props.status;
@@ -20,7 +21,10 @@ const StudentCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.value);
-  console.log(Object.keys(data).length , "datattatt");
+
+  const userCertifications = props.certifications.filter(
+    (cert) => cert.user._id === data.userDetails[0]._id
+  );
 
   const sendRequest = async () => {
     const response = await axios.get(
@@ -32,6 +36,7 @@ const StudentCard = (props) => {
         },
       }
     );
+
     const data = await response.data;
     return data;
   };
@@ -45,10 +50,20 @@ const StudentCard = (props) => {
       .catch((err) => console.log(err));
   };
 
+  const certificateClickHandler = () => {
+    console.log("Certification Info:", props.certifications);
+    if (props.certifications && Object.keys(props.certifications).length > 0) {
+        dispatch(certificateActions.getCertifications(props.certifications));
+        navigate(`/collegeadmin/certification/${id}`);
+    } else {
+        console.warn("No certification info available!");
+    }
+};
+
   return (
     <div className={classes.content}>
       {Object.keys(data).length > 0 && (
-        <div className={classes.card} >
+        <div className={classes.card}>
           <div className={classes.profile}>
             <Avatar
               alt="Student-image"
@@ -138,14 +153,69 @@ const StudentCard = (props) => {
                       className={classes.applicationNumbers}
                     >{` : ${rejected}`}</span>
                   </p>
-                  <Button variant="outlined" onClick={cardClickHandler}>Application Status</Button>
+                  <Button variant="outlined" onClick={cardClickHandler}>
+                    Application Status
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Certification */}
+
+            <div className={classes.placementDetails}>
+              <p>
+                <span>Number of Certifications Done</span>
+                <span
+                  className={classes.courseTitle}
+                >{` : ${userCertifications.length}`}</span>
+              </p>
+              <div className={classes.applicationStatus}>
+                <h4>Certification Details</h4>
+                <div>
+                  <p>
+                    <span>
+                      <HowToRegIcon sx={{ fontSize: "1.22rem" }} />
+                      Approved
+                    </span>
+                    <span className={classes.applicationNumbers}>
+                      {" "}
+                      :{" "}
+                      {
+                        userCertifications.filter(
+                          (cert) => cert.approval === "true"
+                        ).length
+                      }
+                    </span>
+                  </p>
+                  <p>
+                    <CheckBoxRoundedIcon sx={{ fontSize: "1rem" }} />
+                    Pending
+                    <span className={classes.applicationNumbers}>
+                      {" "}
+                      :{" "}
+                      {
+                        userCertifications.filter(
+                          (cert) => cert.approval === "false"
+                        ).length
+                      }
+                    </span>
+                  </p>
+                  {userCertifications.length > 0 ? (
+                    <Button
+                      variant="outlined"
+                      onClick={certificateClickHandler}
+                    >
+                      Certification Detailed View
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
       )}
-     
     </div>
   );
 };

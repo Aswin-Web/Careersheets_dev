@@ -20,6 +20,13 @@ const skillSlice=createSlice({
                 state.error=false;
             }
         },
+        updateSkill(state, action) {
+            const { id, skill, level } = action.payload;
+            const index = state.skills.findIndex((item) => item._id === id);
+            if (index !== -1) {
+              state.skills[index] = { ...state.skills[index], skill, level };
+            }
+          },
         removeSkill(state,action){
             const data=action.payload
             const skillId=data._id

@@ -35,7 +35,6 @@ export default function CertificationVerifyTable() {
     const response = await axios
       .get(
         REACT_APP_SERVER_URL + "/user/getCertification",
-
         {
           headers: {
             "Content-type": "application/json",
@@ -102,6 +101,7 @@ export default function CertificationVerifyTable() {
             <TableHead>
               <TableRow>
                 <TableCell>Sl No</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell>Certificate Name</TableCell>
                 <TableCell>Issued By</TableCell>
                 <TableCell>Issued On</TableCell>
@@ -122,6 +122,7 @@ export default function CertificationVerifyTable() {
                   <TableCell component="th" scope="row">
                     {index + 1}
                   </TableCell>
+                  <TableCell>{user.user.name}</TableCell>
                   <TableCell>{user.certificationName}</TableCell>
                   <TableCell>
                    {user.issuedBy}

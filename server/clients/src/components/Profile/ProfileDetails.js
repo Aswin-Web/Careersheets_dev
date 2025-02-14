@@ -171,7 +171,6 @@ const ProfileDetails = () => {
         });
         setIsEditFormVisible(false);
       }
-      console.log("response got in Editttttttttttttt frontend", response);
     } catch (error) {
       console.error("Error Editting status:", error);
     }
@@ -197,7 +196,6 @@ const ProfileDetails = () => {
         }
       );
 
-      console.log("resssssssssss", response)
       if (response.status === 200) {
         setStatusData({
           skills: response.data[0]?.skills,
@@ -209,12 +207,11 @@ const ProfileDetails = () => {
           tips: response.data[0]?.tips,
           id: response.data[0]?._id,
         });
-        console.log("Form Edit Datavvvvvvvv", formEditData);
       }
-      console.log(
+      /* console.log(
         "response got in frontend Status Get function",
         response.data[0]
-      );
+      ); */
     } catch (error) {
       console.error("Error submitting status:", error);
     }
@@ -226,7 +223,6 @@ const ProfileDetails = () => {
 
   useEffect(() => {
     sendRequest().then((data) => {
-      console.log("datattataaaa", data);
       let status = data.status;
       let details = data.education.reverse();
       let project = data.project.reverse();
@@ -256,7 +252,6 @@ const ProfileDetails = () => {
     });
   }, [dispatch]);
 
-  console.log(certifications, "jjjjjjjjjjjj");
   return (
     <div className={classes.details}>
       <div>
@@ -350,6 +345,7 @@ const ProfileDetails = () => {
           </ul>
         </div>
       </ProfileCard>
+      
       <ProfileCard CardName="status">
         <h3 className="m-3">Status:</h3>
         {status === "Working" && !statusData ? (
@@ -570,9 +566,7 @@ const ProfileDetails = () => {
             <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
               Expiry Date
             </TableCell>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Certificate ID
-            </TableCell>
+           
             <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
               Actions
             </TableCell>
@@ -591,6 +585,7 @@ const ProfileDetails = () => {
               certificateId={item.certificateId}
               approval={item.approval}
               name={data.name}
+              state={"user"}
             />
           ))}
         </TableBody>
