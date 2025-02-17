@@ -8,7 +8,8 @@ import {
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import GenerateIcon from "@mui/icons-material/Save";
+import PrintIcon from "@mui/icons-material/Print";
+
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 import Add from "../ProfileEdit/Add/Add";
@@ -114,7 +115,7 @@ const CertificateDisplay = (props) => {
                 {props.issuedBy === "I-Bacus Tech" ||
                 props.issuedBy === "Greenestep" ? (
                   <IconButton disabled={true}>
-                    <GenerateIcon />
+                    <PrintIcon />
                   </IconButton>
                 ) : (
                   <></>
@@ -151,7 +152,7 @@ const CertificateDisplay = (props) => {
                       },
                     }}
                   >
-                    <GenerateIcon />
+                    <PrintIcon />
                   </IconButton>
                 </Tooltip>
               ) : (
