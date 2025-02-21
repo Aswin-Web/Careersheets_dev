@@ -9,10 +9,7 @@ const CollegeAdmin = () => {
   const navigate = useNavigate();
   const verification = useSelector((state) => state.auth.value.verification);
   const role = useSelector((state) => state.auth.value.role);
-  
 
-
-  
   useEffect(() => {
     if (verification === false && role === "none") {
       return navigate("/");

@@ -10,7 +10,7 @@ const summarySlice = createSlice({
       state.summary = action.payload.summary;
     },
   },
-});
+}); 
 
 export const summaryAction = summarySlice.actions;
 export default summarySlice;

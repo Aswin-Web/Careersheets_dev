@@ -8,7 +8,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { detailsAction } from "../../redux/reducers/userDetails";
 import { collegeAdminAction } from "../../redux/reducers/collegeAdmin-data";
-import {certificateActions} from "../../redux/reducers/certificationInfo";
+import { certificateActions } from "../../redux/reducers/certificationInfo";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -23,7 +23,6 @@ const CollegeAdminHome = () => {
   const certificationItems = useSelector((state) => state.certificate.items);
 
   const [err, seterr] = useState();
-
 
   const sendRequest = async () => {
     const response = await axios
@@ -42,8 +41,6 @@ const CollegeAdminHome = () => {
     }
 
     const data = await response.data;
-    
-
     return data;
   };
 
@@ -53,18 +50,22 @@ const CollegeAdminHome = () => {
         if (data) {
           dispatch(detailsAction.addData(data.userApplication));
           dispatch(collegeAdminAction.addValue(data.collegeAdmin));
-          dispatch(certificateActions.getCertifications(data.certificationInfo));
-          dispatch()
+          dispatch(
+            certificateActions.getCertifications(data.certificationInfo)
+          );
+          dispatch(
+            certificateActions.getCertifications(data.certificationInfo)
+          );
         }
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  
-  let showDetails=false
-  if(details.length!==0){
-    showDetails=true
+
+  let showDetails = false;
+  if (details.length !== 0) {
+    showDetails = true;
   }
 
   return (

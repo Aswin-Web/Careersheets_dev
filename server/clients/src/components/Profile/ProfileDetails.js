@@ -18,7 +18,7 @@ import ProjectItems from "./ProjectItems";
 import CertificateDisplay from "./Certification/CertificateDisplay";
 import { projectActions } from "../../redux/reducers/project-data";
 import { roleActions } from "../../redux/reducers/role-data";
-import { summaryAction } from "../../redux/reducers/summary-data";
+import { summaryAction } from "../../redux/reducers/summary-data"; 
 import { personalActions } from "../../redux/reducers/personalInfo";
 import { certificateActions } from "../../redux/reducers/certificationInfo";
 import { dataAction } from "../../redux/reducers/data";

@@ -7,6 +7,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
+import WorkIcon from "@mui/icons-material/Work";
 import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 
@@ -85,7 +86,11 @@ function MainNavigation() {
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "none", md: "flex", justifyContent: "flex-end" },
+                  display: {
+                    xs: "none",
+                    md: "flex",
+                    justifyContent: "flex-end",
+                  },
                 }}
               >
                 {/* <Box sx={{ fontSize: "1rem" }}>
@@ -101,7 +106,7 @@ function MainNavigation() {
                       rel="noreferrer"
                       target="_blank"
                     >
-                      <Box className="logout_btn">
+                      <Box className="logout_btn" sx={{marginTop: "0.3em"}}>
                         <HelpCenterIcon />
                         <Typography variant="subtitle1" className="logout_btn">
                           Help
@@ -114,7 +119,6 @@ function MainNavigation() {
                   <Box
                     sx={{
                       marginTop: "0.3em",
-                      marginRight: "1.5em",
                       fontSize: "1rem",
                     }}
                   >
@@ -122,6 +126,22 @@ function MainNavigation() {
                       <LogoutIcon />
                     </Button>
                     <p className={classes.iconName}>LOGOUT</p>
+                  </Box>
+                </Link>
+              </Box>
+              <Box>
+                <Link to="/collegeadmin/jobs" className={classes.logout_btn}>
+                  <Box
+                    sx={{
+                      marginTop: "0.3em",
+                      marginRight: "1.5em",
+                      fontSize: "1rem",
+                    }}
+                  >
+                    <Button sx={{ color: "white" }}>
+                      <WorkIcon />
+                    </Button>
+                    <p className={classes.iconName}>JOBS</p>
                   </Box>
                 </Link>
               </Box>

@@ -25,6 +25,7 @@ import { REACT_APP_SERVER_URL } from "../../config";
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  console.log("ssssssssssss", row);
 
   return (
     <React.Fragment>
