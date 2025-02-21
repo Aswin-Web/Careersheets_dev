@@ -41,6 +41,8 @@ import Help from "./components/JobSeekerPage/Help.module";
 import SelectingCollege from "./components/CollegeAdmin/SelectingCollege";
 import CollegeUI from "./components/CollegeAdmin/CollegeUI";
 import ApplicationDetails from "./components/CollegeAdmin/ApplicationDetails";
+import CollegeAdminJobsPage from "./components/CollegeAdmin/CollegeAdminJobsPage";
+import JobDetailsAdmin from "./components/CollegeAdmin/JobDetails";
 import Certification from "./components/CollegeAdmin/Certification";
 import CertificationDisplay from "./components/CollegeAdmin/CertificationDisplay";
 
@@ -135,6 +137,8 @@ function App() {
         >
           <Route index element={<CollegeAdmin />} />
           <Route path=":id" element={<ApplicationDetails />} />
+          <Route path="jobs" element={<CollegeAdminJobsPage />} />
+          <Route path="jobs/:id" element={<JobDetailsAdmin />} />
           <Route path="certification/:id" element={<Certification />} />
           <Route path="certification/:id/print" element={<CertificationDisplay />} />
           <Route path="selectcollege" element={<SelectingCollege />} />

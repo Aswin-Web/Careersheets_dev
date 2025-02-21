@@ -8,7 +8,7 @@ export const allJobsSlice = createSlice({
   reducers: {
     AddJobsUser(state, action) {
       state.value = [...action.payload];
-    },
+    }, 
     updateJobsUser(state, action) {
       const afterUpdate = state.value.map((x) => {
         if (x._id === action.payload.job_id) {

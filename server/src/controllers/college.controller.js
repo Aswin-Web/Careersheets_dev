@@ -2,6 +2,7 @@ const User = require("../models/user.models");
 const Education = require("../models/education.model");
 const Application = require("../models/application.models");
 const Certification = require("../models/certification.models");
+const Skill = require("../models/skill.models");
 const mongoose = require("mongoose");
 
 const getUsers = async (req, res) => {
@@ -86,12 +87,26 @@ const getUsers = async (req, res) => {
         ...cert.toObject(),
         issuedBy: cert.issuedBy?.ProviderName || null,
       }));
-  
+
+      let userSkills = await Skill.find({
+        user: { $in: userIds }
+      }).populate({
+        path: "user",
+        model: "User",
+        select: "name",
+      });
+
+      userSkills = userSkills.map((skill) => ({
+        ...skill.toObject(),
+        user: skill.user?.name || null,
+      }));
+
       console.log("certification", certificationInfo);
+      console.log("skills", userSkills);
 
       return res
         .status(200)
-        .json({ userApplication: userApplication, collegeAdmin: collegeAdmin, certificationInfo });
+        .json({ userApplication: userApplication, collegeAdmin: collegeAdmin, certificationInfo, userSkills: userSkills  });
     } else {
       return res.status(401).json({ message: "College Admin is not verified" });
     }
@@ -153,7 +168,7 @@ const getUserById = async (req, res) => {
 
     certificationInfo = certificationInfo.map((cert) => ({
       ...cert.toObject(),
-      issuedBy: cert.issuedBy?.ProviderName || null,
+      issuedBy: cert.issuedBy?.ProviderName || null, 
     }));
 
 
