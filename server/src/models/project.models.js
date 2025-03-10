@@ -13,11 +13,19 @@ const projectSchema = new mongoose.Schema({
     type: String,
   },
   user: {
-    type: mongoose.Types.ObjectId, 
+    type: mongoose.Types.ObjectId,
     ref: "User",
     required: true,
   },
   projectSkills: [String],
+  startDate: {
+    type: Date,
+    required: false,
+  },
+  endDate: {
+    type: Date,
+    required: false,
+  },
 });
 
 const Project = mongoose.model("Project", projectSchema);

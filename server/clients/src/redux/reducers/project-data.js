@@ -14,20 +14,25 @@ const projectSlice = createSlice({
           projectDomain: newProject.projectDomain,
           projectDescription: newProject.projectDescription,
           projectSkills: newProject.projectSkills,
+          startDate: newProject.startDate,
+          endDate: newProject.endDate, 
+
           _id: newProject._id,
         });
       }
     },
     updateProject(state, action) {
-      const { _id, projectTitle, projectDescription, projectDomain, projectSkills } = action.payload;
+      const { _id, projectTitle, projectDescription, projectDomain, projectSkills,startDate,endDate } = action.payload;
       const index = state.items.findIndex((item) => item._id === _id);
       if (index !== -1) {
-        state.items[index] = { 
-          ...state.items[index], 
-          projectTitle, 
-          projectDescription, 
-          projectDomain, 
-          projectSkills 
+        state.items[index] = {
+          ...state.items[index],
+          projectTitle,
+          projectDescription,
+          projectDomain,
+          projectSkills,
+          startDate, 
+          endDate,
         };
       }
     },    

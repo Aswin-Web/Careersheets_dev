@@ -30,7 +30,7 @@ const getUserInfo = async (req, res) => {
     if (!userDetails) {
       return res.status(400).json({ message: "Could not find user" });
     }
-   
+
     if (Array.isArray(userDetails.certification)) {
       let certifications = await Certification.find({
         _id: { $in: userDetails.certification },
@@ -120,9 +120,16 @@ const getUserInfo = async (req, res) => {
 }; */
 
 const postEducation = async (req, res) => {
-  const { college, degree, graduated, graduationYear, registerNumber, stream, id } = req.body;
+  const {
+    college,
+    degree,
+    graduated,
+    graduationYear,
+    registerNumber,
+    stream,
+    id,
+  } = req.body;
   const user = req.user._id.toString();
-
 
   let existingUser;
   let existingCollege;
@@ -149,7 +156,8 @@ const postEducation = async (req, res) => {
 
       if (matchedRegister) {
         return res.status(400).json({
-          message: "The user with this register number for this college already exists.!!",
+          message:
+            "The user with this register number for this college already exists.!!",
         });
       }
 
@@ -162,16 +170,21 @@ const postEducation = async (req, res) => {
       existingEducation.stream = stream;
 
       await existingEducation.save();
-      return res.status(200).json({ message: "Education updated", edu: existingEducation });
+      return res
+        .status(200)
+        .json({ message: "Education updated", edu: existingEducation });
     }
 
     // Check for duplicate registerNumber before creating a new record
     existingCollege = await Education.find({ collegeName: college });
-    matchedRegister = existingCollege.find((el) => el.registerNumber === registerNumber);
+    matchedRegister = existingCollege.find(
+      (el) => el.registerNumber === registerNumber
+    );
 
     if (matchedRegister) {
       return res.status(400).json({
-        message: "The user with this register number for this college already exists.!!",
+        message:
+          "The user with this register number for this college already exists.!!",
       });
     }
 
@@ -191,13 +204,11 @@ const postEducation = async (req, res) => {
     await existingUser.save();
 
     return res.status(200).json({ message: "Education added", edu });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error", error });
   }
 };
-
 
 const deleteEducation = async (req, res) => {
   const id = req.params.id;
@@ -254,7 +265,7 @@ const deleteEducation = async (req, res) => {
 }; */
 
 const postSkill = async (req, res) => {
-  const { skill, level, id } = req.body; 
+  const { skill, level, id } = req.body;
   const user = req.user._id.toString();
 
   try {
@@ -272,11 +283,15 @@ const postSkill = async (req, res) => {
       existingSkill.skill = skill;
       existingSkill.level = level;
       await existingSkill.save();
-      return res.status(200).json({ message: "Skill updated", skill: existingSkill });
+      return res
+        .status(200)
+        .json({ message: "Skill updated", skill: existingSkill });
     } else {
       const findSkill = existingUser.skill.find((el) => el.skill === skill);
       if (findSkill) {
-        return res.status(400).json({ message: "This skill is already present" });
+        return res
+          .status(400)
+          .json({ message: "This skill is already present" });
       }
 
       const newSkill = new Skill({ skill, user, level });
@@ -291,7 +306,6 @@ const postSkill = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 const deleteSkill = async (req, res) => {
   const skillId = req.params.id;
@@ -370,9 +384,62 @@ const updateStatus = async (req, res) => {
   }
 }; */
 
+// const postProject = async (req, res) => {
+//   console.log("req body in project", req.body);
+//   const { projectTitle, projectDescription, projectDomain, skill, id } = req.body;
+//   const user = req.user._id.toString();
+
+//   try {
+//     const existingUser = await JobSeeker.findById(user).populate("project");
+
+//     if (!existingUser) {
+//       return res.status(400).json({ message: "Could not find the user" });
+//     }
+
+//     if (id) {
+//       const existingProject = await Project.findById(id);
+//       if (!existingProject) {
+//         return res.status(404).json({ message: "Project not found" });
+//       }
+//       existingProject.projectTitle = projectTitle;
+//       existingProject.projectDescription = projectDescription;
+//       existingProject.projectDomain = projectDomain;
+//       existingProject.projectSkills = skill;
+//       await existingProject.save();
+//       return res.status(200).json({ message: "Project updated", newProject: existingProject });
+//     } else {
+//       const newProject = new Project({
+//         projectTitle,
+//         projectDomain,
+//         projectDescription,
+//         projectSkills: skill,
+//         user,
+//       });
+
+//       await newProject.save();
+//       existingUser.project.push(newProject);
+//       await existingUser.save();
+
+//       return res.status(200).json({ message: "Project added", newProject });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+
+//////DELETE PROJECT/////
 const postProject = async (req, res) => {
   console.log("req body in project", req.body);
-  const { projectTitle, projectDescription, projectDomain, skill, id } = req.body;
+  const {
+    projectTitle,
+    projectDescription,
+    projectDomain,
+    skill,
+    id,
+    startDate,
+    endDate,
+  } = req.body;
   const user = req.user._id.toString();
 
   try {
@@ -391,14 +458,20 @@ const postProject = async (req, res) => {
       existingProject.projectDescription = projectDescription;
       existingProject.projectDomain = projectDomain;
       existingProject.projectSkills = skill;
+      existingProject.startDate = new Date(startDate); // Convert to Date object
+      existingProject.endDate = new Date(endDate); // Convert to Date object
       await existingProject.save();
-      return res.status(200).json({ message: "Project updated", newProject: existingProject });
+      return res
+        .status(200)
+        .json({ message: "Project updated", newProject: existingProject });
     } else {
       const newProject = new Project({
         projectTitle,
         projectDomain,
         projectDescription,
         projectSkills: skill,
+        startDate: new Date(startDate), // Convert to Date object
+        endDate: new Date(endDate), // Convert to Date object
         user,
       });
 
@@ -414,8 +487,6 @@ const postProject = async (req, res) => {
   }
 };
 
-
-//////DELETE PROJECT/////
 const deleteProject = async (req, res) => {
   const id = req.params.id;
 
@@ -835,7 +906,6 @@ const sendEmailOnJobApplication = async (req, res) => {
   }
 }; */
 
-
 /* const createCertifications = async (req, res) => {
   console.log("Request Data:", req.body);
   const userId = req.user._id.toString();
@@ -979,10 +1049,14 @@ const createCertifications = async (req, res) => {
       certificationProvider = savedProvider;
     } else {
       // Find an existing provider
-      certificationProvider = await CertificationProvider.findOne({ ProviderName: providedBy });
+      certificationProvider = await CertificationProvider.findOne({
+        ProviderName: providedBy,
+      });
 
       if (!certificationProvider) {
-        return res.status(404).json({ message: "Certification Provider not found" });
+        return res
+          .status(404)
+          .json({ message: "Certification Provider not found" });
       }
     }
 
@@ -1001,7 +1075,7 @@ const createCertifications = async (req, res) => {
 
       const duplicateCert = await Certification.findOne({
         certificateId: CertID,
-        _id: { $ne: existingId }, 
+        _id: { $ne: existingId },
       });
 
       if (duplicateCert) {
@@ -1011,11 +1085,16 @@ const createCertifications = async (req, res) => {
       }
 
       // Check if the provider has changed
-      const providerHasChanged = existingCertification.issuedBy.toString() !== certificationProvider._id.toString();
+      const providerHasChanged =
+        existingCertification.issuedBy.toString() !==
+        certificationProvider._id.toString();
       let newApprovalStatus = approval;
 
       // If provider changed and it's not I-Bacus Tech or Greenestep, set approval to true
-      if (providerHasChanged && !["I-Bacus Tech", "Greenestep"].includes(providedBy)) {
+      if (
+        providerHasChanged &&
+        !["I-Bacus Tech", "Greenestep"].includes(providedBy)
+      ) {
         newApprovalStatus = "true";
       }
 
@@ -1033,10 +1112,9 @@ const createCertifications = async (req, res) => {
         message: "Certification updated successfully",
         certification: {
           ...existingCertification.toObject(),
-          issuedBy: certificationProvider.ProviderName,  
+          issuedBy: certificationProvider.ProviderName,
         },
       });
-
     } else {
       // Create new certification
       const newCertification = new Certification({
@@ -1062,7 +1140,7 @@ const createCertifications = async (req, res) => {
         message: "Certification added successfully",
         certification: {
           ...newCertification.toObject(),
-          issuedBy: certificationProvider.ProviderName,  
+          issuedBy: certificationProvider.ProviderName,
         },
       });
     }
@@ -1072,19 +1150,19 @@ const createCertifications = async (req, res) => {
   }
 };
 
-
 const getCertifications = async (req, res, next) => {
   try {
-    let userInfo = await Certification.find().populate({
-      path: "issuedBy",
-      model: "certificationProvider",
-      select: "ProviderName",
-    })
-    .populate({
-      path: "user",
-      model: "User",
-      select: "name", 
-    });;
+    let userInfo = await Certification.find()
+      .populate({
+        path: "issuedBy",
+        model: "certificationProvider",
+        select: "ProviderName",
+      })
+      .populate({
+        path: "user",
+        model: "User",
+        select: "name",
+      });
 
     userInfo = userInfo.map((cert) => ({
       ...cert.toObject(),
@@ -1118,12 +1196,10 @@ const deleteCertificate = async (req, res) => {
     console.log(error);
     return res.status(500).json({ message: error });
   }
-  return res
-    .status(200)
-    .json({
-      message: "Successfully Deleted the Certificate",
-      existingCertificate,
-    });
+  return res.status(200).json({
+    message: "Successfully Deleted the Certificate",
+    existingCertificate,
+  });
 };
 
 const getCertificationProvider = async (req, res, next) => {
