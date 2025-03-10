@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import classes from "./ProfileDetails.module.css";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -15,12 +16,28 @@ const ProjectItems = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isEdit, setIsEdit] = useState(false);
+  const [projectData, setProjectData] = useState({
+    startDate: "",
+    endDate: "",
+  });
 
   const id = props.id;
+  let startDate = props.startDate;
+  let endDate = props.endDate;
+
+  if (startDate) {
+    startDate = startDate.split("T")[0];
+  }
+  if (endDate) {
+    endDate = endDate.split("T")[0];
+  }
+
+  console.log("ProjectItems - startDate:", startDate);
+  console.log("ProjectItems - endDate:", endDate);
 
   const deleteRequest = async () => {
     const response = await axios.delete(
-      REACT_APP_SERVER_URL + "/user/profile/projects/" + id,
+      `${REACT_APP_SERVER_URL}/user/profile/projects/${id}`,
       {
         headers: {
           "Content-type": "application/json",
@@ -28,9 +45,7 @@ const ProjectItems = (props) => {
         },
       }
     );
-    const data = await response.data;
-
-    return data;
+    return response.data;
   };
 
   const deleteProjectHandler = () => {
@@ -44,24 +59,27 @@ const ProjectItems = (props) => {
       });
   };
 
-  const editProjectHandler = async () => {
-    console.log("ssssaaaaaaaaaaa", isEdit);
-    try {
-      setIsEdit(true);
-    } catch (error) {
-      console.error(error);
-    }
+  const editProjectHandler = () => {
+    setIsEdit(true);
   };
 
   const handleCloseAdd = () => {
     setIsEdit(false);
   };
 
+  useEffect(() => {
+    if (props.startDate && props.endDate) {
+      setProjectData({
+        startDate: props.startDate.split("T")[0],
+        endDate: props.endDate.split("T")[0],
+      });
+    }
+  }, [props.startDate, props.endDate]);
+
   return (
     <div
       style={{
         backgroundColor: "#CEE5D0",
-        paddingTop: "0",
         padding: "1em",
         borderRadius: "10px",
         marginRight: "20px",
@@ -91,19 +109,33 @@ const ProjectItems = (props) => {
       </div>
       <div className={classes.graduationDetails}>
         <h4>Domain : </h4>
-        <p> {props.domain}</p>
+        <p>{props.domain}</p>
       </div>
+
+     
+      {props.startDate && props.endDate && (
+        <div>
+          <h4>Project Duration:</h4>
+          <p>
+            From: {projectData.startDate} To: {projectData.endDate}
+          </p>
+        </div>
+      )}
 
       <div>
         <h4>Skills Used:</h4>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
           {props.skills &&
-            props.skills.map((skill, index) => <p key={index}>{skill}</p>)}
+            props.skills.map((skill, index) => (
+              <p key={index} style={{ marginRight: "5px" }}>
+                {skill}
+              </p>
+            ))}
         </div>
       </div>
 
       <div>
-        <h4>Project Description:-</h4>
+        <h4>Project Description:</h4>
         <p>{props.description}</p>
       </div>
 

@@ -177,11 +177,11 @@ const ProfileDetails = () => {
   };
 
   const handleSwotClick = () => {
-    window.open("https://decisioncoach.onrender.com/profile", "_blank");
+    window.open("https://decision-coach-app.onrender.com/profile", "_blank");
   };
 
   const handleSoftSkillsClick = () => {
-    window.open("https://decisioncoach.onrender.com/skillget", "_blank");
+    window.open("https://decision-coach-app.onrender.com/skillget", "_blank");
   };
 
   const handleGetStatus = async (event) => {
@@ -345,7 +345,7 @@ const ProfileDetails = () => {
           </ul>
         </div>
       </ProfileCard>
-      
+
       <ProfileCard CardName="status">
         <h3 className="m-3">Status:</h3>
         {status === "Working" && !statusData ? (
@@ -527,6 +527,8 @@ const ProfileDetails = () => {
                 domain={item.projectDomain}
                 description={item.projectDescription}
                 skills={item.projectSkills}
+                startDate={item.startDate}
+                endDate={item.endDate}
               />
             </li>
           ))}
@@ -535,62 +537,66 @@ const ProfileDetails = () => {
 
       <ProfileCard CardName="certification">
         <h3 className="m-3"> Certifications</h3>
-        <Box sx={{
-        p: 2,
-        backgroundColor: "background.paper",
-        borderRadius: 2,
-        overflowX: "auto", 
-        maxWidth: "100%",
-      }}>
-      <Typography variant="h6" gutterBottom className="mb-3">
-        Added Certifications
-      </Typography>
-      <Table  sx={{
-          borderCollapse: "collapse",
-          width: "100%"
-        }}>
-        <TableHead sx={{backgroundColor:"#CEE5D0"  }}>
-          <TableRow>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Certificate Name
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Issued By
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Issued On
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Start Date
-            </TableCell>
-            <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-              Expiry Date
-            </TableCell>
-           
-            <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
-              Actions
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {certificationItems.map((item) => (
-            <CertificateDisplay
-              key={item._id}
-              id={item._id}
-              certificationName={item.certificationName}
-              issuedBy={item.issuedBy}
-              certificateIssuedDate={item.certificateIssuedDate}
-              startDate={item.startDate}
-              expiryDate={item.expiryDate}
-              certificateId={item.certificateId}
-              approval={item.approval}
-              name={data.name}
-              state={"user"}
-            />
-          ))}
-        </TableBody>
-      </Table>
-    </Box>
+        <Box
+          sx={{
+            p: 2,
+            backgroundColor: "background.paper",
+            borderRadius: 2,
+            overflowX: "auto",
+            maxWidth: "100%",
+          }}
+        >
+          <Typography variant="h6" gutterBottom className="mb-3">
+            Added Certifications
+          </Typography>
+          <Table
+            sx={{
+              borderCollapse: "collapse",
+              width: "100%",
+            }}
+          >
+            <TableHead sx={{ backgroundColor: "#CEE5D0" }}>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  Certificate Name
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  Issued By
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  Issued On
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  Start Date
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  Expiry Date
+                </TableCell>
+
+                <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
+                  Actions
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {certificationItems.map((item) => (
+                <CertificateDisplay
+                  key={item._id}
+                  id={item._id}
+                  certificationName={item.certificationName}
+                  issuedBy={item.issuedBy}
+                  certificateIssuedDate={item.certificateIssuedDate}
+                  startDate={item.startDate}
+                  expiryDate={item.expiryDate}
+                  certificateId={item.certificateId}
+                  approval={item.approval}
+                  name={data.name}
+                  state={"user"}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
       </ProfileCard>
 
       <ProfileCard CardName="info">

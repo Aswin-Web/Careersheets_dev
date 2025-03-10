@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
 import { useDispatch, useSelector } from "react-redux";
-
 import axios from "axios";
 import classes from "./projectForm.module.css";
 import { projectActions } from "../../../../redux/reducers/project-data";
@@ -19,16 +19,15 @@ const ProjectForm = (props) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [domain, setDomain] = useState("");
-  const [skillItems, setskillItems] = useState([]);
+  const [startDate, setStartDate] = useState(""); 
+  const [endDate, setEndDate] = useState(""); 
+  const [skillItems, setSkillItems] = useState([]);
   const [skill, setSkill] = useState([]);
   const [id, setId] = useState("");
 
-  console.log("propspsppssss", props);
-
   const getAllSkills = async () => {
     const response = await axios.get(
-      REACT_APP_SERVER_URL + "/user/platformskills",
-
+      `${REACT_APP_SERVER_URL}/user/platformskills`,
       {
         headers: {
           "Content-type": "application/json",
@@ -37,29 +36,14 @@ const ProjectForm = (props) => {
       }
     );
 
-    // console.log(response,"Skills From Backend");
-    const data = await response.data;
-
     if (response.status === 200) {
-      setskillItems([...response.data.skill]);
-      return data;
+      setSkillItems([...response.data.skill]);
     }
   };
 
   useEffect(() => {
     getAllSkills();
   }, []);
-
-  // skills
-  function compare(a, b) {
-    if (a.skill < b.skill) {
-      return -1;
-    }
-    if (a.skill > b.skill) {
-      return 1;
-    }
-    return 0;
-  }
 
   useEffect(() => {
     if (props.editdata) {
@@ -69,44 +53,48 @@ const ProjectForm = (props) => {
       setDescription(projectData.description);
       setSkill(projectData.skills);
       setId(projectData.id);
+     setStartDate(
+       projectData.startDate ? projectData.startDate.split("T")[0] : ""
+     );
+     setEndDate(projectData.endDate ? projectData.endDate.split("T")[0] : "");
     }
   }, [props.editdata]);
 
-  const skills = skillItems.sort(compare);
+
+
+console.log("Formatted Start Date:", startDate);
+console.log("Formatted End Date:", endDate);
+
+  const skills = skillItems.sort((a, b) => (a.skill < b.skill ? -1 : 1));
 
   const postRequest = async () => {
-    const response = await axios
-      .post(
-        REACT_APP_SERVER_URL + "/user/profile/projects/",
-        {
-          projectTitle: title,
-          projectDomain: domain,
-          projectDescription: description,
-          skill,
-          id: props.editdata ? id : "",
+    const response = await axios.post(
+      `${REACT_APP_SERVER_URL}/user/profile/projects/`,
+      {
+        projectTitle: title,
+        projectDomain: domain,
+        projectDescription: description,
+        startDate,
+        endDate,
+        skill,
+        id: props.editdata ? id : "",
+      },
+      {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        {
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .catch((error) => console.log(error, "@status error"));
+      }
+    );
 
-    const data = await response.data;
-
-    return data;
+    return response.data;
   };
+
   const projectSubmitHandler = (event) => {
     event.preventDefault();
-
     postRequest()
       .then((data) => {
-        if (props.onClose) {
-          props.onClose();
-        }
-        console.log(data.newProject, "sgabiulwr");
+        if (props.onClose) props.onClose();
 
         const obj = {
           _id: data.newProject._id,
@@ -114,6 +102,8 @@ const ProjectForm = (props) => {
           projectDescription: data.newProject.projectDescription,
           projectDomain: data.newProject.projectDomain,
           projectSkills: data.newProject.projectSkills,
+          startDate: data.newProject.startDate.split("T")[0], 
+          endDate: data.newProject.endDate.split("T")[0], 
         };
 
         if (props.editdata) {
@@ -121,112 +111,101 @@ const ProjectForm = (props) => {
         } else {
           dispatch(projectActions.addProject({ ...obj }));
         }
-        props.onClose(); 
+
+        props.onClose();
       })
       .catch((err) => console.log(err));
   };
+  
 
-  const titleChangeHandler = (event) => {
-    setTitle(event.target.value);
-  };
-  const domainChangeHandler = (event) => {
-    setDomain(event.target.value);
-  };
-  const descriptionChangeHandler = (event) => {
-    setDescription(event.target.value);
-  };
-
-  const inputChangeHandler = (event, values) => {
-    // setSkill(values);
-    setSkill(values);
-    console.log(values);
-  };
 
   return (
     <div>
       <form onSubmit={projectSubmitHandler}>
         <DialogContent sx={{ lineHeight: "25px" }}>
-          <DialogContentText>{props.editdata ? "Edit Project" : "Add Project"}</DialogContentText>
+          <DialogContentText>
+            {props.editdata ? "Edit Project" : "Add Project"}
+          </DialogContentText>
+
           <TextField
             name="projectTitle"
             autoFocus
             margin="dense"
-            id="name"
             label="Title"
             fullWidth
             variant="standard"
             value={title}
-            // sx={{ width: "35.5em" }}
-            onChange={titleChangeHandler}
+            onChange={(e) => setTitle(e.target.value)}
           />
+
           <TextField
             name="projectDomain"
-            autoFocus
             margin="dense"
-            id="name"
             label="Project Domain"
-            placeholder="Eg. Cloud / IOT  "
+            placeholder="Eg. Cloud / IOT"
             fullWidth
             variant="standard"
             value={domain}
-            // sx={{ width: "35.5em" }}
-            onChange={domainChangeHandler}
-          />{" "}
+            onChange={(e) => setDomain(e.target.value)}
+          />
+
+          <TextField
+            name="startDate"
+            margin="dense"
+            label="Project Start Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            variant="standard"
+            value={startDate || ""}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            error={!startDate} 
+            helperText={!startDate ? "Start Date is required" : ""}
+          />
+
+          <TextField
+            name="endDate"
+            margin="dense"
+            label="Project End Date"
+            type="date"
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            variant="standard"
+            value={endDate || ""}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+            error={!endDate} 
+            helperText={!endDate ? "End Date is required" : ""}
+          />
+
           <Autocomplete
             multiple
             id="tags-standard"
             options={skills.map((option) => option.skill)}
-            onChange={inputChangeHandler}
+            onChange={(event, values) => setSkill(values)}
             value={skill}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Skill"
-                variant="standard"
-                InputProps={{
-                  ...params.InputProps,
-                  type: "search",
-                }}
-              />
+              <TextField {...params} label="Skill" variant="standard" />
             )}
           />
-          {/* <Autocomplete
-            freeSolo
-            id="free-solo-2-demo"
-            disableClearable
-            options={skills.map((option) => option.skill)}
-            onChange={inputChangeHandler}
-            sx={{ width: "fullWidth" }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Skill"
-                variant="standard"
-                InputProps={{
-                  ...params.InputProps,
-                  type: "search",
-                }}
-              />
-            )}
-          /> */}
+
           <div className={classes.projectDescription}>
             <TextField
               fullWidth
               name="projectDescription"
-              id="outlined-multiline-static"
               label="Project Description"
               multiline
               value={description}
               rows={4}
               placeholder="Description"
-              onChange={descriptionChangeHandler}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </DialogContent>
+
         <DialogActions>
-          <Button type="submit">
-          {props.editdata ? "Update" : "Add"}
-          </Button>
+          <Button type="submit">{props.editdata ? "Update" : "Add"}</Button>
         </DialogActions>
       </form>
     </div>
@@ -234,3 +213,6 @@ const ProjectForm = (props) => {
 };
 
 export default ProjectForm;
+
+
+
