@@ -27,6 +27,24 @@ const GenerateCertificateMain = () => {
     });
   };
 
+  const getCourseDurationText = (startDateStr, endDateStr) => {
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    const msDiff = endDate - startDate;
+
+    const days = Math.floor(msDiff / (1000 * 60 * 60 * 24));
+    const months = days / 30.44;
+    const years = days / 365;
+
+    if (Math.abs(months - 1) < 0.01) return "1 month";
+    if (Math.abs(months - 2) < 0.01) return "2 months";
+    if (Math.abs(months - 3) < 0.01) return "3 months";
+    if (Math.abs(years - 1) < 0.01) return "1 year";
+    if (Math.abs(years - 2) < 0.01) return "2 years";
+
+    return `${days} days`;
+  };
+
   return (
     <div>
       <button
@@ -149,18 +167,34 @@ const GenerateCertificateMain = () => {
             width: "40rem",
           }}
         >
-          <p
-            style={{
-              color: "#003E57",
-              fontSize: "1.2rem",
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
-          >
-            has successfully completed the course on {data.certificationName}.
-            We commend the dedication to learning and growth. Congratulations on
-            this achievement.
-          </p>
+          {data.endDate ? (
+            <p
+              style={{
+                color: "#003E57",
+                fontSize: "1.2rem",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              has successfully completed the{" "}
+              {getCourseDurationText(data.startDate, data.endDate)} course on{" "}
+              {data.certificationName}. We commend the dedication to learning
+              and growth. Congratulations on this achievement.
+            </p>
+          ) : (
+            <p
+              style={{
+                color: "#003E57",
+                fontSize: "1.2rem",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
+            >
+              has successfully completed the course on {data.certificationName}.
+              We commend the dedication to learning and growth. Congratulations
+              on this achievement.
+            </p>
+          )}
         </div>
 
         <div
