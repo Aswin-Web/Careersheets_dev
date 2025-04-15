@@ -99,6 +99,15 @@ const CertificateDisplay = (props) => {
           }) || "N/A"}
         </TableCell>
         <TableCell>
+          {props.endDate
+            ? new Date(props.endDate).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })
+            : "-"}
+        </TableCell>
+        <TableCell>
           {props.expiryDate
             ? new Date(props.expiryDate).toLocaleDateString("en-GB", {
                 day: "numeric",

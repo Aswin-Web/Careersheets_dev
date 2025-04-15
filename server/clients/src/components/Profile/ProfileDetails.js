@@ -570,6 +570,9 @@ const ProfileDetails = () => {
                   Start Date
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                  End Date
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
                   Expiry Date
                 </TableCell>
 
@@ -587,6 +590,7 @@ const ProfileDetails = () => {
                   issuedBy={item.issuedBy}
                   certificateIssuedDate={item.certificateIssuedDate}
                   startDate={item.startDate}
+                  endDate={item.endDate}
                   expiryDate={item.expiryDate}
                   certificateId={item.certificateId}
                   approval={item.approval}
