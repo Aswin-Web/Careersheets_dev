@@ -32,6 +32,7 @@ const CertificationForm = (props) => {
     issuedOn: "",
     startDate: "",
     endDate: "",
+    expiryDate: "",
     certificateId: "",
     approval: "true",
   });
@@ -53,7 +54,10 @@ const CertificationForm = (props) => {
         providedBy: providerExists ? certificationData.issuedBy : "",
         issuedOn: certificationData.certificateIssuedDate.split("T")[0],
         startDate: certificationData.startDate.split("T")[0],
-        endDate: certificationData.expiryDate
+        endDate: certificationData.endDate
+          ? certificationData.endDate.split("T")[0]
+          : "",
+        expiryDate: certificationData.expiryDate
           ? certificationData.expiryDate.split("T")[0]
           : "",
         certificateId: certificationData.certificateId,
@@ -84,20 +88,25 @@ const CertificationForm = (props) => {
       !formData.certificateName ||
       !formData.providedBy ||
       !formData.issuedOn ||
-      !formData.startDate
+      !formData.startDate ||
+      !formData.endDate
     ) {
       alert("Please fill in all required fields.");
       return;
     } else {
       sendRequest().then((data) => {
-      console.log("aoewuyfqbiu23", data);
+        console.log("aoewuyfqbiu23", data);
         if (props.editdata) {
-          dispatch(certificateActions.updateCertification({ ...data, existingId: formData.existingId }));
+          dispatch(
+            certificateActions.updateCertification({
+              ...data,
+              existingId: formData.existingId,
+            })
+          );
         } else {
           dispatch(certificateActions.addCertification({ ...data }));
         }
-      })
-      
+      });
     }
   };
 
@@ -156,6 +165,7 @@ const CertificationForm = (props) => {
         issuedOn: "",
         startDate: "",
         endDate: "",
+        expiryDate:"",
         certificateId: "",
       });
 
@@ -187,51 +197,50 @@ const CertificationForm = (props) => {
   };
 
   return (
-    <Box sx={{ p: 2, maxWidth: 800, mx: "auto" }}>
-      <Box
-        elevation={4}
+    <Box
+      elevation={4}
+      sx={{
+        p: 4,
+        maxHeight: 630,
+        overflowY: "auto",
+        position: "relative",
+      }}
+    >
+      <IconButton
         sx={{
-          p: 2,
-          maxHeight: 600,
-          overflowY: "auto",
-          position: "relative",
+          position: "absolute",
+          top: 8,
+          right: 8,
+          zIndex: 1,
         }}
+        onClick={props.onClose}
       >
-        <IconButton
-          sx={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            zIndex: 1,
-          }}
-          onClick={props.onClose}
-        >
-          <CloseIcon />
-        </IconButton>
+        <CloseIcon />
+      </IconButton>
 
-        <Typography
-          variant="h5"
-          gutterBottom
-          textAlign="center"
-          color="black"
-          style={{ marginBottom: "2rem", fontWeight: "bolder" }}
-        >
-          {props.editdata ? "Edit Certification" : "Add Certification"}
-        </Typography>
+      <Typography
+        variant="h5"
+        gutterBottom
+        textAlign="center"
+        color="black"
+        style={{ marginBottom: "2rem", fontWeight: "bolder" }}
+      >
+        {props.editdata ? "Edit Certification" : "Add Certification"}
+      </Typography>
 
-        <Box component="form" sx={{ mt: 1 }}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                required
-                label="Certificate Name"
-                name="certificateName"
-                value={formData.certificateName}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            {/* <Grid item xs={12}>
+      <Box component="form" sx={{ mt: 1 }}>
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Certificate Name"
+              name="certificateName"
+              value={formData.certificateName}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          {/* <Grid item xs={12}>
               <TextField
                 fullWidth
                 required
@@ -242,100 +251,111 @@ const CertificationForm = (props) => {
               />
             </Grid> */}
 
-            <Grid item xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>Issued By</InputLabel>
-                <Select
-                  value={isCustomProvider ? "Other" : formData.providedBy}
-                  onChange={handleProviderChange}
-                  label="Issued By"
-                >
-                  {certificationProviders.map((provider) => (
-                    <MenuItem key={provider.id} value={provider.ProviderName}>
-                      {provider.ProviderName}
-                    </MenuItem>
-                  ))}
-                  <MenuItem value="Other">Other</MenuItem>
-                </Select>
-              </FormControl>
-              {isCustomProvider && (
-                <TextField
-                  fullWidth
-                  required
-                  label="Custom Provider"
-                  value={customProvider}
-                  onChange={(e) => {
-                    setCustomProvider(e.target.value);
-                    setFormData({ ...formData, providedBy: e.target.value });
-                  }}
-                  sx={{ marginTop: "1rem" }}
-                />
-              )}
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                required
-                label="Certificate Issued On"
-                name="issuedOn"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={formData.issuedOn}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                required
-                label="Start Date"
-                name="startDate"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={formData.startDate}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                fullWidth
-                label="Expiry Date (Optional)"
-                name="endDate"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-                value={formData.endDate}
-                onChange={handleInputChange}
-              />
-            </Grid>
-            {formData.providedBy === "I-Bacus Tech" ||
-            formData.providedBy === "Greenestep" ? (
-              <></>
-            ) : (
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  required
-                  label="Certificate ID"
-                  name="certificateId"
-                  value={formData.certificateId}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-            )}
-            <Grid item xs={6}>
-              <Button
-                onClick={handleAddCertification}
-                style={{
-                  top: "1rem",
-                  left: "2rem",
-                }}
+          <Grid item xs={12}>
+            <FormControl fullWidth required>
+              <InputLabel>Issued By</InputLabel>
+              <Select
+                value={isCustomProvider ? "Other" : formData.providedBy}
+                onChange={handleProviderChange}
+                label="Issued By"
               >
-                {props.editdata ? "Update Certification" : "Add Certification"}
-              </Button>
-            </Grid>
+                {certificationProviders.map((provider) => (
+                  <MenuItem key={provider.id} value={provider.ProviderName}>
+                    {provider.ProviderName}
+                  </MenuItem>
+                ))}
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
+            </FormControl>
+            {isCustomProvider && (
+              <TextField
+                fullWidth
+                required
+                label="Custom Provider"
+                value={customProvider}
+                onChange={(e) => {
+                  setCustomProvider(e.target.value);
+                  setFormData({ ...formData, providedBy: e.target.value });
+                }}
+                sx={{ marginTop: "1rem" }}
+              />
+            )}
           </Grid>
-        </Box>
+
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              required
+              label="Certificate Issued On"
+              name="issuedOn"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.issuedOn}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              required
+              label="Start Date"
+              name="startDate"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.startDate}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              required
+              label="End Date"
+              name="endDate"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.endDate}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              label="Expiry Date (Optional)"
+              name="expiryDate"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={formData.expiryDate}
+              onChange={handleInputChange}
+            />
+          </Grid>
+          {formData.providedBy === "I-Bacus Tech" ||
+          formData.providedBy === "Greenestep" ? (
+            <Grid item xs={6}></Grid>
+          ) : (
+            <Grid item xs={6}>
+              <TextField
+                fullWidth
+                required
+                label="Certificate ID"
+                name="certificateId"
+                value={formData.certificateId}
+                onChange={handleInputChange}
+              />
+            </Grid>
+          )}
+          <Grid item xs={6}>
+            <Button
+              onClick={handleAddCertification}
+              style={{
+                top: "1rem",
+                left: "2rem",
+              }}
+            >
+              {props.editdata ? "Update Certification" : "Add Certification"}
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

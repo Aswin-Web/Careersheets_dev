@@ -14,6 +14,7 @@ const certificateSlice = createSlice({
           issuedBy: newCertificate.issuedBy,
           certificateIssuedDate: newCertificate.certificateIssuedDate,
           startDate: newCertificate.startDate,
+          endDate: newCertificate.endDate,
           expiryDate: newCertificate.expiryDate,
           certificateId: newCertificate.certificateId,
           approval: newCertificate.approval,
@@ -32,13 +33,16 @@ const certificateSlice = createSlice({
           issuedBy: updatedFields.issuedBy,
           certificateIssuedDate: updatedFields.issuedOn
             ? updatedFields.issuedOn.split("T")[0]
-            : state.items[index].certificateIssuedDate, // Fallback to existing value
+            : state.items[index].certificateIssuedDate,
           startDate: updatedFields.startDate
             ? updatedFields.startDate.split("T")[0]
-            : state.items[index].startDate, // Fallback to existing value
-          expiryDate: updatedFields.endDate
+            : state.items[index].startDate,
+          endDate: updatedFields.endDate
             ? updatedFields.endDate.split("T")[0]
-            : state.items[index].expiryDate, // Fallback to existing value
+            : state.items[index].endDate,
+          expiryDate: updatedFields.expiryDate
+            ? updatedFields.expiryDate.split("T")[0]
+            : state.items[index].expiryDate,
           certificateId: updatedFields.certificateId,
           approval: updatedFields.approval,
         };
@@ -47,7 +51,6 @@ const certificateSlice = createSlice({
 
     removeCertificate(state, action) {
       const id = action.payload;
-      //   const existingEdu=state.items.find((item)=>item._id===id)
       state.items = state.items.filter((item) => item._id !== id);
     },
     replaceCertificate(state, action) {

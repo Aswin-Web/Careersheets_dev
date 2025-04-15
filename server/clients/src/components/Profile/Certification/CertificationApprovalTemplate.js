@@ -5,6 +5,7 @@ import classes from "./CertificateTemplate.module.css";
 import Certificate from "./../../../images/Certificate.png";
 import I_Bacus_Logo from "./../../../images/I_Bacus_Logo.jpg";
 import GreeneStep_Logo from "./../../../images/Greenestep_Logo.jpg";
+import CEOSignature from "./../../../images/CEO-Signature.png";
 
 const GenerateCertificateMain = () => {
   const location = useLocation();
@@ -99,12 +100,12 @@ const GenerateCertificateMain = () => {
             top: "90%",
             left: "7%",
             color: "#003E57",
-            fontSize:"0.5rem",
-            width:"40rem",
-            textAlign:"center"
+            fontSize: "0.5rem",
+            width: "40rem",
+            textAlign: "center",
           }}
         >
-          This certificate is digitally issued and generated through 
+          This certificate is digitally issued and generated through
           <a
             href="https://www.app.careersheets.in/"
             target="_blank"
@@ -114,7 +115,8 @@ const GenerateCertificateMain = () => {
               fontWeight: "bold",
             }}
           >
-             {" "} Careersheets
+            {" "}
+            Careersheets
           </a>
           .
         </p>
@@ -185,27 +187,56 @@ const GenerateCertificateMain = () => {
           </p>
         </div>
 
-        <div
-          style={{
-            position: "absolute",
-            top: "79%",
-            left: "46%",
-            width: "10rem",
-          }}
-        >
-          <p
+        {data.issuedBy === "I-Bacus Tech" ? (
+          <div
             style={{
-              color: "#003E57",
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-              textAlign: "center",
+              position: "absolute",
+              top: "68%",
+              left: "39.5%",
+              width: "15rem",
             }}
           >
-            {data.issuedBy === "I-Bacus Tech"
-              ? "Dr P K Dhanesh"
-              : "Mr Sunil Kumar"}
-          </p>
-        </div>
+            <p
+              style={{
+                color: "#003E57",
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                textAlign: "center",
+              }}
+            >
+              <img
+                src={CEOSignature}
+                alt="CEO Signature"
+                style={{
+                  position: "absolute",
+                  top: "45%",
+                  left: "42.5%",
+                  width: "8rem",
+                }}
+              />
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: "79%",
+              left: "42.5%",
+              width: "15rem",
+            }}
+          >
+            <p
+              style={{
+                color: "#003E57",
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+                textAlign: "center",
+              }}
+            >
+              Mr Sunil Kumar
+            </p>
+          </div>
+        )}
 
         <div
           style={{
@@ -231,8 +262,8 @@ const GenerateCertificateMain = () => {
           style={{
             position: "absolute",
             top: "84.5%",
-            left: "46%",
-            width: "10rem",
+            left: "42.5%",
+            width: "15rem",
           }}
         >
           <p
@@ -243,7 +274,11 @@ const GenerateCertificateMain = () => {
               textAlign: "center",
             }}
           >
-            Issued By
+            {data.issuedBy === "I-Bacus Tech" ? (
+              <div>Director Mr P K Dhanesh</div>
+            ) : (
+              "Issued By"
+            )}
           </p>
         </div>
       </div>
