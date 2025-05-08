@@ -309,7 +309,10 @@ const GenerateCertificateMain = () => {
             }}
           >
             {data.issuedBy === "I-Bacus Tech" ? (
-              <div>Director Mr P K Dhanesh</div>
+              <>
+                <div> Mr P K Dhanesh</div>
+                <span>Director</span>
+              </>
             ) : (
               "Issued By"
             )}
