@@ -178,8 +178,20 @@ const GenerateCertificateMain = () => {
             >
               has successfully completed the{" "}
               {getCourseDurationText(data.startDate, data.endDate)} course on{" "}
-              {data.certificationName}. We commend the dedication to learning
-              and growth. Congratulations on this achievement.
+              {data.certificationName} in the duration from{" "}
+              {new Date(data.startDate).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}{" "}
+              to{" "}
+              {new Date(data.endDate).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+              . We commend the dedication to learning and growth.
+              Congratulations on this achievement.
             </p>
           ) : (
             <p
@@ -213,7 +225,7 @@ const GenerateCertificateMain = () => {
               textAlign: "center",
             }}
           >
-            {new Date(data.startDate).toLocaleDateString("en-GB", {
+            {new Date(data.certificateIssuedDate).toLocaleDateString("en-GB", {
               day: "numeric",
               month: "short",
               year: "numeric",
