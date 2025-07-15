@@ -418,5 +418,4 @@ const ViewRecruiterJobs = () => {
   );
 };
 
-
 export default ViewRecruiterJobs;
