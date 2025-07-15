@@ -27,7 +27,8 @@ const {
   getCertifications,
   deleteCertificate, 
   getCertificationProvider,
-  generateCertification
+  generateCertification,
+  updateUserRoleByID
 } = require("../controllers/user.profile.conroller");
 
 const {

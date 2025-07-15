@@ -12,6 +12,8 @@ const email = require("../utils/nodemailer.email");
 const { findUserFromElasticSearch } = require("./elastic.controller");
 const JobsHistory = require("../models/jobshistory.models");
 
+// const { updateUserRoleByID } = require("../controllers/user.profile.conroller"); 
+
 const GetAllCollegeAdmin = async (req, res, next) => {
   try {
     console.log("Asking");

@@ -1,0 +1,68 @@
+body{
+    background-color:#E7F0FD;
+    font-family: "Merriweather", serif;
+}
+.logo img {
+  width: 100%;
+  max-width: 75px;
+  border-radius: 50%;
+}
+.logo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 1em;
+}
+.title{
+    text-align: center;
+}
+.users{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.userCards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+    margin: 0.5em;
+    border-radius: 10px;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.selectionDesc{
+    text-align: center;
+    font-size: 0.9em;
+    color: #444444;
+    margin-top: 0.5em;
+}
+
+@media (max-width:618px){
+    
+    .users{
+        padding: 1em;
+        
+    }
+}
+
+@media (max-width: 768px) {
+    .users {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .users {
+        grid-template-columns: 1fr;
+    }
+}   
+
+

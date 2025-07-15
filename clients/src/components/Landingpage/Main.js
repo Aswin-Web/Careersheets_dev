@@ -37,7 +37,7 @@ const handleClick = () => {
       <main className={classes.container}>
         <div className={classes.quote}>
           <h1>Track Your Application </h1>
-          <p>
+          <p className="">
             "One important key to success is self-confidence. An important key
             to self-confidence is preparation."
           </p>
@@ -47,7 +47,7 @@ const handleClick = () => {
             sx={{ margin: 1, borderRadius: 6, width: "8em", height: "3em" }}
             onClick={handleClick}
           >
-            Login
+          Login
           </Button>
         </div>
 
