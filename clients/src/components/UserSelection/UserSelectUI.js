@@ -49,6 +49,7 @@ const UserSelectUI = () => {
             onClick={() => {
               return setSelectUser("user");
             }}
+            className={classes.card}
           >
             <CardActionArea>
               <CardMedia
@@ -74,6 +75,7 @@ const UserSelectUI = () => {
               </CardContent>
             </CardActionArea>
           </Card>
+          <p className={classes.selectionDesc}>Select this if you are a student, graduated student or working professional looking for a change</p>
         </div>
         <div className={classes.userCards}>
           <Card
@@ -113,6 +115,7 @@ const UserSelectUI = () => {
               </CardContent>
             </CardActionArea>
           </Card>
+          <p className={classes.selectionDesc}>Select this if you are College Staff <br></br> (Teaching, Non~Teaching or Placement) </p>
         </div>
         <div className={classes.userCards}>
           <Card
@@ -153,6 +156,7 @@ const UserSelectUI = () => {
               </CardContent>
             </CardActionArea>
           </Card>
+          <p className={classes.selectionDesc}>Select this if you are Recruter wanting to recruit</p>
         </div>
       </div>
       <Box

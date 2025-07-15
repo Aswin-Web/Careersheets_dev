@@ -25,6 +25,8 @@ const {
 } = require("../controllers/platformAdmin.controller");
 const { authenticateAdmin } = require("../utils/authorisation.header.check");
 
+const { updateUserRoleByID } = require("../controllers/user.profile.conroller"); 
+
 const router = express.Router();
 
 // router.route("/login").post(AuthenticatePlatformAdmin);
@@ -76,5 +78,7 @@ router.route("/addrecruiter").post(AddRecruiterToJobPosting);
 router.route("/removerecruiter").post(RemoveRecruiterFromJobPosting);
 
 router.get("/lastseen", ViewLastLoginUsers);
+
+router.put("/users/:id/role", updateUserRoleByID);
 
 module.exports = router;
