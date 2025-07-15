@@ -1,14 +1,22 @@
-
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { Avatar, Box, Button, TextField } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DoneIcon from "@mui/icons-material/Done";
 import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ScheduleInterview from "./Scheduleint/Scheduleint";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,8 +30,17 @@ const centerItems = {
   margin: "0.5rem 0",
 };
 
+const statusOptions = [
+  "Applied",
+  "Reviewed",
+  "HR Screening",
+  "Technical Round",
+  "Offer Extended",
+  "Hired",
+  "Not Qualified",
+];
+
 const ViewRecruiterJobs = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
   const [currentJob, setCurrentJob] = useState([]);
@@ -40,13 +57,15 @@ const ViewRecruiterJobs = () => {
   const [feedbackPosted, setFeedbackPosted] = useState(false);
 
   useEffect(() => {
-    GetJobInfo();
-  }, []);
+    if (jobbID) {
+      GetJobInfo();
+    }
+  }, [jobbID]);
 
   const GetJobInfo = async () => {
     try {
-      const data = await axios.get(
-        `${REACT_APP_SERVER_URL + `/recruiter/jobs/${jobbID}`}`,
+      const jobResponse = await axios.get(
+        `${REACT_APP_SERVER_URL}/recruiter/jobs/${jobbID}`,
         {
           headers: {
             "Content-type": "application/json",
@@ -54,14 +73,71 @@ const ViewRecruiterJobs = () => {
           },
         }
       );
-      if (data.status === 200) {
-        setCurrentJob([...data.data.allJobs]);
-      }
-      if (data.status === 400) {
-        setError({ isError: true, msg: "Not authorised" });
-      }
+
+      const appResponse = await axios.get(
+        `${REACT_APP_SERVER_URL}/recruiter/job/${jobbID}/applications`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
+          },
+        }
+      );
+
+      const jobs = jobResponse.data.allJobs;
+      const applications = appResponse.data.applications;
+
+      const mergedJobs = jobs.map((job) => {
+        const mergedAppliedUsers = job.appliedUsers.map((appliedUser) => {
+          const application = applications.find(
+            (app) => app.userId === appliedUser.userId._id
+          );
+          
+          return {
+            ...appliedUser,
+            status: application ? application.status : "Applied",
+            applicationId: application ? application._id : null,
+          };
+        });
+        return { ...job, appliedUsers: mergedAppliedUsers };
+      });
+
+      setCurrentJob(mergedJobs);
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching job info:", error);
+      setError({ isError: true, msg: "Could not load job data." });
+    }
+  };
+
+  const handleStatusChange = async (applicationId, newStatus) => {
+    if (!applicationId) {
+      toast.error("Cannot update status: Application ID is missing.");
+      return;
+    }
+    try {
+      await axios.put(
+        `${REACT_APP_SERVER_URL}/recruiter/application/${applicationId}/status`,
+        { status: newStatus },
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("recruiter")}`,
+          },
+        }
+      );
+      toast.success("Status updated successfully!");
+      setCurrentJob((prevJobs) =>
+        prevJobs.map((job) => ({
+          ...job,
+          appliedUsers: job.appliedUsers.map((user) =>
+            user.applicationId === applicationId
+              ? { ...user, status: newStatus }
+              : user
+          ),
+        }))
+      );
+    } catch (error) {
+      console.error("Failed to update status:", error);
+      toast.error("Failed to update status.");
     }
   };
 
@@ -107,20 +183,15 @@ const ViewRecruiterJobs = () => {
   };
 
   const handleMarkComplete = () => {
-  
     if (feedback) {
-      setFeedback(""); 
+      setFeedback("");
     }
-
     const candidatePhone = interviewDetails.candidatePhone;
-
     const thankYouMessage =
       "Thank you for attending the interview. We appreciate your time and effort!";
     console.log(
       `Sending thank you message to ${candidatePhone}: ${thankYouMessage}`
     );
-
-   
     toast.success("Thank you message sent");
   };
 
@@ -129,7 +200,6 @@ const ViewRecruiterJobs = () => {
       toast.error("Please provide feedback before submitting.");
       return;
     }
-
     try {
       const response = await axios.post(
         `${REACT_APP_SERVER_URL}/recruiter/post-feedback`,
@@ -146,9 +216,8 @@ const ViewRecruiterJobs = () => {
         }
       );
       if (response.status === 200) {
-     
         toast.success("Feedback submitted successfully!");
-        setFeedback(""); 
+        setFeedback("");
       }
     } catch (error) {
       console.error("Failed to post feedback:", error);
@@ -158,6 +227,7 @@ const ViewRecruiterJobs = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Box display={{ display: "flex", flexDirection: "row-reverse" }}>
         <Box
           sx={{
@@ -167,17 +237,18 @@ const ViewRecruiterJobs = () => {
             padding: "0.5rem",
             border: "1px solid black",
             borderRadius: "10px",
+            overflowY: "auto",
           }}
         >
           <h3>Applied Users</h3>
           <Box sx={{ padding: "1rem" }}>
-            {currentJob[0] !== undefined
+            {currentJob[0]
               ? currentJob[0].appliedUsers
                   .slice()
                   .reverse()
                   .map((item, index) => (
                     <Box
-                      key={index}
+                      key={item.applicationId || index}
                       sx={{
                         display: "flex",
                         flexDirection: "column",
@@ -209,6 +280,26 @@ const ViewRecruiterJobs = () => {
                         </Link>
                         {item.isViewed && <DoneIcon sx={{ color: "green" }} />}
                       </Box>
+                      
+                      <Box sx={{ width: "100%", mt: 2, mb: 1 }}>
+                        <FormControl fullWidth size="small">
+                          <InputLabel>Status</InputLabel>
+                          <Select
+                            value={item.status || "Applied"}
+                            label="Status"
+                            onChange={(e) =>
+                              handleStatusChange(item.applicationId, e.target.value)
+                            }
+                          >
+                            {statusOptions.map((status) => (
+                              <MenuItem key={status} value={status}>
+                                {status}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
+
                       <Box sx={{ display: "flex", gap: "10px" }}>
                         <Button
                           variant="contained"
@@ -226,7 +317,6 @@ const ViewRecruiterJobs = () => {
                         >
                           Mark as Complete
                         </Button>
-                        <ToastContainer position="top-right" autoClose={3000} />
                       </Box>
 
                       <Box sx={{ marginTop: "1rem" }}>
@@ -261,8 +351,8 @@ const ViewRecruiterJobs = () => {
             minHeight: "80vh",
           }}
         >
-          {error.isError ? <h1>Not Authorised</h1> : ""}
-          {currentJob.length !== 0 && (
+          {error.isError ? <h1>{error.msg}</h1> : ""}
+          {currentJob.length > 0 && !error.isError && (
             <Box
               sx={{
                 backgroundColor: "white",
@@ -277,7 +367,7 @@ const ViewRecruiterJobs = () => {
               <Box>
                 <Box sx={centerItems}>
                   <WorkOutlineIcon />
-                  {currentJob[0].jobTitle}
+                  {currentJob[0].experience}
                 </Box>
                 <Box sx={centerItems}>
                   <ApartmentIcon />
@@ -292,39 +382,27 @@ const ViewRecruiterJobs = () => {
                   {currentJob[0].location}
                 </Box>
                 <Box>
-                 
                   <h3>About Us</h3>
-                 <p>{currentJob[0].companyDescription}</p>
-              </Box>
-              <Box>
-                <h3>Job Description</h3>
-                <p>{currentJob[0].JobDescription}</p>
-             </Box>
-           
-               
+                  <p>{currentJob[0].companyDescription}</p>
+                </Box>
+                <Box>
+                  <h3>Job Description</h3>
+                  <p>{currentJob[0].JobDescription}</p>
+                </Box>
               </Box>
             </Box>
-                
-              
-            
           )}
         </Box>
       </Box>
-       <ScheduleInterview
+      <ScheduleInterview
         open={scheduleDialogOpen}
         onClose={handleScheduleClose}
         onSave={handleScheduleSave}
-         interviewDetails={interviewDetails}
+        interviewDetails={interviewDetails}
         setInterviewDetails={setInterviewDetails}
       />
     </LocalizationProvider>
-
-
-   
   );
 };
 
 export default ViewRecruiterJobs;
-
-
-

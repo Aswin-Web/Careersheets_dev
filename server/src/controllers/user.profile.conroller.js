@@ -11,6 +11,7 @@ const JobsHistory = require("../models/jobshistory.models");
 const Certification = require("../models/certification.models");
 const CertificationProvider = require("../models/certificateProvider.models");
 const generateCertificateId = require("./../utils/certificationIdGenerator.utils");
+const JobApplication = require("../models/jobApplication.model.js");
 
 const nodemailer = require("nodemailer");
 const Mailgen = require("mailgen");
@@ -588,6 +589,8 @@ const ApplyForPlatformJobs = async (req, res, next) => {
           },
           { $push: { appliedUsers: { userId, isViewed: false } } }
         );
+        
+        // This 'Application.create' is your old logic, leave it.
         const newApplication = await Application.create({
           author: userId,
           company: job[0].companyName,
@@ -597,10 +600,16 @@ const ApplyForPlatformJobs = async (req, res, next) => {
           applicationDate: job[0].createdAt,
           location: job[0].location,
         });
+
+        // --- FIX: ADD THIS LINE HERE ---
+        // This creates the record for the recruiter's status tracking.
+        await JobApplication.create({ jobId: jobId, userId: userId });
+
         return res.status(200).json({
           msg: "item added successfully",
           newApplication: newApplication,
         });
+
       } else {
         const isDuplicated = user.appliedPlatformJobs.filter(
           (item) => item.toString() === jobId
@@ -611,6 +620,8 @@ const ApplyForPlatformJobs = async (req, res, next) => {
             { _id: userId },
             { $push: { appliedPlatformJobs: jobId } }
           );
+
+          // This 'Application.create' is your old logic, leave it.
           const newApplication = await Application.create({
             author: userId,
             company: job[0].companyName,
@@ -620,12 +631,16 @@ const ApplyForPlatformJobs = async (req, res, next) => {
             applicationDate: job[0].createdAt,
             location: job[0].location,
           });
+          
           let jobUpdate = await Jobs.findOneAndUpdate(
             {
               _id: jobId,
             },
             { $push: { appliedUsers: { userId, isViewed: false } } }
           );
+
+          // job application cReation done here
+          await JobApplication.create({ jobId: jobId, userId: userId });
 
           return res.status(200).json({
             msg: "item added successfully",

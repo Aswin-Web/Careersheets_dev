@@ -2,6 +2,7 @@ const Recruiter = require("../models/recruiterinfo.models");
 const User = require("../models/user.models");
 const Jobs = require("../models/jobs.models");
 const Certification = require("../models/certification.models");
+const JobApplication = require("../models/jobApplication.model.js");
 const Mongoose = require("mongoose");
 
 const CreateProfile = async (req, res, next) => {
@@ -226,10 +227,53 @@ const ViewProfile = async (req, res, next) => {
   }
 };
 
+const GetApplicationsForJob = async (req, res, next) => {
+    try {
+        const { jobid } = req.params;
+        const applications = await JobApplication.find({ jobId: jobid });
+        return res.status(200).json({ applications });
+    } catch (error) {
+        console.log(error);
+        return next(error);
+    }
+};
+
+const UpdateApplicationStatus = async (req, res, next) => {
+    try {
+        const { applicationId } = req.params; 
+        const { status } = req.body; 
+
+        if (!status) {
+            return res.status(400).json({ msg: "Status is required." });
+        }
+
+        const updatedApplication = await JobApplication.findByIdAndUpdate(
+            applicationId,
+            { status: status },
+            { new: true } 
+        );
+
+        if (!updatedApplication) {
+            return res.status(404).json({ msg: "Application not found." });
+        }
+
+        return res.status(200).json({ 
+            msg: "Application status updated successfully.", 
+            application: updatedApplication 
+        });
+
+    } catch (error) {
+        console.log(error);
+        return next(error);
+    }
+};
+
 module.exports = {
   CreateProfile,
   ViewRecruiterJobs,
   GetAParticularJobForRecruiter,
   GetUserInfoRecruiter,
   ViewProfile,
+  GetApplicationsForJob,
+  UpdateApplicationStatus
 };
