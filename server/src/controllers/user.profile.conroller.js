@@ -796,6 +796,49 @@ const sendEmailOnJobApplication = async (req, res) => {
   }
 };
 
+const sendEmailonRoleChange = async (userEmail, newRole) => {
+  if (!userEmail) {
+    console.error("No user email provided for role change notification.");
+    return;
+  }
+
+  const config = {
+    service: "gmail",
+    auth: {
+      user: process.env.NODEMAILER_USERNAME,
+      pass: process.env.NODEMAILER_PASSWORD,
+    },
+  };
+
+  const transporter = nodemailer.createTransport(config);
+
+  // Email content
+  const mailOptions = {
+    from: `"Careersheets Admin" <${process.env.NODEMAILER_FROM}>`,
+    to: userEmail,
+    subject: "🔔 Your Role Has Been Updated",
+    text: `Hello,\n\nYour user role has been changed to: ${newRole}.\n\nIf you believe this was a mistake, please contact support immediately.\n\nThank you,\nCareersheets Team`,
+    html: `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
+        <h2 style="color: #333;">🔔 Role Change Notification</h2>
+        <p>Hello,</p>
+        <p>Your user role has been successfully updated to:</p>
+        <p style="font-size: 18px; font-weight: bold; color: #007bff;">${newRole}</p>
+        <p>If you believe this was a mistake, please contact our support team immediately.</p>
+        <hr style="margin: 20px 0;" />
+        <p style="font-size: 14px; color: #666;">Thank you,<br/>Careersheets Team</p>
+      </div>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log("Role change email sent successfully");
+  } catch (error) {
+    console.error("Error sending role change email:", error);
+  }
+};
+
 const createCertifications = async (req, res) => {
   console.log("Request Data:", req.body);
   const userId = req.user._id.toString();
@@ -1016,6 +1059,8 @@ const updateUserRoleByID = async (req, res, next) => {
 
     user.role = role;
     await user.save();
+    // mail to user about changed role
+    sendEmailonRoleChange(user.email, role);
 
     return res.status(200).json({ message: "User role updated successfully" });
   } catch (error) {
