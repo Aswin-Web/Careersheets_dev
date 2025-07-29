@@ -1,150 +1,120 @@
-
-* {
-  scroll-behavior: smooth;
-}
-
-.parent {
-  background-color: #accbee;
-  max-height: 100%;
-  max-width: 100%;
-  margin-bottom: 0;
-}
-.footerSection {
+.footerContainer {
   width: 100%;
-  display: flex;
-  font-family: "Merriweather";
-  flex-wrap: wrap;
-  margin-bottom: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.footerSection h1 {
+.ctaSection {
+  
+  color: #FFFFFF;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  font-family: "Merriweather";
+  gap: 1.5rem;
+}
+
+.ctaContent{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ctaContent h2 {
+  font-size: 2rem;
   font-weight: 700;
-}
-.first {
-  width: 25%;
-  margin-left: 5em;
-}
-.first img {
-  width: 45%;
-  padding: 2em;
-  margin-left: 0;
-  border-radius: 50px;
+  margin: 0 0 0.5rem 0;
 }
 
-.first p {
-  font-family: 'Playball', cursive;
-  padding-left: 1em;
-  margin: 0;
-  font-family: "Merriweather";
-  font-weight: 900;
-}
-.second {
-  margin-top: 5em;
-  margin-left: 10em;
-}
-.third {
-  margin-top: 5em;
-  margin-left: 10em;
-}
-
-.second p {
-  margin-bottom: 1.5em;
-}
-.third p {
-  margin-bottom: 1.5em;
-}
-.second a {
-  text-decoration: none;
-  color: #042345;
-}
-.third a {
-  text-decoration: none;
-  color: #042345;
-}
-.horizontalLine {
-  border-color: #91b9e7;
-  margin: 0 auto;
-  width: 55%;
-  opacity: 50%;
-}
-.socialMediaIcons {
-  display: flex;
-  justify-content: center;
-  margin-top: 2em;
-  padding-bottom: 1.5em;
-}
-.icons {
-  padding: 0.4em;
-}
-
-.last p {
-  display: flex;
-  padding: 1em;
-  justify-content: center;
-  align-items: center;
-}
-.footerLinks {
-  display: flex;
-  align-items: center;
-}
-.instagram {
-  background: radial-gradient(
-      circle farthest-corner at 35% 90%,
-      #fec564,
-      transparent 50%
-    ),
-    radial-gradient(circle farthest-corner at 0 140%, #fec564, transparent 50%),
-    radial-gradient(ellipse farthest-corner at 0 -25%, #5258cf, transparent 50%),
-    radial-gradient(
-      ellipse farthest-corner at 20% -50%,
-      #5258cf,
-      transparent 50%
-    ),
-    radial-gradient(ellipse farthest-corner at 100% 0, #893dc2, transparent 50%),
-    radial-gradient(
-      ellipse farthest-corner at 60% -20%,
-      #893dc2,
-      transparent 50%
-    ),
-    radial-gradient(ellipse farthest-corner at 100% 100%, #d9317a, transparent),
-    linear-gradient(
-      #6559ca,
-      #bc318f 30%,
-      #e33f5f 50%,
-      #f77638 70%,
-      #fec66d 100%
-    );
-  border-radius: 10px;
-}
-.slogan p {
-  font-family: "Playball", cursive;
-  font-weight: 900;
+.ctaContent p {
   font-size: 1rem;
+  color: #042345;
+  margin: 0;
+  max-width: 50ch;
+  padding: 10px 0px;
 }
 
-@media (max-width: 650px) {
-  .parent {
-    max-height: 25%;
-    font-size: 0.5rem;
+.ctaButton {
+  background-color: #FFFFFF;
+  color: #042345; 
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.ctaButton:hover {
+  background-color: #accbee;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.mainFooter {
+  background-color: #accbee;
+  padding: 2rem 1.5rem;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 10px 0;
+}
+
+.navLink {
+  color: #042345; 
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.copyright {
+  color: #042345;
+  opacity: 0.8; 
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .ctaSection {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    padding: 4rem 2.5rem;
   }
 
-  .socialMediaIcons {
-    font-size: 0.2rem;
+  .footerContent {
+    flex-direction: row;
+    justify-content: space-between;
   }
-  .first {
-    margin: 0;
-  }
-  .footerLinks {
-    margin: 0;
-    padding: 0;
-    margin-right: 3em;
-  }
-  .third {
-    margin-left: 3em;
-  }
-  .second {
-    margin-left: 3em;
-  }
+
+  .logo { order: 1; }
+  .footerNav { order: 2; }
+  .copyright { order: 3; }
 }

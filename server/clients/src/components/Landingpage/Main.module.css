@@ -1,56 +1,75 @@
-
-.main{
-    background-color:#e7f0fd;
-    
-}
-.container{
-    width: 80%;
-    display:flex ;
-    justify-content: space-around;
-    margin:auto;
-    padding: 3em 0;
-}
-.quote{
-    margin:auto;
-    padding: 1em;
-    width:40%;
-    margin-right: 7em;
-}
-.quote h1{
-    font-family: 'Playball', cursive;
-    font-weight: 500;
-    font-size: 4.3rem;
-    color: #042345;
-}
-.quote p{
-    font-family: "Merriweather";
-    font-weight: 600;
-    color: #0b57ae;
-    margin:2em auto;
+.main {
+  background-color: #e7f0fd;
+  min-height: 80vh; 
+  padding: 2em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.image img{
-    width:100%;
-    border-radius: 10px;
-    filter: drop-shadow(0 0 0.75rem rgb(147, 144, 144) );
+.container {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
 }
 
-@media (max-width:1065px){
-    main{
-        max-width: 100%;
-        max-height: 50%;
-        flex-direction:column;
-    }
-    .quote h1{
-        font-size: 2rem;
-    }
-    .quote p{
-        font-size: 1rem;
-    }
 
+.quote {
+  flex: 1; 
+  text-align: center; 
 }
-@media (min-width:620px) and (max-width:1065px){
-    main .quote{
-    margin-left:15.625em;
-   }
+
+.imageContainer {
+  flex: 1;
+  max-width: 500px;
+  width: 100%;
+}
+
+.imageContainer img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: block;
+}
+
+.quote h1 {
+  font-family: 'Playball', cursive;
+  font-weight: 500;
+  font-size: 2.8rem;
+  color: #042345;
+  line-height: 1.2;
+}
+
+.quote p {
+  font-family: "Merriweather", serif;
+  font-weight: 400; 
+  color: #0b57ae;
+  margin: 1.5em 0 2em; 
+  max-width: 50ch; 
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row;
+    gap: 4em;
+  }
+  
+  .quote {
+    text-align: left;
+  }
+  
+  .quote p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .quote h1 {
+    font-size: 4rem;
+  }
 }
