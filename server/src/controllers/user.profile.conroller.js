@@ -433,7 +433,7 @@ const postProject = async (req, res) => {
     id,
     startDate,
     endDate,
-    expiryDate
+    expiryDate,
   } = req.body;
   const user = req.user._id.toString();
 
@@ -453,9 +453,9 @@ const postProject = async (req, res) => {
       existingProject.projectDescription = projectDescription;
       existingProject.projectDomain = projectDomain;
       existingProject.projectSkills = skill;
-      existingProject.startDate = new Date(startDate); 
-      existingProject.endDate = new Date(endDate); 
-      existingProject.expiryDate = new Date(expiryDate); 
+      existingProject.startDate = new Date(startDate);
+      existingProject.endDate = new Date(endDate);
+      existingProject.expiryDate = new Date(expiryDate);
 
       await existingProject.save();
       return res
@@ -467,9 +467,9 @@ const postProject = async (req, res) => {
         projectDomain,
         projectDescription,
         projectSkills: skill,
-        startDate: new Date(startDate), 
-        endDate: new Date(endDate), 
-        expiryDate: new Date(expiryDate), 
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+        expiryDate: new Date(expiryDate),
         user,
       });
 
@@ -551,7 +551,6 @@ const GetAllJobs = async (req, res, next) => {
     const user = req.user._id.toString();
     const userInfo = await User.findOne({ _id: user }).populate("skill");
 
-
     const acceptJobs = await Jobs.find({
       _id: { $nin: userInfo.appliedPlatformJobs },
       isClosed: false,
@@ -589,7 +588,7 @@ const ApplyForPlatformJobs = async (req, res, next) => {
           },
           { $push: { appliedUsers: { userId, isViewed: false } } }
         );
-        
+
         // This 'Application.create' is your old logic, leave it.
         const newApplication = await Application.create({
           author: userId,
@@ -609,7 +608,6 @@ const ApplyForPlatformJobs = async (req, res, next) => {
           msg: "item added successfully",
           newApplication: newApplication,
         });
-
       } else {
         const isDuplicated = user.appliedPlatformJobs.filter(
           (item) => item.toString() === jobId
@@ -631,7 +629,7 @@ const ApplyForPlatformJobs = async (req, res, next) => {
             applicationDate: job[0].createdAt,
             location: job[0].location,
           });
-          
+
           let jobUpdate = await Jobs.findOneAndUpdate(
             {
               _id: jobId,
@@ -744,11 +742,13 @@ const sendEmailOnJobApplication = async (req, res) => {
     .map((skill) => `${skill.skill} - ${skill.level}`)
     .join(", ");
 
+    console.log("sssssssssssss",  process.env.NODEMAILER_USERNAME)
+
   let config = {
     service: "gmail",
     auth: {
-      user: process.env.APPLICATION_EMAIL,
-      pass: process.env.APPLICATION_PASSWORD,
+      user: process.env.NODEMAILER_USERNAME,
+      pass: process.env.NODEMAILER_PASSWORD,
     },
   };
   let transporter = nodemailer.createTransport(config);
@@ -781,8 +781,9 @@ const sendEmailOnJobApplication = async (req, res) => {
 
   let mail = mailGenerator.generate(response);
   let message = {
-    from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
-    to: ["dhanesh@ibacustech.com", "hr@ibacustechlabs.in"],
+    from: `CareerSheets ${process.env.NODEMAILER_USERNAME}`,
+     to: "dhanesh@ibacustech.com",
+  cc: "hr@ibacustechlabs.in",
     subject: "Job Application Received",
     html: mail,
   };
@@ -920,7 +921,7 @@ const createCertifications = async (req, res) => {
       }
 
       existingCertification.certificationName = certificateName;
-      existingCertification.issuedBy = certificationProvider._id; 
+      existingCertification.issuedBy = certificationProvider._id;
       existingCertification.certificateIssuedDate = issuedOn;
       existingCertification.startDate = startDate;
       existingCertification.endDate = endDate;
@@ -1092,5 +1093,5 @@ module.exports = {
   deleteCertificate,
   getCertificationProvider,
   generateCertification,
-  updateUserRoleByID
+  updateUserRoleByID,
 };
