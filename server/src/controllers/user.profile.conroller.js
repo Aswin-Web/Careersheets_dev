@@ -782,7 +782,7 @@ const sendEmailOnJobApplication = async (req, res) => {
   let mail = mailGenerator.generate(response);
   let message = {
     from: `CareerSheets ${process.env.APPLICATION_EMAIL}`,
-    to: "dhanesh@ibacustech.com",
+    to: ["dhanesh@ibacustech.com", "hr@ibacustechlabs.in"],
     subject: "Job Application Received",
     html: mail,
   };
