@@ -43,6 +43,7 @@ const ProfileDetails = () => {
   const Languages = personalState.languages.map((item) => item);
 
   const [certifications, setCertifications] = useState([]);
+   const [width, setWidth] = useState(window.innerWidth);
 
   const handleDeleteCertification = (id) => {
     setCertifications(certifications.filter((cert) => cert.id !== id));
@@ -222,6 +223,12 @@ const ProfileDetails = () => {
   }, []);
 
   useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
     sendRequest().then((data) => {
       let status = data.status;
       let details = data.education.reverse();
@@ -256,13 +263,13 @@ const ProfileDetails = () => {
     <div className={classes.details}>
       <div>
         <Typography
-          variant="h4"
+          variant="h6"
           style={{
             fontWeight: "bold",
             textAlign: "left",
             marginBottom: "20px",
             marginLeft: "20px",
-            fontSize: "24px",
+            fontSize: "21px",
             color: "black",
           }}
         >
@@ -271,7 +278,7 @@ const ProfileDetails = () => {
 
         <ProfileCard style={{ margin: "20px", padding: "20px" }}>
           {/* <Typography variant="h6">SWOT Analysis</Typography> */}
-          <h3 className="m-3">SWOT Analysis</h3>
+          <h3 className="m-2">SWOT Analysis</h3>
           <p style={{ fontSize: 10 }}></p>
 
           <p style={{ fontSize: 14 }}>
@@ -282,12 +289,13 @@ const ProfileDetails = () => {
             variant="contained"
             color="primary"
             style={{
-              marginTop: "10px",
-              fontWeight: "bold",
-              backgroundColor: "#11144C",
-              color: "white",
-              width: "24%",
-            }}
+                marginTop: "10px",
+                fontWeight: "bold",
+                backgroundColor: "#11144C",
+                color: "white",
+                width: window.innerWidth < 600 ? "90%" : "24%", // responsive width
+                minWidth: "120px", // optional: prevents too small button on tiny screens
+              }}
           >
             Go to SWOT Analysis
           </Button>
@@ -295,7 +303,7 @@ const ProfileDetails = () => {
 
         <ProfileCard style={{ margin: "20px", padding: "20px" }}>
           {/* <Typography variant="h6">Soft Skills</Typography> */}
-          <h3 className="m-3">Soft Skills</h3>
+          <h3 className="m-2">Soft Skills</h3>
           <p style={{ fontSize: 10 }}></p>
           <p style={{ fontSize: 14 }}>
             Improve and showcase your interpersonal and communication skills.
@@ -309,7 +317,8 @@ const ProfileDetails = () => {
               fontWeight: "bold",
               backgroundColor: "#11144C",
               color: "white",
-              width: "20%",
+              width: window.innerWidth < 600 ? "90%" : "24%", // responsive width
+              minWidth: "120px", // optional: prevents too small button on tiny screens
             }}
           >
             Go to Soft Skills
@@ -318,39 +327,59 @@ const ProfileDetails = () => {
       </div>
 
       <div>
+        {/* <ProfileCard CardName="Summary">
+          <h3 className="m-2">Summary:</h3>
+          <p style={{ fontSize: 14, }}>{summaryState.summary}</p>
+        </ProfileCard> */}
         <ProfileCard CardName="Summary">
-          <h3 className="m-3">Summary</h3>
-          <p style={{ fontSize: 14 }}>{summaryState.summary}</p>
+          <h3 style={{ margin: "0 0 12px 0" }}>Summary:</h3>
+          <p
+            style={{
+              fontSize: 14,
+              margin: 0,
+              lineHeight: 1.6,
+              textAlign: "justify",    
+              paddingRight: "20px",   
+            }}
+          >
+            {summaryState.summary}
+          </p>
         </ProfileCard>
+
       </div>
       <ProfileCard CardName="education">
-        <div>
-          <h3 className="m-3">Education :</h3>
-          {eduErrState && <p className={classes.skillError}>{eduErrMsg}</p>}
-          <ul className={classes.educationList}>
-            {eduItems.map((edu, index) => (
-              <li key={index}>
-                <EducationItems
-                  key={edu._id}
-                  id={edu._id}
-                  collegeName={edu.collegeName}
-                  degree={edu.degree}
-                  stream={edu.stream}
-                  graduated={edu.graduated}
-                  graduationYear={edu.graduationYear}
-                  registerNumber={edu.registerNumber}
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </ProfileCard>
+          <div style={{ padding: "10px 0" }}>
+            <h3 style={{ margin: "0 0 12px 0" }}>Education :</h3>
+
+            {eduErrState && (
+              <p style={{ color: "red", marginBottom: "10px" }}>{eduErrMsg}</p>
+            )}
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+              {eduItems.map((edu, index) => (
+                <div key={index} style={{ width: "100%" }}>
+                  <EducationItems
+                    key={edu._id}
+                    id={edu._id}
+                    collegeName={edu.collegeName}
+                    degree={edu.degree}
+                    stream={edu.stream}
+                    graduated={edu.graduated}
+                    graduationYear={edu.graduationYear}
+                    registerNumber={edu.registerNumber}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </ProfileCard>
+
 
       <ProfileCard CardName="status">
-        <h3 className="m-3">Status:</h3>
+        <h3  style={{ margin: "0 0 12px 0" }}>Status:</h3>
         {status === "Working" && !statusData ? (
-          <div style={{ marginLeft: "3rem" }}>
-            <>
+          <div style={{paddingRight:"10px"}}>
+         
               <br />
               <h4>{status}</h4>
               <div style={{ backgroundColor: "#f2f2f2", maxWidth: "80rem" }}>
@@ -395,10 +424,10 @@ const ProfileDetails = () => {
                   </Button>
                 </Form>
               </div>
-            </>
+          
           </div>
         ) : status === "Working" && statusData ? (
-          <div style={{ marginLeft: "3rem" }}>
+          <div style={{paddingRight:"10px"}}>
             <br />
             <h4>{status}</h4>
             <br />
