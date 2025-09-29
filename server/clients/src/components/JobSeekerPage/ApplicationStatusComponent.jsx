@@ -13,8 +13,9 @@ const ApplicationStatusComponent = () => {
     ReactGA.pageview(window.location.pathname);
   }, []);
 
+  // Overall container
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", px: { xs: 1 } }}>
+    <Box sx={{ display: "flex", flexDirection: "column", px: { xs: 1 } }}> 
       {/* Right side navbar */}
       <Box sx={{ alignSelf: "flex-end" }}>
         <RightSideNavbar />
