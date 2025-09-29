@@ -213,7 +213,8 @@ const Cards = (props) => {
       case "Pending":
         return "#F9D923";
       case "Selected":
-        return "#49FF00";
+        // return "#49FF00";
+        return "#2AAA8A";
       default:
         return "grey";
     }

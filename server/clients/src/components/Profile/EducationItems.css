@@ -14,13 +14,14 @@
 
 .education-label {
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: gray;
 }
 
 .education-value {
   margin: 4px 0;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 /* Mobile view */
@@ -36,9 +37,10 @@
 
   .education-value {
     font-size: 16px;
+    font-weight: 500;
   }
 
   .education-item {
-  flex: 1 1 45%; 
+   flex: 1 1 45%; 
   }
 }

@@ -81,8 +81,8 @@ const CertificateDisplay = (props) => {
 
   return (
     <>
-      <TableRow key={props._id}>
-        <TableCell>{props.certificationName}</TableCell>
+      <TableRow sx={{textAlign:"justify"}} key={props._id}>
+        <TableCell >{props.certificationName}</TableCell>
         <TableCell>{props.issuedBy}</TableCell>
         <TableCell>
           {new Date(props.certificateIssuedDate).toLocaleDateString("en-GB", {

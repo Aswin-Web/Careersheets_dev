@@ -76,12 +76,12 @@ const EducationItems = (props) => {
         }}
       >
         <h3 style={{ margin: 0 }}>{collegeName}</h3>
-        <div>
+        <div style={{ display: "flex", gap: "10px",paddingRight:"10px" }}>
           <IconButton onClick={editEducationHandler} title="Edit Education">
-            <EditOutlinedIcon sx={{mr:1}} />
+            <EditOutlinedIcon />
           </IconButton>
           <IconButton onClick={deleteEducationHandler} title="Delete Education">
-            <DeleteOutlinedIcon sx={{mr:4}} />
+            <DeleteOutlinedIcon />
           </IconButton>
         </div>
       </div>

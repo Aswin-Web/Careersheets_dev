@@ -4,7 +4,7 @@ import classes from "./ProfileDetails.module.css";
 import ProfileCard from "./UI/ProfileCard";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Typography } from "@mui/material";
+import { TableContainer, Typography } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Card from "react-bootstrap/Card";
@@ -15,6 +15,7 @@ import { skillActions } from "../../redux/reducers/Skill-data";
 import SkillItem from "./SkillItem";
 import { statusActions } from "../../redux/reducers/status-data";
 import ProjectItems from "./ProjectItems";
+import "./Personalinfo.css";
 import CertificateDisplay from "./Certification/CertificateDisplay";
 import { projectActions } from "../../redux/reducers/project-data";
 import { roleActions } from "../../redux/reducers/role-data";
@@ -327,10 +328,6 @@ const ProfileDetails = () => {
       </div>
 
       <div>
-        {/* <ProfileCard CardName="Summary">
-          <h3 className="m-2">Summary:</h3>
-          <p style={{ fontSize: 14, }}>{summaryState.summary}</p>
-        </ProfileCard> */}
         <ProfileCard CardName="Summary">
           <h3 style={{ margin: "0 0 12px 0" }}>Summary:</h3>
           <p
@@ -529,7 +526,7 @@ const ProfileDetails = () => {
       </ProfileCard>
 
       <ProfileCard CardName="skills">
-        <h3 className="m-3">Skills : </h3>
+        <h3 style={{ margin: "0 0 12px 0" }}>Skills : </h3>
         {skillError && <p className={classes.skillError}>{skillErrMsg}</p>}
         <div className={classes.skillItem}>
           {skillItems.map((skill, index) => (
@@ -544,141 +541,159 @@ const ProfileDetails = () => {
           ))}
         </div>
       </ProfileCard>
-      <ProfileCard CardName="project">
-        <h3 className="m-3">Project</h3>
-        <ul className={classes.educationList}>
-          {projectItems.map((item) => (
-            <li className={classes.cardItems}>
-              <ProjectItems
-                key={item._id}
-                id={item._id}
-                title={item.projectTitle}
-                domain={item.projectDomain}
-                description={item.projectDescription}
-                skills={item.projectSkills}
-                startDate={item.startDate}
-                endDate={item.endDate}
-              />
-            </li>
-          ))}
-        </ul>
-      </ProfileCard>
 
-      <ProfileCard CardName="certification">
-        <h3 className="m-3"> Certifications</h3>
-        <Box
-          sx={{
-            p: 2,
-            backgroundColor: "background.paper",
-            borderRadius: 2,
-            overflowX: "auto",
-            maxWidth: "100%",
-          }}
-        >
-          <Typography variant="h6" gutterBottom className="mb-3">
-            Added Certifications
-          </Typography>
-          <Table
-            sx={{
-              borderCollapse: "collapse",
-              width: "100%",
+      <ProfileCard CardName="project">
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <h3 style={{ margin: 0 }}>Project:</h3>
+          <ul
+            className={classes.educationList}
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
             }}
           >
-            <TableHead sx={{ backgroundColor: "#CEE5D0" }}>
-              <TableRow>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  Certificate Name
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  Issued By
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  Issued On
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  Start Date
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  End Date
-                </TableCell>
-                <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                  Expiry Date
-                </TableCell>
-
-                <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {certificationItems.map((item) => (
-                <CertificateDisplay
-                  key={item._id}
+            {projectItems.map((item) => (
+              <li key={item._id} className={classes.cardItems}>
+                <ProjectItems
                   id={item._id}
-                  certificationName={item.certificationName}
-                  issuedBy={item.issuedBy}
-                  certificateIssuedDate={item.certificateIssuedDate}
+                  title={item.projectTitle}
+                  domain={item.projectDomain}
+                  description={item.projectDescription}
+                  skills={item.projectSkills}
                   startDate={item.startDate}
                   endDate={item.endDate}
-                  expiryDate={item.expiryDate}
-                  certificateId={item.certificateId}
-                  approval={item.approval}
-                  name={data.name}
-                  state={"user"}
                 />
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </ProfileCard>
-
-      <ProfileCard CardName="info">
-        <h3 className="m-3">Personal Information</h3>
-        <div className="m-5">
-          <h4 style={{ marginBottom: "5px" }}>
-            <span style={{ color: "#2C3333" }}>Full Name</span> :{" "}
-            <span>{personalState.fullName}</span>
-          </h4>
-          <h4 style={{ marginBottom: "5px" }}>
-            <span style={{ color: "#2C3333" }}>Phone</span> :{" "}
-            <span>{personalState.phone}</span>
-          </h4>
-          <h4 style={{ marginBottom: "5px" }}>
-            <span style={{ color: "#2C3333" }}>Gender</span> :{" "}
-            <span>{personalState.gender}</span>
-          </h4>
-          <h4 style={{ marginBottom: "5px" }}>
-            <span style={{ color: "#2C3333" }}>Date of Birth</span> :{" "}
-            <span>{personalState.dob}</span>
-          </h4>
-          <h4 style={{ marginBottom: "5px" }}>
-            <span style={{ color: "#2C3333" }}>Hometown</span> :{" "}
-            <span>{personalState.hometown}</span>
-          </h4>
-          <h4 style={{ color: "#2C3333", marginBottom: "10px" }}>
-            Languages known
-          </h4>
-
-          <ul style={{ display: "flex", flexWrap: "wrap" }}>
-            {Languages.map((item, index) => (
-              <li
-                key={index}
-                style={{
-                  textDecoration: "none",
-                  listStyle: "none",
-                  margin: "8px",
-                  backgroundColor: "#accbee",
-                  borderRadius: "10px",
-                  padding: "7px",
-                  fontSize: "12px",
-                }}
-              >
-                {item}
               </li>
             ))}
           </ul>
         </div>
       </ProfileCard>
+
+
+      <ProfileCard CardName="certification">
+        <h3 style={{ margin: 0 }}> Certifications:</h3>
+        <Box
+          sx={{
+            // p: 2,
+            mr: 2,
+            mt: 2,
+            backgroundColor: "background.paper",
+            borderRadius: 2,
+            overflowX: "auto",
+            maxWidth: "100%",
+            boxShadow: 1, 
+          }}
+        >
+          {/* <Typography variant="h6" gutterBottom className="mb-3">
+            Added Certifications
+          </Typography> */}
+          <TableContainer  sx={{ borderRadius: '10px', boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",}} >
+            <Table
+                sx={{
+                  borderCollapse: "collapse",
+                  width: "100%",
+                  
+                }}
+              >
+                <TableHead sx={{ backgroundColor: "#CCCCFF", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"}}>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      Certificate Name
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      Issued By
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      Issued On
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      Start Date
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      End Date
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                      Expiry Date
+                    </TableCell>
+
+                    <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
+                      Actions
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {certificationItems.map((item) => (
+                    <CertificateDisplay
+                      key={item._id}
+                      id={item._id}
+                      certificationName={item.certificationName}
+                      issuedBy={item.issuedBy}
+                      certificateIssuedDate={item.certificateIssuedDate}
+                      startDate={item.startDate}
+                      endDate={item.endDate}
+                      expiryDate={item.expiryDate}
+                      certificateId={item.certificateId}
+                      approval={item.approval}
+                      name={data.name}
+                      state={"user"}
+                    />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+        </Box>
+      </ProfileCard>
+
+      <ProfileCard CardName="info">
+        <h3 style={{ margin: 0 }} >Personal Information:</h3>
+
+        <div className="info-container">
+          <div className="info-flex">
+            <div className="info-item">
+              <p className="info-label">Full Name:</p>
+              <p className="info-value">{personalState.fullName}</p>
+            </div>
+
+            <div className="info-item">
+              <p className="info-label">Phone:</p>
+              <p className="info-value">{personalState.phone}</p>
+            </div>
+
+            <div className="info-item">
+              <p className="info-label">Gender:</p>
+              <p className="info-value">{personalState.gender}</p>
+            </div>
+
+            <div className="info-item">
+              <p className="info-label">Date of Birth:</p>
+              <p className="info-value">{personalState.dob}</p>
+            </div>
+
+            <div className="info-item">
+              <p className="info-label">Hometown:</p>
+              <p className="info-value">{personalState.hometown}</p>
+            </div>
+          </div>
+
+          {/* Languages Section */}
+          <div style={{ marginTop: "16px" }}>
+            <p className="info-label">Languages Known:</p>
+            <ul className="language-list">
+              {Languages.map((item, index) => (
+                <li key={index} className="language-chip">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </ProfileCard>
+
+
       <ToastContainer />
     </div>
   );

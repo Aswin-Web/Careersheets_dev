@@ -22,7 +22,7 @@ const JobseekerPage = () => {
       </Helmet>
       <Navbar className="Navbar" />
 
-      <Box className="UserBody">
+      <Box sx={{ml:1}} className="UserBody">
         <Box>
           <LeftSideBar />
         </Box>

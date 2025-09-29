@@ -14,22 +14,6 @@ const ApplicationStatusComponent = () => {
   }, []);
 
   return (
-    // <div>
-    //   <Box>
-    //     <RightSideNavbar />
-    //   </Box>
-    //   {data.length === 0 ? 
-    //   (
-    //     <DefaultText />
-    //   ) : (
-    //     data.map((item, index) => (
-    //       <Container key={index}>
-    //         <Cards data={item} />
-    //         <br />
-    //       </Container>
-    //     ))
-    //   )}
-    // </div>
     <Box sx={{ display: "flex", flexDirection: "column", px: { xs: 1 } }}>
       {/* Right side navbar */}
       <Box sx={{ alignSelf: "flex-end" }}>
