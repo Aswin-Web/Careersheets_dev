@@ -13,23 +13,33 @@ const ApplicationStatusComponent = () => {
     ReactGA.pageview(window.location.pathname);
   }, []);
 
+  // Overall container
   return (
-    <div>
-      <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", px: { xs: 1 } }}> 
+      {/* Right side navbar */}
+      <Box sx={{ alignSelf: "flex-end" }}>
         <RightSideNavbar />
       </Box>
-      {data.length === 0 ? 
-      (
+
+      {/* Content */}
+      {data.length === 0 ? (
         <DefaultText />
       ) : (
         data.map((item, index) => (
-          <Container key={index}>
+          <Container
+            key={index}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              mb: 2,
+            }}
+          >
             <Cards data={item} />
-            <br />
           </Container>
         ))
       )}
-    </div>
+    </Box>
   );
 };
 

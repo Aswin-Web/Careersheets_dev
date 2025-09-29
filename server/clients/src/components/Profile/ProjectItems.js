@@ -79,11 +79,12 @@ const ProjectItems = (props) => {
   return (
     <div
       style={{
-        backgroundColor: "#CEE5D0",
+        backgroundColor: "#CCCCFF",
         padding: "1em",
         borderRadius: "10px",
         marginRight: "20px",
         marginBottom: "1em",
+        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
       <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
@@ -136,7 +137,7 @@ const ProjectItems = (props) => {
 
       <div>
         <h4>Project Description:</h4>
-        <p>{props.description}</p>
+        <p style={{textAlign: "justify"}}>{props.description}</p>
       </div>
 
       {isEdit && (

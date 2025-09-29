@@ -149,7 +149,7 @@ export default function FormPropsTextFields(props) {
         </Box>
       </Box>
       <Button
-        disabled={buttonController() ? false : true}
+        disabled={!buttonController()}
         onClick={async (e) => {
           e.preventDefault();
           const response = await axios.post(
@@ -180,9 +180,33 @@ export default function FormPropsTextFields(props) {
             );
           }
         }}
-      >
+
+        sx={{
+          backgroundColor: "#0096FF",
+          color: "#fff", // default text color
+          "&:hover": {
+            backgroundColor: "#1565c0",
+          },
+          "&.Mui-disabled": {
+            backgroundColor: "#0096FF", // light blue background when disabled
+            color: "#fff", // keep text white even when disabled
+            cursor: "pointer",
+            
+          },
+          px: 3,
+          ml:1,
+          py: 1.2,
+          borderRadius: 2,
+          textTransform: "none",
+          cursor: "pointer",
+        }}
+
+      
+>
+      
         Save
       </Button>
+
     </Box>
   );
 }
