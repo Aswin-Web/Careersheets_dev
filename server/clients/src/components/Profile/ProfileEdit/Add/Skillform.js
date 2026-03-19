@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -31,7 +31,7 @@ const Skillform = (props) => {
 
   // const [err, setErr] = useState(false);
   //
-  const getAllSkills = async () => {
+  const getAllSkills = useCallback(async () => {
     const response = await axios.get(
       REACT_APP_SERVER_URL + "/user/platformskills",
 
@@ -50,11 +50,11 @@ const Skillform = (props) => {
       setskillItems([...response.data.skill]);
       return data;
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     getAllSkills();
-  }, []);
+  }, [getAllSkills]);
 
   // skills
   function compare(a, b) {

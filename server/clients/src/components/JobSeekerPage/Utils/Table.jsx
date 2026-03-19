@@ -7,45 +7,25 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Popup from "../Utils/PopupStatus";
-import CreateIcon from "@mui/icons-material/Create";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { DeleteStatus } from "../../../redux/reducers/application.data";
 import { Box } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import { REACT_APP_SERVER_URL } from "../../../config";
-import AddStatusComponent from "../Utils/AddStatus";
-import { useTheme } from "@mui/material/styles";
 import { Stack } from "@mui/material";
 import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Button } from "@mui/material";
 
-function createData(
-  name,
-  calories,
-  fat,
-  carbs,
-  protein
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
 export default function BasicTable(props) {
-  const navigate = useNavigate();
-  const [alert, setalert] = useState(false);
   const [round, setround] = useState(-1);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.value);
   const { _id, author, status, view, application_id } = props;
 
   console.log("Data from table author", props.author);
-
-  const [rowData, setRowData] = useState(null);
-
   const handleDelete = async (application_id, index) => {
     const response = await axios.post(
       `${REACT_APP_SERVER_URL}/user/application/removestatus`,
@@ -62,15 +42,6 @@ export default function BasicTable(props) {
     if (response.status === 200) {
       setround(-1);
       dispatch(DeleteStatus(response.data.modify));
-    }
-  };
-
-  const handleEdit = async (row) => {
-    if (row) {
-      setRowData(row);
-      navigate(`/user`, { state: { rowData: row, applicationId: application_id } });
-    } else {
-      console.error("Row is undefined.");
     }
   };
 

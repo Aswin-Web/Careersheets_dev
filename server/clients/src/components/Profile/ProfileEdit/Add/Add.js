@@ -90,7 +90,7 @@ export default function Add(props) {
       setAbout(props.Card === "Summary");
       setInfo(props.Card === "info");
     }
-  }, [props.editdata, props.Card]);
+  }, [props.editdata, props.Card, open]);
 
 
   return (

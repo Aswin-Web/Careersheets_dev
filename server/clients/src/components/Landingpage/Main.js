@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import UseAuth from "../../hooks/auth";
 import { Helmet } from "react-helmet-async";
 import { REACT_APP_SERVER_URL } from "../../config";
-import Banner_img from "../../images/banner_img.avif"
 
 const Main = () => {
   const navigate = useNavigate();

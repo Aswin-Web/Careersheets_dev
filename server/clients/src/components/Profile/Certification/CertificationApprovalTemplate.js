@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useRef } from "react";
 import { useLocation } from "react-router-dom";
 import html2canvas from "html2canvas";
-import classes from "./CertificateTemplate.module.css";
 import Certificate from "./../../../images/Certificate.png";
 import I_Bacus_Logo from "./../../../images/I_Bacus_Logo.jpg";
 import GreeneStep_Logo from "./../../../images/Greenestep_Logo.jpg";
@@ -127,6 +126,7 @@ const GenerateCertificateMain = () => {
           <a
             href="https://www.app.careersheets.in/"
             target="_blank"
+            rel="noreferrer"
             style={{
               color: "#003E57",
               textDecoration: "none",

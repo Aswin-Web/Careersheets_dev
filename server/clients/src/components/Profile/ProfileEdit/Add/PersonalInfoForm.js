@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -9,7 +9,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import Autocomplete from "@mui/material/Autocomplete";
 import Stack from "@mui/material/Stack";
-import InputLabel from "@mui/material/InputLabel";
 import FilledInput from "@mui/material/FilledInput";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +37,6 @@ const topLanguages = [
 ];
 
 const PersonalInfoForm = (props) => {
-  const personalState = useSelector((state) => state.personalInfo);
   const token = useSelector((state) => state.auth.value);
   const dispatch = useDispatch();
   const [gender, setGender] = React.useState("");
@@ -50,7 +48,7 @@ const PersonalInfoForm = (props) => {
 
   // user details fetching
 
-  const sendRequest = async () => {
+  const sendRequest = useCallback(async () => {
     const response = await axios
       .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
@@ -62,7 +60,7 @@ const PersonalInfoForm = (props) => {
     const data = await response.data;
 
     return data;
-  };
+  }, [token]);
 
   useEffect(() => {
     sendRequest()
@@ -82,7 +80,7 @@ const PersonalInfoForm = (props) => {
         // dispatch(summaryAction.addSummary({ summary:data.summary }));
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [sendRequest]);
 
   // update request
   const updateRequest = async () => {

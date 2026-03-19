@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,10 +10,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  fabClasses,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { REACT_APP_SERVER_URL } from "../../../../config";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -73,10 +71,6 @@ const CertificationForm = (props) => {
       }
     }
   }, [props.editdata, certificationProviders]);
-
-  useEffect(() => {
-    getCertificationProvider();
-  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -176,7 +170,7 @@ const CertificationForm = (props) => {
     return data;
   };
 
-  const getCertificationProvider = async () => {
+  const getCertificationProvider = useCallback(async () => {
     const response = await axios
       .get(REACT_APP_SERVER_URL + "/user/getCertificationProvider", {
         headers: {
@@ -194,7 +188,11 @@ const CertificationForm = (props) => {
     } else {
       toast("Failed to add the Certification");
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    getCertificationProvider();
+  }, [getCertificationProvider]);
 
   return (
     <Box

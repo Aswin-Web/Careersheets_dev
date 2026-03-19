@@ -21,6 +21,7 @@ import ScheduleInterview from "./Scheduleint/Scheduleint";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { REACT_APP_SERVER_URL } from "../../config";
+import { useCallback } from "react";
 
 const centerItems = {
   display: "flex",
@@ -62,7 +63,7 @@ const ViewRecruiterJobs = () => {
     }
   }, [jobbID]);
 
-  const GetJobInfo = async () => {
+  const GetJobInfo = useCallback(async () => {
     try {
       const jobResponse = await axios.get(
         `${REACT_APP_SERVER_URL}/recruiter/jobs/${jobbID}`,
@@ -105,7 +106,7 @@ const ViewRecruiterJobs = () => {
       console.error("Error fetching job info:", error);
       setError({ isError: true, msg: "Could not load job data." });
     }
-  };
+  }, [jobbID]);
 
   const handleStatusChange = async (applicationId, newStatus) => {
     if (!applicationId) {

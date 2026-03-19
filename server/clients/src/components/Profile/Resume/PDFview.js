@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { PDFViewer } from "@react-pdf/renderer";
 import MyDocument from "./MyDocument";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { dataAction } from "../../../redux/reducers/data";
-import Resume from "./Resume";
 import { REACT_APP_SERVER_URL } from "../../../config";
 
 const PDF = () => {
@@ -13,7 +12,7 @@ const PDF = () => {
   const token = useSelector((state) => state.auth.value);
   const [data, SetData] = useState();
 
-  const sendRequest = async () => {
+  const sendRequest = useCallback(async () => {
     const response = await axios
       .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
@@ -26,7 +25,7 @@ const PDF = () => {
     // console.log(data);
 
     return data;
-  };
+  }, [token]);
   useEffect(() => {
     sendRequest()
       .then((data) => {
@@ -34,7 +33,7 @@ const PDF = () => {
         dispatch(dataAction.AddData(data));
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [dispatch, sendRequest]);
 
   return (
     <PDFViewer style={{ width: '100%', height: '100vh' }}>

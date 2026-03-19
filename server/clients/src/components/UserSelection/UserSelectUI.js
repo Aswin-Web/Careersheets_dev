@@ -5,7 +5,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box, Button, CardActionArea, CircularProgress } from "@mui/material";
 import classes from "./UserSelect.module.css";
-import UseAuth from "../../hooks/auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Careersheets from "../../images/Careersheets-logo.png";

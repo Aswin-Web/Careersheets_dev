@@ -1,6 +1,6 @@
 // import React from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeUserInfo } from "../../redux/reducers/auth.data";
 import React, { useEffect } from "react";
 import axios from "axios";
@@ -95,7 +95,7 @@ const UserSelect = () => {
         }
     dataFetch();
     return;
-  }, []);
+  }, [dispatch, navigate, token]);
 };
 
 export default UserSelect;

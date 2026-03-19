@@ -1,12 +1,10 @@
 import { Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 import Axios from "axios";
-import { AddJobs } from "../../redux/reducers/AllJobDetails";
 import { Link } from "react-router-dom";
 import { REACT_APP_SERVER_URL } from "../../config";
 
