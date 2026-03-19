@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
@@ -25,7 +25,7 @@ const ProjectForm = (props) => {
   const [skill, setSkill] = useState([]);
   const [id, setId] = useState("");
 
-  const getAllSkills = async () => {
+  const getAllSkills = useCallback(async () => {
     const response = await axios.get(
       `${REACT_APP_SERVER_URL}/user/platformskills`,
       {
@@ -39,11 +39,11 @@ const ProjectForm = (props) => {
     if (response.status === 200) {
       setSkillItems([...response.data.skill]);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     getAllSkills();
-  }, []);
+  }, [getAllSkills]);
 
   useEffect(() => {
     if (props.editdata) {

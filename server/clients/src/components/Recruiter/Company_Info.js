@@ -1,20 +1,17 @@
-import React, { Profiler, useEffect } from "react";
+import React, { useEffect } from "react";
 import classes from "./Company_Info.module.css";
 
 ///mui///
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import axios from "axios";
 ///redux///
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { REACT_APP_SERVER_URL } from "../../config";
 
 ////component function////
 
 const Company_Info = () => {
-  const token = useSelector((state) => state.auth.value);
   const navigate = useNavigate();
   const [profile, setProfile] = React.useState({
     employeeName: "",
@@ -52,9 +49,6 @@ const Company_Info = () => {
   useEffect(() => {
     GetRecruiterInfo();
   }, []);
-
-  //validating the form///
-  let formValid = false;
 
   ///API call function to the server///
   const postRequest = async () => {

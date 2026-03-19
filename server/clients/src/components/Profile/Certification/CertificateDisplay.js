@@ -4,7 +4,6 @@ import {
   IconButton,
   TableCell,
   TableRow,
-  Typography,
   Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";

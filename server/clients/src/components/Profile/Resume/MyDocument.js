@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Page,
   Text,
@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Image,
   Font,
-  Svg,
 } from "@react-pdf/renderer";
 import RobotoRegular from "./assets/roboto/Roboto-Regular.ttf";
 import RobotoBold from "./assets/roboto/Roboto-Bold.ttf";

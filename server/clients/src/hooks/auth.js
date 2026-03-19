@@ -1,5 +1,4 @@
 import jwt_decode from "jwt-decode";
-import { useSelector } from "react-redux";
 
 const UseAuth = () => {
   // const token = useSelector((state) => state.auth.value.token);

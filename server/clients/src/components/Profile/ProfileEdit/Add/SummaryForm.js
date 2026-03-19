@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -9,7 +9,6 @@ import axios from "axios";
 import { REACT_APP_SERVER_URL } from "../../../../config";
 
 const AboutForm = (props) => {
-  const summaryValue = useSelector((state) => state.summary.summary);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
   const [summary, setSummary] = React.useState();
@@ -20,7 +19,7 @@ const AboutForm = (props) => {
   console.log("Ssssssssssssssssssss", props)
 
   //USER FETCHING
-  const sendRequest = async () => {
+  const sendRequest = useCallback(async () => {
     const response = await axios
       .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
@@ -32,7 +31,7 @@ const AboutForm = (props) => {
     const data = await response.data;
 
     return data;
-  };
+  }, [token]);
 
   useEffect(() => {
     sendRequest()
@@ -41,7 +40,7 @@ const AboutForm = (props) => {
         // dispatch(summaryAction.addSummary({ summary:data.summary }));
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [sendRequest]);
 
   // API REQUEST TO ADD SUMMARY
   const updateRequest = async () => {
@@ -66,7 +65,7 @@ const AboutForm = (props) => {
   const formSubimt = async (e) => {
     e.preventDefault();
     try {
-      const data = await updateRequest();
+      await updateRequest();
       dispatch(summaryAction.addSummary({ summary }));
     } catch (error) {
       console.log(error);

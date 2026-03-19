@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import classes from "./ProfileDetails.module.css";
 import ProfileCard from "./UI/ProfileCard";
 import Button from "react-bootstrap/Button";
@@ -43,14 +43,7 @@ const ProfileDetails = () => {
   const data = useSelector((state) => state.data.value);
   const Languages = personalState.languages.map((item) => item);
 
-  const [certifications, setCertifications] = useState([]);
-  const [width, setWidth] = useState(window.innerWidth);
-
-  const handleDeleteCertification = (id) => {
-    setCertifications(certifications.filter((cert) => cert.id !== id));
-  };
-
-  const sendRequest = async () => {
+  const sendRequest = useCallback(async () => {
     const response = await axios
       .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
@@ -71,7 +64,7 @@ const ProfileDetails = () => {
 
     const { displayPicture, name } = data;
     return { ...data, profilePicture: displayPicture, name, highestEducation };
-  };
+  }, [token]);
 
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
 
@@ -186,7 +179,7 @@ const ProfileDetails = () => {
     window.open("https://decision-coach-app.onrender.com/skillget", "_blank");
   };
 
-  const handleGetStatus = async (event) => {
+  const handleGetStatus = useCallback(async () => {
     try {
       const response = await axios.get(
         `${REACT_APP_SERVER_URL}/user/status/getStatus`,
@@ -217,17 +210,11 @@ const ProfileDetails = () => {
     } catch (error) {
       console.error("Error submitting status:", error);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     handleGetStatus();
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [handleGetStatus]);
 
   useEffect(() => {
     sendRequest().then((data) => {
@@ -258,7 +245,7 @@ const ProfileDetails = () => {
       }
       dispatch(dataAction.AddData(data));
     });
-  }, [dispatch]);
+  }, [dispatch, sendRequest]);
 
   return (
     <div className={classes.details}>

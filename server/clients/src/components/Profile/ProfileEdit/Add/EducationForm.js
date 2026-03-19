@@ -39,8 +39,6 @@ const degree = [
 
 ];
 
-const id = "64350344dfae173da0f0e127";
-
 const EducationForm = (props) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.value);
@@ -56,15 +54,6 @@ const EducationForm = (props) => {
   });
   const [existId, setExistId] = React.useState();
 
-  const [educationData, setEducationData] = React.useState({
-    collegeName: "",
-    degree: "",
-    id: "",
-    graduated: "",
-    graduationYear: "",
-    registerNumber: "",
-    existId: "",
-  });
 
   ////college list////
   const collegeData = props.data;
@@ -195,14 +184,6 @@ const EducationForm = (props) => {
       } else {
         dispatch(educationActions.addEducation({ ...obj }));
       }
-    });
-
-    setEducationData({
-      collegeName: collegeName.collegeName,
-      degree: enteredDegree.degree,
-      graduationYear: enteredGraduationYear,
-      graduated: enteredGraduated,
-      registerNumber: register,
     });
   };
 

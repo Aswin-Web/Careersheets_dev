@@ -7,14 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 import Cookies from "js-cookie";
 import { Provider } from "react-redux";
-import { userSlice } from "../src/redux/reducers/auth.data";
 import store from "../src/redux/store";
 /////////////////////////////////////////////////////
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 
 // React-helmet-async
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from "react-helmet-async";
 
 const theme = createTheme({
   typography: {

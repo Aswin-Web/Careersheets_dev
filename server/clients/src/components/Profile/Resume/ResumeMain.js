@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DownloadButton from "./DownloadResume";
-import generatePDF from "./GeneratePdf";
 import Resume from "./Resume";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { useNavigate, useNavigation } from "react-router-dom";
-import PDFGenerator from "./GeneratePdf";
 import { useDispatch } from "react-redux";
 import { dataAction } from "../../../redux/reducers/data";
 import { REACT_APP_SERVER_URL } from "../../../config";
@@ -14,8 +11,7 @@ const ResumeMain = () => {
   const dispatch=useDispatch()
   const token = useSelector((state) => state.auth.value);
   const [data, SetData] = useState();
-  const navigate = useNavigate();
-  const sendRequest = async () => {
+  const sendRequest = useCallback(async () => {
     const response = await axios
       .get(`${REACT_APP_SERVER_URL}/user/profile`, {
         headers: {
@@ -28,7 +24,7 @@ const ResumeMain = () => {
     // console.log(data);
 
     return data;
-  };
+  }, [token]);
   useEffect(() => {
     sendRequest()
       .then((data) => {
@@ -36,7 +32,7 @@ const ResumeMain = () => {
         dispatch(dataAction.AddData(data))
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [dispatch, sendRequest]);
 
   return (
     <a className="app" href="pdf" target="_blank" style={{color:'black',textDecoration:'none'}}>
