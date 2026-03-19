@@ -1,50 +1,40 @@
-import { Box, Typography, Grid  } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { Box, Typography, Grid, Container } from "@mui/material";
+import React from "react";
 import JobCard from "./JobCard";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { AddJobsUser } from "../../../redux/reducers/JobsUsers";
+import { useSelector } from "react-redux";
 
 const JobsMenuComponent = () => {
   const allJobs = useSelector((state) => state.allJobsUser.value);
-  console.log("Jobs", allJobs);
-
-  const skillItems = useSelector((state) => state.skill.skills);
-
-  console.log("skills from jobs menu", skillItems);
-
-  const dispatch = useDispatch();
   const skillOfUser = useSelector((state) => state.skill.skills);
   const skills = skillOfUser.map((x) => x.skill);
   const userProject = useSelector((state) => state.project.items);
   const skillOfProject = userProject.map((x) => x.projectSkills);
-  // const [Jobs, setJobs] = useState([]);
-  // console.log(skills);
-  // console.log(useSelector((state) => state));
 
   return (
-    <Box
-      sx={{
-        margin: "0.5rem",
-        backgroundColor: "white",
-        borderRadius: "10px",
-        padding: "1rem",
-      }}
-    >
-      {allJobs.length === 0 ? (
-        <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-          {" "}
-          We didn't find any matching jobs for your skills. Please ensure your
-          profile (link to profile) lists all skills you have. Come back again
-          as we will be adding jobs every day.
-        </p>
-      ) : (
-        <Typography variant="h6">Jobs Based on your Skill</Typography>
-      )}
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ mb: 6, textAlign: 'center' }}>
+        <Typography
+          variant="h3"
+          fontWeight="800"
+          sx={{
+            color: '#1e293b',
+            letterSpacing: '-0.03em',
+            mb: 1.5,
+            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' }
+          }}
+        >
+          Recommended Jobs
+        </Typography>
+        <Typography variant="h6" sx={{ color: '#64748b', fontWeight: 500, maxWidth: 800, mx: 'auto' }}>
+          {allJobs.length === 0
+            ? "We didn't find any matching jobs for your skills. Please ensure your profile lists all your skills."
+            : `Based on your skillset, we found ${allJobs.length} opportunities for you.`}
+        </Typography>
+      </Box>
 
-      <Grid container spacing={2} style={{marginTop:"1rem"}}>
+      <Grid container spacing={4} justifyContent="center">
         {allJobs.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item._id}>
+          <Grid item xs={12} sm={6} lg={4} key={item._id}>
             <JobCard
               item={item}
               skillofUser={skills}
@@ -53,9 +43,7 @@ const JobsMenuComponent = () => {
           </Grid>
         ))}
       </Grid>
-
-      {/* <JobCard /> */}
-    </Box>
+    </Container>
   );
 };
 

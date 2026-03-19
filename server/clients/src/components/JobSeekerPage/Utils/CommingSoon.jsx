@@ -1,33 +1,46 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, Stack, Container } from '@mui/material'
 import React from 'react'
-
-
-
+import wishlist from "../../../images/3271760.jpg"
 const CommingSoon = () => {
-
-    return (
-      <div>
-        <Box
+  return (
+    <Container maxWidth="md">
+      <Stack
+        spacing={3}
+        alignItems="center"
+        justifyContent="center"
+        sx={{ minHeight: "60vh", textAlign: "center", py: 8 }}
+      >
+       <Box
+            component="img"
+            src={wishlist}
+            alt="Calendar Illustration"
+            sx={{
+              width: "100%",
+              maxWidth: 350,
+              height: "auto",
+              filter: "drop-shadow(0px 10px 20px rgba(0,0,0,0.1))",
+              mb: 2,
+              borderRadius: "20px"
+            }}
+          />
+        <Typography
+          variant="h3"
+          fontWeight="800"
           sx={{
-            padding:"2rem",
-            minHeight: "80vh",
-        
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
+            color: '#1e293b',
+            letterSpacing: '-0.03em',
+            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' }
           }}
         >
-          <Typography variant="h2" color="initial">
-            Coming Soon...!
-          </Typography>
-          <Typography variant="body1" color="initial">
-            Our Developers are working hard to build this and it is in the
-            development stage.
-          </Typography>
-        </Box>
-      </div>
-    );
+          Coming Soon!
+        </Typography>
+
+        <Typography variant="h6" sx={{ color: '#64748b', fontWeight: 500, maxWidth: 600 }}>
+          Our developers are working hard to build this feature. Stay tuned for exciting updates!
+        </Typography>
+      </Stack>
+    </Container>
+  );
 }
 
-export default CommingSoon
+export default CommingSoon;

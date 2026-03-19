@@ -52,7 +52,6 @@ BootstrapDialogTitle.propTypes = {
 
 export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -63,28 +62,14 @@ export default function CustomizedDialogs(props) {
 
   return (
     <>
-      <div>
-        <Box onClick={handleClickOpen}>
-          <ResuableButton content={props.content} />
-        </Box>
-        <BootstrapDialog
-          onClose={handleClose}
-          aria-labelledby="customized-dialog-title"
-          open={open}
-          sx={{}}
-        >
-          <BootstrapDialogTitle
-            id="customized-dialog-title"
-            onClose={handleClose}
-          >
-            {props.titles}
-          </BootstrapDialogTitle>
-
-          <DialogActions>
-            <AddStatus info={props.info} handleClose={handleClose}/>
-          </DialogActions>
-        </BootstrapDialog>
-      </div>
+      <Box onClick={handleClickOpen} sx={{ cursor: 'pointer', width: '100%' }}>
+        {props.content || <ResuableButton content={props.titles || props.title} />}
+      </Box>
+      <AddStatus
+        open={open}
+        handleClose={handleClose}
+        info={props.info}
+      />
     </>
   );
 }

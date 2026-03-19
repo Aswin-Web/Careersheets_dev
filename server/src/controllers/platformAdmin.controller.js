@@ -311,7 +311,7 @@ const JobCreationRoute = async (req, res, next) => {
     return next();
   }
 };
- 
+
 const GetAllJobs = async (req, res, next) => {
   const jobs = await Jobs.find({})
     .populate({

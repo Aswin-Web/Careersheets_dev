@@ -22,7 +22,7 @@ const centerItems = {
   gap: "10px",
   margin: "0.5rem 0",
 };
- 
+
 const JobDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const JobDetails = () => {
         setEmailUsers([...data.data.userlist]);
         // console.log(emailUsers);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
   console.log(selectedEmailusers)
   const handleTransmitSelectedEmail = async () => {
@@ -136,9 +136,8 @@ const JobDetails = () => {
 
   const SearchUser = async () => {
     const data = await axios.post(
-      `${
-        REACT_APP_SERVER_URL +
-        `/admin/finduser?find=${searchKeyword}`
+      `${REACT_APP_SERVER_URL +
+      `/admin/finduser?find=${searchKeyword}`
       }`,
       { jobbID: currentJob[0]._id },
       {
@@ -380,13 +379,13 @@ const JobDetails = () => {
             {/* Horizontal Columns */}
             <Box>
               <Box sx={centerItems}>
-                {" "}
                 <WorkOutlineIcon />
-                {currentJob[0].experience} years
+                {Math.max(0, Number(currentJob[0].experience))} years
               </Box>
+
               <Box sx={centerItems}>
                 <CurrencyRupeeIcon />
-                {currentJob[0].salary}
+                ₹{Math.max(0,Number(currentJob[0].salary))}
               </Box>
             </Box>
             <Box sx={centerItems}>
@@ -588,7 +587,7 @@ const JobDetails = () => {
                           sx={{ margin: "1rem" }}
                           variant="contained"
                           color="success"
-                          onClick={() =>  handleTransmitSelectedEmail()}
+                          onClick={() => handleTransmitSelectedEmail()}
                           disabled={
                             selectedEmailusers.length === 0 ? true : false
                           }

@@ -6,6 +6,8 @@ import DefaultText from "./DefaultText";
 import { useSelector } from "react-redux";
 import ReactGA from "react-ga";
 import { useEffect } from "react";
+import { Typography } from "@mui/material";
+import { Stack } from "@mui/material";
 const ApplicationStatusComponent = () => {
   const data = useSelector((state) => state.application.value);
   console.log("Data", data);
@@ -13,33 +15,46 @@ const ApplicationStatusComponent = () => {
     ReactGA.pageview(window.location.pathname);
   }, []);
 
-  // Overall container
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", px: { xs: 1 } }}> 
-      {/* Right side navbar */}
-      <Box sx={{ alignSelf: "flex-end" }}>
-        <RightSideNavbar />
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ mb: 6, textAlign: 'center' }}>
+        <Typography
+          variant="h3"
+          fontWeight="800"
+          sx={{
+            color: '#1e293b',
+            letterSpacing: '-0.03em',
+            mb: 1.5,
+            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' }
+          }}
+        >
+          Application Tracking
+        </Typography>
+        <Typography variant="h6" sx={{ color: '#64748b', fontWeight: 500, maxWidth: 800, mx: 'auto' }}>
+          {data.length === 0
+            ? "You haven't started any applications yet. Track your progress here!"
+            : `You are currently tracking ${data.length} active applications.`}
+        </Typography>
       </Box>
 
-      {/* Content */}
-      {data.length === 0 ? (
-        <DefaultText />
-      ) : (
-        data.map((item, index) => (
-          <Container
-            key={index}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 2,
-            }}
-          >
-            <Cards data={item} />
-          </Container>
-        ))
-      )}
-    </Box>
+      <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'absolute', top: -100, right: 0, display: { xs: 'none', md: 'block' } }}>
+          <RightSideNavbar />
+        </Box>
+
+        <Stack spacing={4} alignItems="center">
+          {data.length === 0 ? (
+            <DefaultText />
+          ) : (
+            data.map((item, index) => (
+              <Box key={index} sx={{ width: '100%', maxWidth: 1000 }}>
+                <Cards data={item} />
+              </Box>
+            ))
+          )}
+        </Stack>
+      </Box>
+    </Container>
   );
 };
 

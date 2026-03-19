@@ -94,7 +94,7 @@ const CreateOppourtunity = () => {
 
   return (
     <Box sx={{ padding: "1rem" }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
         Create New Opportunity
       </Typography>
       <form onSubmit={formik.handleSubmit}>
@@ -149,7 +149,7 @@ const CreateOppourtunity = () => {
           onBlur={formik.handleBlur}
         />
 
-        <Typography variant="h5" sx={{ mt: 2 }}>Job Description</Typography>
+        <Typography variant="h5" sx={{ mt: 2, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>Job Description</Typography>
         <TextareaAutosize
           name="JobDescription"
           style={{ width: "99%", minHeight: "150px", marginTop: '8px', marginBottom: '16px', padding: '8px' }}
@@ -159,7 +159,7 @@ const CreateOppourtunity = () => {
           placeholder="Detailed job description..."
         />
 
-        <Typography variant="h5" sx={{ mt: 2 }}>Company Description</Typography>
+        <Typography variant="h5" sx={{ mt: 2, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>Company Description</Typography>
         <TextareaAutosize
           name="companyDescription"
           style={{ width: "99%", minHeight: "150px", marginTop: '8px', marginBottom: '16px', padding: '8px' }}
@@ -169,7 +169,7 @@ const CreateOppourtunity = () => {
           placeholder="About the company..."
         />
 
-        <Typography variant="h5" sx={{ mt: 2 }}>Responsibilities</Typography>
+        <Typography variant="h5" sx={{ mt: 2, fontSize: { xs: '1.25rem', sm: '1.5rem' } }}>Responsibilities</Typography>
         <TextareaAutosize
           name="Responsibilites"
           style={{ width: "99%", minHeight: "150px", marginTop: '8px', marginBottom: '16px', padding: '8px' }}
@@ -181,7 +181,6 @@ const CreateOppourtunity = () => {
 
         {/* This is our working skills component */}
         <SkillAdminform SkillValues={skillArray} getSkills={setSkills} />
-
         <TextField
           fullWidth
           sx={{ my: 2 }}
@@ -191,7 +190,13 @@ const CreateOppourtunity = () => {
           value={formik.values.experience}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          helperText="Enter 0 for freshers"
+          inputProps={{ min: 0 }}
+          error={formik.touched.experience && Boolean(formik.errors.experience)}
+          helperText={
+            formik.touched.experience && formik.errors.experience
+              ? formik.errors.experience
+              : "Enter 0 for freshers"
+          }
         />
 
         <TextField
@@ -221,10 +226,17 @@ const CreateOppourtunity = () => {
           sx={{ mb: 2 }}
           name="salary"
           label="Salary"
+
           value={formik.values.salary}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          helperText="e.g., 5-8 LPA or Not Disclosed"
+
+          error={formik.touched.salary && Boolean(formik.errors.salary)}
+          helperText={
+            formik.touched.salary && formik.errors.salary
+              ? formik.errors.salary
+              : "e.g., 5-8 LPA or Not Disclosed"
+          }
         />
 
         <TextField

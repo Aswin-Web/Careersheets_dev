@@ -19,12 +19,12 @@ import "./Personalinfo.css";
 import CertificateDisplay from "./Certification/CertificateDisplay";
 import { projectActions } from "../../redux/reducers/project-data";
 import { roleActions } from "../../redux/reducers/role-data";
-import { summaryAction } from "../../redux/reducers/summary-data"; 
+import { summaryAction } from "../../redux/reducers/summary-data";
 import { personalActions } from "../../redux/reducers/personalInfo";
 import { certificateActions } from "../../redux/reducers/certificationInfo";
 import { dataAction } from "../../redux/reducers/data";
 import { REACT_APP_SERVER_URL } from "../../config";
-import { Table, TableCell, TableHead, TableRow, Box , TableBody  } from "@mui/material";
+import { Table, TableCell, TableHead, TableRow, Box, TableBody } from "@mui/material";
 
 const ProfileDetails = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const ProfileDetails = () => {
   const Languages = personalState.languages.map((item) => item);
 
   const [certifications, setCertifications] = useState([]);
-   const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(window.innerWidth);
 
   const handleDeleteCertification = (id) => {
     setCertifications(certifications.filter((cert) => cert.id !== id));
@@ -290,13 +290,13 @@ const ProfileDetails = () => {
             variant="contained"
             color="primary"
             style={{
-                marginTop: "10px",
-                fontWeight: "bold",
-                backgroundColor: "#11144C",
-                color: "white",
-                width: window.innerWidth < 600 ? "90%" : "24%", // responsive width
-                minWidth: "120px", // optional: prevents too small button on tiny screens
-              }}
+              marginTop: "10px",
+              fontWeight: "bold",
+              backgroundColor: "#11144C",
+              color: "white",
+              width: window.innerWidth < 600 ? "90%" : "24%", // responsive width
+              minWidth: "120px", // optional: prevents too small button on tiny screens
+            }}
           >
             Go to SWOT Analysis
           </Button>
@@ -335,8 +335,8 @@ const ProfileDetails = () => {
               fontSize: 14,
               margin: 0,
               lineHeight: 1.6,
-              textAlign: "justify",    
-              paddingRight: "20px",   
+              textAlign: "justify",
+              paddingRight: "20px",
             }}
           >
             {summaryState.summary}
@@ -345,86 +345,86 @@ const ProfileDetails = () => {
 
       </div>
       <ProfileCard CardName="education">
-          <div style={{ padding: "10px 0" }}>
-            <h3 style={{ margin: "0 0 12px 0" }}>Education :</h3>
+        <div style={{ padding: "10px 0" }}>
+          <h3 style={{ margin: "0 0 12px 0" }}>Education :</h3>
 
-            {eduErrState && (
-              <p style={{ color: "red", marginBottom: "10px" }}>{eduErrMsg}</p>
-            )}
+          {eduErrState && (
+            <p style={{ color: "red", marginBottom: "10px" }}>{eduErrMsg}</p>
+          )}
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {eduItems.map((edu, index) => (
-                <div key={index} style={{ width: "100%" }}>
-                  <EducationItems
-                    key={edu._id}
-                    id={edu._id}
-                    collegeName={edu.collegeName}
-                    degree={edu.degree}
-                    stream={edu.stream}
-                    graduated={edu.graduated}
-                    graduationYear={edu.graduationYear}
-                    registerNumber={edu.registerNumber}
-                  />
-                </div>
-              ))}
-            </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            {eduItems.map((edu, index) => (
+              <div key={index} style={{ width: "100%" }}>
+                <EducationItems
+                  key={edu._id}
+                  id={edu._id}
+                  collegeName={edu.collegeName}
+                  degree={edu.degree}
+                  stream={edu.stream}
+                  graduated={edu.graduated}
+                  graduationYear={edu.graduationYear}
+                  registerNumber={edu.registerNumber}
+                />
+              </div>
+            ))}
           </div>
-        </ProfileCard>
+        </div>
+      </ProfileCard>
 
 
       <ProfileCard CardName="status">
-        <h3  style={{ margin: "0 0 12px 0" }}>Status:</h3>
+        <h3 style={{ margin: "0 0 12px 0" }}>Status:</h3>
         {status === "Working" && !statusData ? (
-          <div style={{paddingRight:"10px"}}>
-         
-              <br />
-              <h4>{status}</h4>
-              <div style={{ backgroundColor: "#f2f2f2", maxWidth: "80rem" }}>
-                <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
-                  <br />
-                  <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
-                    Help Your Friends Just By Answering The Below Questions
-                  </h2>
-                  <Form.Group className="mb-3" controlId="formBasicSkills">
-                    <Form.Label style={{ color: "black" }}>
-                      <b>What Helped You Secure A Job?</b>
-                    </Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      placeholder="Skills"
-                      name="skills"
-                      value={formData.skills}
-                      onChange={handleData}
-                    />
-                  </Form.Group>
-                  <Form.Group className="mb-3" controlId="formBasicTips">
-                    <Form.Label style={{ color: "black" }}>
-                      <b>
-                        What Tips Do You Have For Students From Your College To
-                        Prepare For Job Interview?
-                      </b>
-                    </Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      placeholder="Tips"
-                      name="tips"
-                      value={formData.tips}
-                      onChange={handleData}
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    style={{ marginTop: "1rem", marginBottom: "2rem" }}
-                  >
-                    Submit
-                  </Button>
-                </Form>
-              </div>
-          
+          <div style={{ paddingRight: "10px" }}>
+
+            <br />
+            <h4>{status}</h4>
+            <div style={{ backgroundColor: "#f2f2f2", maxWidth: "80rem" }}>
+              <Form style={{ margin: "2rem" }} onSubmit={handleStatusSubmit}>
+                <br />
+                <h2 style={{ fontSize: "1.5rem", marginBottom: "2rem" }}>
+                  Help Your Friends Just By Answering The Below Questions
+                </h2>
+                <Form.Group className="mb-3" controlId="formBasicSkills">
+                  <Form.Label style={{ color: "black" }}>
+                    <b>What Helped You Secure A Job?</b>
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Skills"
+                    name="skills"
+                    value={formData.skills}
+                    onChange={handleData}
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicTips">
+                  <Form.Label style={{ color: "black" }}>
+                    <b>
+                      What Tips Do You Have For Students From Your College To
+                      Prepare For Job Interview?
+                    </b>
+                  </Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Tips"
+                    name="tips"
+                    value={formData.tips}
+                    onChange={handleData}
+                  />
+                </Form.Group>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  style={{ marginTop: "1rem", marginBottom: "2rem" }}
+                >
+                  Submit
+                </Button>
+              </Form>
+            </div>
+
           </div>
         ) : status === "Working" && statusData ? (
-          <div style={{paddingRight:"10px"}}>
+          <div style={{ paddingRight: "10px" }}>
             <br />
             <h4>{status}</h4>
             <br />
@@ -585,66 +585,66 @@ const ProfileDetails = () => {
             borderRadius: 2,
             overflowX: "auto",
             maxWidth: "100%",
-            boxShadow: 1, 
+            boxShadow: 1,
           }}
         >
           {/* <Typography variant="h6" gutterBottom className="mb-3">
             Added Certifications
           </Typography> */}
-          <TableContainer  sx={{ borderRadius: '10px', boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",}} >
+          <TableContainer sx={{ borderRadius: '10px', boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)", }} >
             <Table
-                sx={{
-                  borderCollapse: "collapse",
-                  width: "100%",
-                  
-                }}
-              >
-                <TableHead sx={{ backgroundColor: "#CCCCFF", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"}}>
-                  <TableRow>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      Certificate Name
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      Issued By
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      Issued On
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      Start Date
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      End Date
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
-                      Expiry Date
-                    </TableCell>
+              sx={{
+                borderCollapse: "collapse",
+                width: "100%",
 
-                    <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
-                      Actions
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {certificationItems.map((item) => (
-                    <CertificateDisplay
-                      key={item._id}
-                      id={item._id}
-                      certificationName={item.certificationName}
-                      issuedBy={item.issuedBy}
-                      certificateIssuedDate={item.certificateIssuedDate}
-                      startDate={item.startDate}
-                      endDate={item.endDate}
-                      expiryDate={item.expiryDate}
-                      certificateId={item.certificateId}
-                      approval={item.approval}
-                      name={data.name}
-                      state={"user"}
-                    />
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+              }}
+            >
+              <TableHead sx={{ backgroundColor: "#a3a3b7ff", boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)" }}>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    Certificate Name
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    Issued By
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    Issued On
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    Start Date
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    End Date
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", width: "14%" }}>
+                    Expiry Date
+                  </TableCell>
+
+                  <TableCell sx={{ fontWeight: "bold", width: "16%" }}>
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {certificationItems.map((item) => (
+                  <CertificateDisplay
+                    key={item._id}
+                    id={item._id}
+                    certificationName={item.certificationName}
+                    issuedBy={item.issuedBy}
+                    certificateIssuedDate={item.certificateIssuedDate}
+                    startDate={item.startDate}
+                    endDate={item.endDate}
+                    expiryDate={item.expiryDate}
+                    certificateId={item.certificateId}
+                    approval={item.approval}
+                    name={data.name}
+                    state={"user"}
+                  />
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </ProfileCard>
 

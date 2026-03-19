@@ -79,7 +79,7 @@ const ProjectItems = (props) => {
   return (
     <div
       style={{
-        backgroundColor: "#CCCCFF",
+        backgroundColor: "#b8b8c1ff",
         padding: "1em",
         borderRadius: "10px",
         marginRight: "20px",
@@ -113,7 +113,7 @@ const ProjectItems = (props) => {
         <p>{props.domain}</p>
       </div>
 
-     
+
       {props.startDate && props.endDate && (
         <div>
           <h4>Project Duration:</h4>
@@ -137,7 +137,7 @@ const ProjectItems = (props) => {
 
       <div>
         <h4>Project Description:</h4>
-        <p style={{textAlign: "justify"}}>{props.description}</p>
+        <p style={{ textAlign: "justify" }}>{props.description}</p>
       </div>
 
       {isEdit && (

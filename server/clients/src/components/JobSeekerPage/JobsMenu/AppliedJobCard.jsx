@@ -1,173 +1,129 @@
-// import { Box, Button } from "@mui/material";
-// import React from "react";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-// import ApartmentIcon from "@mui/icons-material/Apartment";
-// import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-// import DateRangeIcon from "@mui/icons-material/DateRange";
-// import { Link } from "react-router-dom";
-// const centerItems = {
-//   display: "flex",
-//   justifyContent: "flex-start",
-//   alignItems: "center",
-//   gap: "10px",
-//   margin: "0.5rem 0",
-// };
-
-// const AppliedJobCard = ({ item, skillofUser }) => {
-//   return (
-//     <div className="applied-job-card">
-//       <Box
-//         key={Math.random() * 0.9999}
-//         sx={{
-//           backgroundColor: "white",
-//           padding: "1rem",
-//           border: "1px solid black",
-//           display: "inline-block",
-//           margin: "1rem",
-//           borderRadius: "10px",
-//           width:"20vw"
-//         }}
-//       >
-//         {/* Heading */}
-//         <Box>
-//           <h3>
-//             {" "}
-//             {item.roleName
-//               ? item.roleName.length <= 14
-//                 ? item.roleName
-//                 : item.roleName.slice(0, 12) + "..."
-//               : ""}{" "}
-//             <div
-//               style={{
-//                 width: "10px",
-//                 height: "10px",
-//                 background: `${item.isClosed ? "red" : "#03C988"}`,
-//                 borderRadius: "50%",
-//                 display: "inline-block",
-//               }}
-//             ></div>
-//           </h3>
-//           <h4>
-//             {item.companyName
-//               ? item.companyName.length <= 14
-//                 ? item.companyName
-//                 : item.companyName.slice(0, 14) + "..."
-//               : ""}{" "}
-//           </h4>
-//         </Box>
-//         {/* Horizontal Columns */}
-//         <Box>
-//           <Box className='center-items'>
-//             {" "}
-//             <WorkOutlineIcon /> {item.experience} years
-//           </Box>
-//           <Box className='center-items'>
-//             <CurrencyRupeeIcon />
-//             {item.salary}
-//           </Box>
-//         </Box>
-//         <Box className='center-items'>
-//           <ApartmentIcon />
-//           {item.location}
-//         </Box>
-//         <Box
-//           sx={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             margin: "0.5rem 0",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Box className='center-items'>
-//             <DateRangeIcon />
-//             {new Date(item.createdAt).toLocaleDateString()}
-//           </Box>
-
-//           <Box>
-            
-//           </Box>
-//         </Box>
-//         <Box>
-//           <p style={{ color: "grey" }}>
-//             {`${
-//               item.appliedUsers.length !== 0
-//                 ? item.appliedUsers.length + " Applications received"
-//                 : "None applied"
-//             } `}
-//           </p>
-//           <Link to={`/user/applied/${item._id}`}>
-//               <p>View</p>
-//             </Link>
-//         </Box>
-//       </Box>
-//     </div>
-//   );
-// };
-
-// export default AppliedJobCard;
-
-
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Stack,
+  Divider,
+  Avatar
+} from "@mui/material";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import DateRangeIcon from "@mui/icons-material/DateRange";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { Link } from "react-router-dom";
 
 const AppliedJobCard = ({ item, skillofUser }) => {
   return (
-    <div className="container mt-4">
-      <div className="card">
-        <div className="card-body">
-          {/* Heading */}
-          <h3 className="card-title">
-            {item.roleName
-              ? item.roleName.length <= 14
-                ? item.roleName
-                : item.roleName.slice(0, 12) + "..."
-              : ""}
-            <span
-              className="dot ms-2"
-              style={{
-                background: `${item.isClosed ? "red" : "#03C988"}`,
+    <Paper
+      elevation={0}
+      sx={{
+        p: 3,
+        borderRadius: 4,
+        border: "1px solid #eef2f6",
+        bgcolor: "#ffffff",
+        transition: "all 0.3s ease",
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        "&:hover": {
+          boxShadow: "0 12px 30px -10px rgba(0,0,0,0.08)",
+          borderColor: "#e2e8f0",
+          transform: "translateY(-4px)"
+        }
+      }}
+    >
+      {/* Top Header */}
+      <Stack direction="row" spacing={2} sx={{ mb: 2.5 }} alignItems="flex-start">
+        <Avatar
+          variant="rounded"
+          sx={{
+            width: 48,
+            height: 48,
+            bgcolor: "#f8fafc",
+            color: "#155dfc",
+            fontWeight: 800,
+            borderRadius: 2.5,
+            border: '1px solid #f1f5f9'
+          }}
+        >
+          {item.companyName ? item.companyName[0] : "?"}
+        </Avatar>
+        <Box sx={{ flex: 1 }}>
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6" fontWeight="800" sx={{ color: "#1e293b", letterSpacing: "-0.01em", fontSize: '1.1rem' }}>
+              {item.roleName}
+            </Typography>
+            <Box
+              sx={{
+                width: 8,
+                height: 8,
+                borderRadius: "50%",
+                bgcolor: item.isClosed ? "#ef4444" : "#10b981",
+                boxShadow: item.isClosed ? "0 0 0 4px rgba(239, 68, 68, 0.1)" : "0 0 0 4px rgba(16, 185, 129, 0.1)"
               }}
-            ></span>
-          </h3>
-          <h4 className="card-subtitle mb-2 text-muted">
-            {item.companyName
-              ? item.companyName.length <= 14
-                ? item.companyName
-                : item.companyName.slice(0, 14) + "..."
-              : ""}
-          </h4>
-          {/* Horizontal Columns */}
-          <div className="d-flex justify-content-between mb-2">
-            <div className="center-items">
-              <WorkOutlineIcon /> {item.experience} years
-            </div>
-            <div className="center-items">
-              <CurrencyRupeeIcon /> {item.salary}
-            </div>
-          </div>
-          <div className="center-items">
-            <ApartmentIcon /> {item.location}
-          </div>
-          <div className="d-flex justify-content-between mb-2">
-            <div className="center-items">
-              <DateRangeIcon />{new Date(item.createdAt).toLocaleDateString()}
-            </div>
-          </div>
-          <p className="card-text text-muted">
-            {item.appliedUsers.length !== 0
-              ? item.appliedUsers.length + " Applications received"
-              : "None applied"}
-          </p>
-          <Link to={`/user/applied/${item._id}`} className="card-link">View</Link>
-        </div>
-      </div>
-    </div>
+            />
+          </Stack>
+          <Typography variant="body2" sx={{ color: "#64748b", fontWeight: 600 }}>
+            {item.companyName}
+          </Typography>
+        </Box>
+      </Stack>
+
+      <Divider sx={{ mb: 2.5, borderColor: '#f1f5f9' }} />
+
+      {/* Details Grid */}
+      <Box sx={{ flexGrow: 1 }}>
+        <Stack spacing={1.5}>
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ color: "#64748b" }}>
+            <WorkOutlineIcon sx={{ fontSize: 18 }} />
+            <Typography variant="body2" fontWeight="500">{item.experience} Years Exp</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ color: "#64748b" }}>
+            <CurrencyRupeeIcon sx={{ fontSize: 18 }} />
+            <Typography variant="body2" fontWeight="500">{item.salary}</Typography>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1.5} sx={{ color: "#64748b" }}>
+            <LocationOnIcon sx={{ fontSize: 18 }} />
+            <Typography variant="body2" fontWeight="500">{item.location}</Typography>
+          </Stack>
+        </Stack>
+      </Box>
+
+      {/* Footer Actions */}
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mt: 3, pt: 2, borderTop: '1px solid #f8fafc' }}
+      >
+        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ color: "#94a3b8" }}>
+          <CalendarTodayIcon sx={{ fontSize: 14 }} />
+          <Typography variant="caption" fontWeight="600">
+            {new Date(item.createdAt).toLocaleDateString()}
+          </Typography>
+        </Stack>
+
+        <Button
+          component={Link}
+          to={`/user/applied/${item._id}`}
+          size="small"
+          sx={{
+            textTransform: 'none',
+            fontWeight: 700,
+            borderRadius: 2,
+            px: 2,
+            color: '#155dfc',
+            '&:hover': { bgcolor: 'rgba(21, 93, 252, 0.05)' }
+          }}
+        >
+          View Details
+        </Button>
+      </Stack>
+    </Paper>
   );
 };
 

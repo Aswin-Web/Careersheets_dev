@@ -1,20 +1,23 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-const H = () => {
-  return (
-    <div>
-      <Outlet />
-    </div>
-  );
-};
+import { Box } from '@mui/material';
 
 const RightSideBar = () => {
   return (
-    <div className="RightSide" id='right_id'>
-      <H/>
-    </div>
+    <Box
+      id='right_id'
+      sx={{
+        width: "100%",
+        maxWidth: "1400px",
+        mx: "auto",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100%"
+      }}
+    >
+      <Outlet />
+    </Box>
   );
 }
 
- 
-export default RightSideBar
+export default RightSideBar;

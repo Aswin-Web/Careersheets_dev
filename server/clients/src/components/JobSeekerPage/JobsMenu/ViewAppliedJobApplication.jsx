@@ -1,253 +1,233 @@
-import { Box, Button, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Typography,
+  Container,
+  Paper,
+  Stack,
+  Divider,
+  Grid,
+  Chip,
+  Avatar
+} from "@mui/material";
 
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import DateRangeIcon from "@mui/icons-material/DateRange";
-import React, { useEffect, useState } from "react";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { AddSingleApplication } from "../../../redux/reducers/application.data";
 import { REACT_APP_SERVER_URL } from "../../../config";
 
-const centerItems = {
-  display: "flex",
-  justifyContent: "flex-start",
-  alignItems: "center",
-  gap: "10px",
-  margin: "0.5rem 0",
-};
 const ViewAppliedJobApplications = () => {
   const [views, setviews] = useState(0);
-  const [currentJob, setCurrentJob] = useState([]);
-  const dispatch = useDispatch();
+  const [currentJob, setCurrentJob] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
-  const allJobs = useSelector((state) => state.allJobsUser.value);
-  // const currentJob = allJobs.filter((x) => x._id === jobbID);
-  const newState = useSelector((state) => state);
 
   const saveApplyHistory = async () => {
-    const data = await axios.get(
-      `${REACT_APP_SERVER_URL + `/user/appliedjobs/${jobbID}`}`,
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage
-            .getItem("user")
-            .slice(1, localStorage.getItem("user").length - 1)}`,
-        },
-      }
-    );
-    const view = await axios.get(
-      `${REACT_APP_SERVER_URL + `/user/history/${jobbID}`}`,
-      {
-        headers: {
-          "Content-type": "application/json",
-          Authorization: `Bearer ${localStorage
-            .getItem("user")
-            .slice(1, localStorage.getItem("user").length - 1)}`,
-        },
-      }
-    );
-    console.log(data,`${REACT_APP_SERVER_URL + `/user/history/${jobbID}`}`)
-    setviews(view.data.views);
-    console.log(data.data.jobs);
-    setCurrentJob([...data.data.jobs])
+    try {
+      const token = localStorage.getItem("user").replace(/"/g, '');
+      const data = await axios.get(
+        `${REACT_APP_SERVER_URL}/user/appliedjobs/${jobbID}`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const view = await axios.get(
+        `${REACT_APP_SERVER_URL}/user/history/${jobbID}`,
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setviews(view.data.views);
+      setCurrentJob(data.data.jobs[0]);
+    } catch (error) {
+      console.error("Error fetching job details:", error);
+    }
   };
 
   useEffect(() => {
-    try {
-      
-      saveApplyHistory();
-    } catch (error) {
-      console.log(error)
-    }
-  }, []);
+    saveApplyHistory();
+  }, [jobbID]);
 
-// return (<div>THis Route</div>)
+  if (!currentJob) return (
+    <Box sx={{ py: 10, textAlign: 'center', bgcolor: "#f1f5f9", minHeight: '100vh' }}>
+      <Typography variant="h6" color="text.secondary">Loading application details...</Typography>
+    </Box>
+  );
 
   return (
-    <Box
-      sx={{
-        padding: "1rem",
-      }}
-    >
-      {currentJob.length !== 0 ? (
-        <Box
-          sx={{
-            backgroundColor: "white",
-            padding: "1rem",
-            border: "1px solid black",
+    <Box sx={{ bgcolor: "#f1f5f9", minHeight: '100vh', py: 4 }}>
+      <Container maxWidth="md">
+        {/* Back Button */}
+        <Button
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate(-1)}
+          sx={{ mb: 3, textTransform: 'none', fontWeight: 600, color: '#64748b' }}
+        >
+          Back to Applications
+        </Button>
 
-            margin: "1rem",
-            borderRadius: "10px",
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 3, md: 5 },
+            borderRadius: 4,
+            border: "1px solid #eef2f6",
+            bgcolor: "#ffffff",
+            boxShadow: "0 10px 40px -15px rgba(0,0,0,0.05)"
           }}
         >
-          {/* Heading */}
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <h4>{currentJob[0].companyName}</h4>
+          {/* Title & Company */}
+          <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 4 }}>
             <Box>
-              <p style={{ color: "grey" }}>{`${views} Views`}</p>
+              <Typography variant="h4" fontWeight="800" sx={{ color: "#1e293b", letterSpacing: "-0.03em", mb: 0.5, fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
+                {currentJob.roleName}
+              </Typography>
+              <Typography variant="body1" sx={{ color: "#64748b", fontWeight: 600 }}>
+                {currentJob.companyName}
+              </Typography>
             </Box>
-          </Box>
-          {/* Horizontal Columns */}
-          <Box>
-            <Box sx={centerItems}>
-              {" "}
-              <WorkOutlineIcon />
-              {currentJob[0].experience} years
-            </Box>
-            <Box sx={centerItems}>
-              <CurrencyRupeeIcon />
-              {currentJob[0].salary}
-            </Box>
-          </Box>
-          <Box sx={centerItems}>
-            <ApartmentIcon />
-            {currentJob[0].location}
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              margin: "0.5rem 0",
-              alignItems: "center",
-            }}
-          >
-            <Box sx={centerItems}>
-              <DateRangeIcon />
-              {new Date().toLocaleDateString()}
-            </Box>
-            {/* <Box>
-            <Button>View</Button>
-          </Box> */}
-          </Box>
-          {/* About Us */}
-          <Box>
-            <h3>About Us</h3>
-            <br />
-            <p>{currentJob[0].companyDescription}</p>
-            <br />
-          </Box>
-          {/* Job Description */}
-          <Box>
-            <h3>Job Description</h3>
-            <br />
-            <p>{currentJob[0].JobDescription}</p>
-            <br />
+            <Stack direction="row" spacing={1} alignItems="center" sx={{ color: "#94a3b8" }}>
+              <VisibilityIcon sx={{ fontSize: 18 }} />
+              <Typography variant="caption" fontWeight="700">{views} Views</Typography>
+            </Stack>
+          </Stack>
 
-            <br />
-            <Box>
-              <h4>Responsibilities : </h4>
-              <p> {currentJob[0].Responsibilites}</p>
-            </Box>
-            <br />
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Skills :{" "}
-              </Typography>
-              <Typography variant="p">
-                {" "}
-                {currentJob[0].SkillsRequired}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Role :{" "}
-              </Typography>
-              <Typography variant="p"> {currentJob[0].roleName}</Typography>
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Industry Type :{" "}
-              </Typography>
-              <Typography variant="p"> {currentJob[0].IndustryType}</Typography>
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Department :{" "}
-              </Typography>
-              <Typography variant="p">
-                {currentJob[0].departmentType}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Employment Type:
-              </Typography>
-              <Typography variant="p">
-                {" "}
-                {currentJob[0].employmentType}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography
-                sx={{
-                  display: "inline-block",
-                  fontWeight: 600,
-                  fontSize: "1rem",
-                }}
-              >
-                Education UG:
-              </Typography>
-              <Typography variant="p"> {currentJob[0].education}</Typography>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Button
-              sx={{
-                color: "black",
-                border: "1px solid black",
-                backgroundColor: "#27E1C1",
+          {/* Quick Metadata Row */}
+          <Grid container spacing={2} sx={{ mb: 5 }}>
+            <Grid item xs={6} sm={3}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ color: '#64748b' }}>
+                <WorkOutlineIcon sx={{ fontSize: 18 }} />
+                <Typography variant="body2" fontWeight="600">{currentJob.experience} Years</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ color: '#64748b' }}>
+                <CurrencyRupeeIcon sx={{ fontSize: 18 }} />
+                <Typography variant="body2" fontWeight="600">{currentJob.salary}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ color: '#64748b' }}>
+                <LocationOnIcon sx={{ fontSize: 18 }} />
+                <Typography variant="body2" fontWeight="600">{currentJob.location}</Typography>
+              </Stack>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ color: '#64748b' }}>
+                <CalendarTodayIcon sx={{ fontSize: 18 }} />
+                <Typography variant="body2" fontWeight="600">{new Date(currentJob.updatedAt).toLocaleDateString()}</Typography>
+              </Stack>
+            </Grid>
+          </Grid>
 
-              }}
-              disabled
-            >
-              Applied on {`${new Date(currentJob[0].updatedAt).toLocaleDateString ()}`}
-            </Button>
+          <Stack spacing={4}>
+            {/* About Company */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#1e293b', mb: 1 }}>About Company</Typography>
+              <Typography variant="body2" sx={{ color: '#475569', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                {currentJob.companyDescription}
+              </Typography>
+            </Box>
+
+            {/* Job Description */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#1e293b', mb: 1 }}>Job Description</Typography>
+              <Typography variant="body2" sx={{ color: '#475569', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                {currentJob.JobDescription}
+              </Typography>
+            </Box>
+
+            {/* Responsibilities */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#1e293b', mb: 1 }}>Responsibilities</Typography>
+              <Typography variant="body2" sx={{ color: '#475569', lineHeight: 1.7, whiteSpace: 'pre-line' }}>
+                {currentJob.Responsibilites}
+              </Typography>
+            </Box>
+
+            {/* Required Skills */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#1e293b', mb: 2 }}>Required Skills</Typography>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {currentJob.SkillsRequired?.split(',').map((skill, index) => (
+                  <Chip
+                    key={index}
+                    label={skill.trim()}
+                    variant="outlined"
+                    sx={{
+                      borderRadius: 10,
+                      fontWeight: 600,
+                      color: '#64748b',
+                      borderColor: '#e2e8f0',
+                      fontSize: '0.75rem'
+                    }}
+                  />
+                ))}
+              </Stack>
+            </Box>
+
+            {/* Additional Details Grid */}
+            <Box>
+              <Typography variant="subtitle1" fontWeight="800" sx={{ color: '#1e293b', mb: 2 }}>Additional Details</Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.5}>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Industry</Typography>
+                      <Typography variant="body2" fontWeight="600" sx={{ color: '#334155' }}>{currentJob.IndustryType}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Employment</Typography>
+                      <Typography variant="body2" fontWeight="600" sx={{ color: '#334155' }}>{currentJob.employmentType}</Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Stack spacing={1.5}>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Department</Typography>
+                      <Typography variant="body2" fontWeight="600" sx={{ color: '#334155' }}>{currentJob.departmentType}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Education</Typography>
+                      <Typography variant="body2" fontWeight="600" sx={{ color: '#334155' }}>{currentJob.education}</Typography>
+                    </Box>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Box>
+          </Stack>
+
+          {/* Status Badge */}
+          <Box sx={{ mt: 6, pt: 3, borderTop: '1px solid #f1f5f9' }}>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Avatar sx={{ bgcolor: 'rgba(16, 185, 129, 0.1)', color: '#10b981', width: 44, height: 44 }}>
+                <CalendarTodayIcon />
+              </Avatar>
+              <Box>
+                <Typography variant="caption" sx={{ color: '#94a3b8', fontWeight: 800, textTransform: 'uppercase' }}>Application Status</Typography>
+                <Typography variant="body1" fontWeight="800" sx={{ color: '#1e293b' }}>
+                  Applied on {new Date(currentJob.updatedAt).toLocaleDateString()}
+                </Typography>
+              </Box>
+            </Stack>
           </Box>
-        </Box>
-      ) : (
-        <></>
-      )}
+        </Paper>
+      </Container>
     </Box>
   );
 };

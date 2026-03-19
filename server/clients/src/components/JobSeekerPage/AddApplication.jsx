@@ -71,7 +71,7 @@ export default function FormPropsTextFields(props) {
     <Box
       component="form"
       sx={{
-        backgroundColor: "white",
+        backgroundColor: "#f4f4f4ff",
 
         padding: "25px",
         "& .MuiTextField-root": { m: 1, width: "25ch" },
