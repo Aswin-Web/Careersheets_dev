@@ -607,15 +607,28 @@ const EditJobOppourtunity = () => {
       {/* --------------------------------------------------------------------------------------- */}
       <br />
       <TextField
-        fullWidth
-        name="experience"
-        label="Experience"
-        type="number"
-        value={currentJob.experience}
-        onChange={(e) =>
-          setjobss({ ...currentJob, experience: e.target.value })
-        }
-      />
+  fullWidth
+  name="experience"
+  label="Experience"
+  type="number"
+  value={currentJob.experience}
+  onChange={(e) => {
+    const value = e.target.value;
+
+    if (value < 0) {
+      alert("Experience cannot be negative");
+      return;
+    }
+
+    if (value > 50) {
+      alert("Experience cannot be more than 50 years");
+      return;
+    }
+
+    setjobss({ ...currentJob, experience: value });
+  }}
+  inputProps={{ min: 0, max: 50 }}
+/>
       <br />
       <br />
       <TextField

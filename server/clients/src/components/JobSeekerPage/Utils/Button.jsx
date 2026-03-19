@@ -6,13 +6,13 @@ const Buttons = (props) => {
   return (
 
     <Button
-              variant={variant}
+              // variant={variant}
               sx={{
-                backgroundColor: "#E90064",
-                color:'white',
-                "&:hover": {
-                  backgroundColor: "#B3005E",
-                },
+                // backgroundColor: "#E90064",
+                // color:'white',
+                // "&:hover": {
+                //   backgroundColor: "#B3005E",
+                // },
               }}
               onClick={onClick ? onClick : null} 
               disabled={buttonType}

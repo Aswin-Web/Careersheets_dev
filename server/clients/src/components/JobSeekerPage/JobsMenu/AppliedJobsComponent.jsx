@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddJobsUser } from "../../../redux/reducers/JobsUsers";
 import AppliedJobCard from "./AppliedJobCard";
 import { REACT_APP_SERVER_URL } from "../../../config";
+import { Container, Grid } from "@mui/material";
 
 const AppliedJobsMenuComponent = () => {
   const [appliedJobs, setAppliedJobs] = useState([]);
@@ -37,34 +38,37 @@ const AppliedJobsMenuComponent = () => {
   // console.log(useSelector((state) => state));
 
   return (
-    <Box>
-      <Box
-        sx={{
-          margin: "1rem",
-          backgroundColor: "white",
-          minHeight: "80vh",
-          borderRadius: "10px",
-          padding: "1rem",
-        }}
-      >
-        <Typography variant="h6">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Box sx={{ mb: 6, textAlign: 'center' }}>
+        <Typography
+          variant="h3"
+          fontWeight="800"
+          sx={{
+            color: '#1e293b',
+            letterSpacing: '-0.03em',
+            mb: 1.5,
+            fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' }
+          }}
+        >
           Applied Jobs
         </Typography>
-        {appliedJobs.length === 0 ? (
-          <p>You Have not applied for any jobs</p>
-        ) : (
-          <p></p>
-        )}
-        <Box sx={{  display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: "1rem", }}>
-          {appliedJobs.map((item) => (
-            <AppliedJobCard item={item} skillofUser={skills} key={item._id} />
-          ))}
-        </Box>
-        {/* <JobCard /> */}
+        <Typography variant="h6" sx={{ color: '#64748b', fontWeight: 500, maxWidth: 800, mx: 'auto' }}>
+          {appliedJobs.length === 0 ? (
+            "You haven't applied for any jobs yet. Start exploring opportunities!"
+          ) : (
+            `You have applied for ${appliedJobs.length} positions.`
+          )}
+        </Typography>
       </Box>
-    </Box>
+
+      <Grid container spacing={4} justifyContent="center">
+        {appliedJobs.map((item) => (
+          <Grid item xs={12} sm={6} lg={4} key={item._id}>
+            <AppliedJobCard item={item} skillofUser={skills} />
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 };
 
