@@ -57,12 +57,6 @@ const ViewRecruiterJobs = () => {
   // Use separate feedback state for each user
   const [feedbacks, setFeedbacks] = useState({});
 
-  useEffect(() => {
-    if (jobbID) {
-      GetJobInfo();
-    }
-  }, [jobbID]);
-
   const GetJobInfo = useCallback(async () => {
     try {
       const jobResponse = await axios.get(
@@ -107,6 +101,12 @@ const ViewRecruiterJobs = () => {
       setError({ isError: true, msg: "Could not load job data." });
     }
   }, [jobbID]);
+
+  useEffect(() => {
+    if (jobbID) {
+      GetJobInfo();
+    }
+  }, [jobbID, GetJobInfo]);
 
   const handleStatusChange = async (applicationId, newStatus) => {
     if (!applicationId) {

@@ -1,5 +1,5 @@
 import { Box, Stack, Tooltip, IconButton, Typography, Fade } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import { projectActions } from "../../redux/reducers/project-data";
 import { skillActions } from "../../redux/reducers/Skill-data";
 import { statusActions } from "../../redux/reducers/status-data";
 import { roleActions } from "../../redux/reducers/role-data";
-import jwt from "jwt-decode";
 import { REACT_APP_SERVER_URL } from "../../config";
 
 // Icons
@@ -22,8 +21,6 @@ import ModelTrainingIcon from "@mui/icons-material/ModelTraining";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
-import PushPinIcon from "@mui/icons-material/PushPin";
-import PushPinOutlinedIcon from "@mui/icons-material/PushPinOutlined";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -49,7 +46,7 @@ const LeftSideBar = ({ isOpen, setIsOpen }) => {
   const [admin, setAdmin] = useState(false);
   const location = useLocation();
 
-  const getApplication = async () => {
+  const getApplication = useCallback(async () => {
     if (data.length === 0) {
       const { data } = await axios.get(
         `${REACT_APP_SERVER_URL}/user/application`,
@@ -63,9 +60,9 @@ const LeftSideBar = ({ isOpen, setIsOpen }) => {
       dispatch(AddApplication([...data]));
       return data;
     }
-  };
+  }, [data.length, dispatch, token]);
 
-  const getJobs = async () => {
+  const getJobs = useCallback(async () => {
     const { data } = await axios.get(
       `${REACT_APP_SERVER_URL + "/user/jobs"}`,
       {
@@ -78,7 +75,7 @@ const LeftSideBar = ({ isOpen, setIsOpen }) => {
       }
     );
     dispatch(AddJobsUser(data.jobs));
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     getApplication();
@@ -99,7 +96,7 @@ const LeftSideBar = ({ isOpen, setIsOpen }) => {
         }
       }
     });
-  }, []);
+  }, [dispatch, getApplication, getJobs]);
 
   const navItems = [
     { path: "/user", icon: <DashboardIcon />, label: "Status" },

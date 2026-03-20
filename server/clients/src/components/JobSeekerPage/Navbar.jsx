@@ -14,7 +14,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Avatar, Tooltip, Stack } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ShareIcon from "@mui/icons-material/Share";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
@@ -35,7 +34,6 @@ import {
   WorkOutline,
   CheckCircleOutline,
   AdminPanelSettings,
-  AddCircleOutline as AddCircleOutlineIcon,
 } from "@mui/icons-material";
 import Popup from "./Utils/Popup";
 import AddApplication from "./AddApplication";
