@@ -1,4 +1,4 @@
-import { Box, Typography, Stack, Container } from '@mui/material'
+import { Typography, Stack, Container } from '@mui/material'
 import React from 'react'
 
 const DefaultText = () => {

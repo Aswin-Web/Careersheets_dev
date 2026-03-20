@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -6,7 +6,6 @@ import {
   Container,
   Paper,
   Stack,
-  Divider,
   Grid,
   Chip
 } from "@mui/material";
@@ -38,7 +37,7 @@ const ViewJobApplications = () => {
   const searchParams = new URLSearchParams(location.search);
   const disableApplyButton = searchParams.get("disableApplyButton");
 
-  const saveApplyHistory = async () => {
+  const saveApplyHistory = useCallback(async () => {
     try {
       const token = localStorage.getItem("user").replace(/"/g, '');
       const data = await axios.get(
@@ -54,13 +53,13 @@ const ViewJobApplications = () => {
     } catch (error) {
       console.error("Error saving history:", error);
     }
-  };
+  }, [jobbID]);
 
   useEffect(() => {
     if (currentJob) {
       saveApplyHistory();
     }
-  }, [currentJob]);
+  }, [currentJob, saveApplyHistory]);
 
   const handleApply = async () => {
     try {

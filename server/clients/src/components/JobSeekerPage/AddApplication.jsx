@@ -1,13 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import DropDown from "./Utils/Dropdown";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import ReusableDate from "./Utils/Date";
-import ResuableButton from "./Utils/Button";
-import ResuableStatus from "./Utils/AddStatus";
 import axios from "axios";
-import config from "../../utils/headers";
 import { useSelector, useDispatch } from "react-redux";
 import { AddApplication } from "../../redux/reducers/application.data";
 import { ShowNotification } from "../../redux/reducers/notification.data";
@@ -17,10 +13,6 @@ export default function FormPropsTextFields(props) {
   const dispatch = useDispatch();
 
   const token = useSelector((state) => state.auth.value);
-  const [buttonDisable, setButtonDisable] = React.useState(false);
-  const [status, setStatus] = React.useState([]);
-  const [statusValue, setStatusValue] = React.useState([]);
-  const val = [];
 
   // Forms input
   const [company, setcompany] = React.useState("");
@@ -33,11 +25,6 @@ export default function FormPropsTextFields(props) {
 
   const handleDateChange = (date) => {
     setapplicationDate(date);
-  };
-
-  DataTransfer = (data) => {
-    setButtonDisable(false);
-    return val.push(data);
   };
 
   console.log("data from ad application", company,designation, whereApply, joblink, applicationDate,location);
@@ -57,16 +44,6 @@ export default function FormPropsTextFields(props) {
       return false;
     }
   };
-  const handleInputField = () => {
-    if (!buttonDisable) {
-      setStatus([
-        ...status,
-        <ResuableStatus DataTransfer={DataTransfer} key={Date.now()} />,
-      ]);
-    }
-    return setButtonDisable(true);
-  };
-
   return (
     <Box
       component="form"
