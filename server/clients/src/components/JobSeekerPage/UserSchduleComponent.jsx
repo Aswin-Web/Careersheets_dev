@@ -1,4 +1,4 @@
-import { Box, Button, Typography, Container, Paper } from "@mui/material";
+import { Box, Button, Typography, Container } from "@mui/material";
 import React from "react";
 import Card from "./UserSchduleCards";
 import { useSelector } from "react-redux";

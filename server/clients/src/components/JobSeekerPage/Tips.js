@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { REACT_APP_SERVER_URL } from "../../config";
 import { useSelector } from "react-redux";
@@ -10,8 +10,7 @@ import {
     Paper,
     Avatar,
     Stack,
-    Divider,
-    Tooltip
+    Divider
 } from "@mui/material";
 import StarIcon from '@mui/icons-material/Star';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -19,22 +18,16 @@ import { ToastContainer, toast } from "react-toastify";
 
 const Tips = () => {
     const [data, setData] = useState([]);
-    const [value, setValue] = React.useState(2);
-    const [hover, setHover] = React.useState(-1);
 
     const labels = {
         0.5: 'Useless', 1: 'Useless+', 1.5: 'Poor', 2: 'Poor+', 2.5: 'Ok',
         3: 'Ok+', 3.5: 'Good', 4: 'Good+', 4.5: 'Excellent', 5: 'Excellent+',
     };
 
-    function getLabelText(value) {
-        return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
-    }
-
     const token = useSelector((state) => state.auth.value);
     const eduItems = useSelector((state) => state.edu.items);
 
-    const incrementViews = async (tipId) => {
+    const incrementViews = useCallback(async (tipId) => {
         try {
             await axios.put(`${REACT_APP_SERVER_URL}/user/status/incrementViews`, { tipId }, {
                 headers: {
@@ -45,9 +38,9 @@ const Tips = () => {
         } catch (error) {
             console.error("Error incrementing views:", error);
         }
-    };
+    }, [token]);
 
-    const handleGetStatus = async () => {
+    const handleGetStatus = useCallback(async () => {
         if (eduItems.length === 0) {
             setData([]);
         } else {
@@ -67,7 +60,7 @@ const Tips = () => {
                 console.error("Error fetching tips:", error);
             }
         }
-    };
+    }, [eduItems, token]);
 
     const handleSubmitRating = async (tipId, value) => {
         try {
@@ -98,7 +91,7 @@ const Tips = () => {
 
     useEffect(() => {
         handleGetStatus();
-    }, [eduItems]);
+    }, [handleGetStatus]);
 
     useEffect(() => {
         const incrementAllViews = async () => {
@@ -109,7 +102,7 @@ const Tips = () => {
         if (data.length > 0) {
             incrementAllViews();
         }
-    }, [data]);
+    }, [data, incrementViews]);
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>

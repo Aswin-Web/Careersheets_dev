@@ -319,7 +319,6 @@ import {
   MenuItem,
   Divider,
   InputAdornment,
-  Tooltip,
 } from "@mui/material";
 
 // Icons
@@ -329,7 +328,6 @@ import EventNoteIcon from "@mui/icons-material/EventNote";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneIcon from "@mui/icons-material/Phone";
 import NotesIcon from "@mui/icons-material/Notes";
-import VideoChatIcon from "@mui/icons-material/VideoChat";
 import BadgeIcon from "@mui/icons-material/Badge";
 
 // Redux & Routing

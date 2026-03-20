@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from "@mui/material";
 
 const Buttons = (props) => {
-    const {variant,content,buttonType,onClick} =props
+  const { content, buttonType, onClick } = props
   return (
 
     <Button

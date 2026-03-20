@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && react-scripts build",
+    "build": "react-dotenv && cross-env CI=false react-scripts build",
     "buildProduct": "(npm i) && (react-dotenv && react-scripts build && rm -rf '../src/build' && mv  build  '../src'  )",
     "backendbuild": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
@@ -79,6 +79,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.17"
   }
