@@ -5,12 +5,9 @@ import {
   Button,
   Stack,
   Avatar,
-  IconButton,
-  Tooltip,
   Chip
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CheckIcon from "@mui/icons-material/Check";
@@ -78,7 +75,7 @@ const StatusCircle = ({ active, completed, rejected, icon, label, statusText }) 
 
 const Cards = (props) => {
   const [view, setView] = React.useState(false);
-  const { _id, author, status, company, location, designation, updatedAt } = props.data;
+  const { _id, author, status, company, location, designation } = props.data;
 
   // Mapping stages to status history
   const stages = [

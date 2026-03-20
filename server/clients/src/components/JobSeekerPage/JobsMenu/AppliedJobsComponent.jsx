@@ -1,9 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import JobCard from "./JobCard";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { AddJobsUser } from "../../../redux/reducers/JobsUsers";
+import { useSelector } from "react-redux";
 import AppliedJobCard from "./AppliedJobCard";
 import { REACT_APP_SERVER_URL } from "../../../config";
 import { Container, Grid } from "@mui/material";

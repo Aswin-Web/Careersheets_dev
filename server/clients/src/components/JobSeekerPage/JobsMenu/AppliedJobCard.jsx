@@ -9,7 +9,6 @@ import {
   Avatar
 } from "@mui/material";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
-import ApartmentIcon from "@mui/icons-material/Apartment";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";

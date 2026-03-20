@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -6,7 +6,6 @@ import {
   Container,
   Paper,
   Stack,
-  Divider,
   Grid,
   Chip,
   Avatar
@@ -30,7 +29,7 @@ const ViewAppliedJobApplications = () => {
   const location = useLocation();
   const jobbID = location.pathname.split("/").pop();
 
-  const saveApplyHistory = async () => {
+  const saveApplyHistory = useCallback(async () => {
     try {
       const token = localStorage.getItem("user").replace(/"/g, '');
       const data = await axios.get(
@@ -56,11 +55,11 @@ const ViewAppliedJobApplications = () => {
     } catch (error) {
       console.error("Error fetching job details:", error);
     }
-  };
+  }, [jobbID]);
 
   useEffect(() => {
     saveApplyHistory();
-  }, [jobbID]);
+  }, [saveApplyHistory]);
 
   if (!currentJob) return (
     <Box sx={{ py: 10, textAlign: 'center', bgcolor: "#f1f5f9", minHeight: '100vh' }}>
