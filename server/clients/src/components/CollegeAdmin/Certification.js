@@ -10,8 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { applicationDetailAction } from "../../redux/reducers/applicationDetails";
 import CertificateDisplay from "../Profile/Certification/CertificateDisplay";
-///css file///
-import classes from "./ApplicationDetails.module.css";
 import { REACT_APP_SERVER_URL } from "../../config";
 import { certificateActions } from "../../redux/reducers/certificationInfo";
 
@@ -63,7 +61,6 @@ export default function Certification() {
       <Table
         sx={{
           borderCollapse: "collapse",
-          width: "100%",
           backgroundColor: "white",
           width:"98%",
           marginTop:"1rem"

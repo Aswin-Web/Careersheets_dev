@@ -13,7 +13,6 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { REACT_APP_SERVER_URL } from "../../config";
-import { rootShouldForwardProp } from "@mui/material/styles/styled";
 
 const CollegeAdminHome = () => {
   const navigate = useNavigate();
@@ -95,10 +94,7 @@ const CollegeAdminHome = () => {
           let rejected = 0;
           let pending = 0;
           let cleared = 0;
-          data.application.map((app) => {
-            {
-              /* console.log(app.status[app.status.length - 1]); */
-            }
+          data.application.forEach((app) => {
             if (app.status.length !== 0) {
               const { status } = app.status[app.status.length - 1];
               if (status === "Selected") {
