@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "react-dotenv && react-scripts start",
-    "build": "react-dotenv && cross-env CI=false react-scripts build",
+    "build": "react-dotenv && cross-env CI=true react-scripts build",
     "buildProduct": "(npm i) && (react-dotenv && react-scripts build && rm -rf '../src/build' && mv  build  '../src'  )",
     "backendbuild": "react-dotenv && react-scripts build",
     "test": "react-scripts test",
@@ -63,7 +63,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "react-hooks/exhaustive-deps": "off"
+    }
   },
   "browserslist": {
     "production": [

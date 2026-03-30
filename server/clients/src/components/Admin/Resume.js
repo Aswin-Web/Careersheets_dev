@@ -14,7 +14,6 @@ function Resume({ data }) {
           className="resume"
           style={{
             padding: "20px",
-            padding: "20px",
             paddingBottom: "50px",
             backgroundColor: "aliceblue",
             borderRadius: "2px",

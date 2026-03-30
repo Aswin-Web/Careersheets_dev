@@ -106,6 +106,7 @@ const CertificationDisplay = () => {
           <a
             href="https://www.app.careersheets.in/"
             target="_blank"
+            rel="noreferrer"
             style={{
               color: "#003E57",
               textDecoration: "none",

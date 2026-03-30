@@ -1,7 +1,6 @@
 import React from "react";
-import ReactGA from "react-ga";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import { Outlet, Route, Routes, useNavigate, useLocation  } from "react-router-dom";
+import { Outlet, Route, Routes, useLocation } from "react-router-dom";
 import JobseekerPage from "./components/JobSeekerPage/main";
 // import "./Pages/JobSeeker_Page/main.css";
 import "./components/JobSeekerPage/main.css";
@@ -19,8 +18,6 @@ import UserSelect from "./components/UserSelection/UserSelect";
 import Profile from "./components/Profile/Profile";
 import UserSelectUI from "./components/UserSelection/UserSelectUI";
 
-import UseAuth from "./hooks/auth";
-import { useEffect } from "react";
 //  Controllers
 import UserController from "./components/Controller/UserController";
 import CollegeAdminController from "./components/Controller/CollegeAdminController";
@@ -30,7 +27,6 @@ import { changeUserInfo } from "./redux/reducers/auth.data";
 
 // Notification Function
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 // reducer
@@ -47,10 +43,7 @@ import Certification from "./components/CollegeAdmin/Certification";
 import CertificationDisplay from "./components/CollegeAdmin/CertificationDisplay";
 
 import CommingSoon from "./components/JobSeekerPage/Utils/CommingSoon";
-import AdminController from "./components/Controller/AdminController";
-import Admin from "./components/Admin/main";
 import Dashboard from "./components/Admin/Dashboard";
-import LoginSection from "./components/Admin/LoginSection";
 import AdminTable from "./components/Admin/Table";
 import WorkingStatusTable from "./components/Admin/WorkingStatusTable"
 import CertificationVerifyTable from "./components/Admin/CertificationVerifyTable"
@@ -74,14 +67,13 @@ import RecruiterController from "./components/Controller/RecruiterController";
 import Jobs from "./components/Recruiter/Jobs";
 import Scheduleint from "./components/Recruiter/Scheduleint/Scheduleint";
 import RecruiterTable from "./components/Admin/RecruiterTable";
-import Company_Info from "./components/Recruiter/Company_Info";
+import CompanyInfo from "./components/Recruiter/Company_Info";
 import ViewRecruiterJobs from "./components/Recruiter/ViewRecruiterJobs";
 import PDFViewRecruiter from "./components/Recruiter/PDFViewRecruiter";
 import ResumeViewRecruiter from "./components/Recruiter/ResumeView";
 import SearchUser from "./components/Admin/SearchUser";
 import Tips from "./components/JobSeekerPage/Tips";
 import GenerateCertificateMain from "./components/Profile/Certification/CertificationApprovalTemplate";
-import { REACT_APP_CLIENT_URL } from "./config";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -217,7 +209,7 @@ function App() {
           }
         >
           <Route index element={<Jobs />} />
-          <Route path="profile" element={<Company_Info />} />
+          <Route path="profile" element={<CompanyInfo />} />
           <Route path="jobs/*" element={<ViewRecruiterJobs />} />
           <Route path ='schedule'element={<Scheduleint/>}></Route>
           <Route path="profile/resume/pdf/*" element={<PDFViewRecruiter />} />
